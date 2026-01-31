@@ -6,7 +6,7 @@ React and TypeScript implementation of SmonthlAPI with liquid glass effects.
 
 ### Via npm
 ```bash
-npm install @smonthl/liquid-glass-react
+npm install smonthl-react
 ```
 
 ### Via GitHub
@@ -19,9 +19,9 @@ npm install
 ## 🚀 Usage in Your Project
 
 ```typescript
-import { SmonthlAPI } from '@smonthl/liquid-glass-react';
-import { LiquidGlassDemo } from '@smonthl/liquid-glass-react';
-import '@smonthl/liquid-glass-react/dist/style.css';
+import { SmonthlAPI } from 'smonthl-react';
+import { LiquidGlassDemo } from 'smonthl-react';
+import 'smonthl-react/dist/style.css';
 
 // Initialize API
 const api = new SmonthlAPI();

@@ -20,12 +20,12 @@ Beautiful frosted glass UI components with real magnifying lens effects, jelly p
 
 ### HTML/JavaScript Version
 ```bash
-npm install @smonthl/liquid-glass-html
+npm install smonthl
 ```
 
 ### React TypeScript Version
 ```bash
-npm install @smonthl/liquid-glass-react
+npm install smonthl-react
 ```
 
 ## 📁 Available Versions
@@ -37,7 +37,7 @@ Pure HTML and vanilla JavaScript - zero dependencies, runs directly in browser.
 
 **Install:**
 ```bash
-npm install @smonthl/liquid-glass-html
+npm install smonthl
 ```
 
 **Or clone:**
@@ -52,7 +52,7 @@ Modern React with TypeScript, Vite, and full type safety.
 
 **Install:**
 ```bash
-npm install @smonthl/liquid-glass-react
+npm install smonthl-react
 ```
 
 **Or clone:**

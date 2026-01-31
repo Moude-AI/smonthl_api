@@ -6,7 +6,7 @@ Pure HTML and JavaScript implementation of SmonthlAPI with liquid glass effects.
 
 ### Via npm
 ```bash
-npm install @smonthl/liquid-glass-html
+npm install smonthl
 ```
 
 ### Via GitHub
