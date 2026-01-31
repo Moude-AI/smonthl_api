@@ -1,0 +1,32 @@
+{
+  "name": "tiprun",
+  "version": "1.0.0",
+  "description": "A powerful native cross-platform desktop application for creating and displaying highly customizable tip/hint windows with advanced features.",
+  "main": "electron-main.js",
+  "devDependencies": {
+    "@types/node": "^25.1.0",
+    "@types/react": "^19.2.10",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "electron": "^40.1.0",
+    "electron-builder": "^26.4.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.0.12"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev:react": "vite",
+    "dev:electron": "NODE_ENV=development electron electron-react.js",
+    "dev": "concurrently \"npm run dev:react\" \"npm run dev:electron\"",
+    "build:react": "tsc && vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}
