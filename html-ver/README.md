@@ -11,19 +11,20 @@ npm install smonthl
 
 ## 🚀 Quick Start
 
-After installation, you'll need the configuration file:
-
 ```javascript
 const api = new SmonthlAPI();
-// Load the included glass-config.json
-api.loadConfig('./node_modules/smonthl/glass-config.json').then(config => {
+
+// Option 1: Use default configuration (easiest)
+api.loadConfig().then(config => {
   console.log('Configuration loaded:', config);
 });
-```
 
-Or copy `glass-config.json` to your project and customize it:
-```bash
-cp node_modules/smonthl/glass-config.json ./my-config.json
+// Option 2: Load the included glass-config.json
+// api.loadConfig('./node_modules/smonthl/glass-config.json');
+
+// Option 3: Copy and customize your own config
+// cp node_modules/smonthl/glass-config.json ./my-config.json
+// api.loadConfig('./my-config.json');
 ```
 
 ## Features
