@@ -1249,7 +1249,7 @@ export class SmonthlAPI {
   }
 
   multilineText(lines: string[], options: any = {}): SmonthlConfig {
-    const configs = lines.map((line, i) => {
+    lines.map((line, i) => {
       return this.text(line, {
         ...options,
         fontSize: (options.fontSize || 48) - (i * 4)
