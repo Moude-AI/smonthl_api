@@ -2,6 +2,83 @@
 
 All notable changes to SmonthlAPI will be documented in this file.
 
+## [2.0.1] - 2026-01-31
+
+### Added - Creative Syntax Language & External Imports
+
+#### Natural Language Syntax
+- `make(what)` - Start building with natural language
+- `with(props)` - Add properties
+- `sized(width, height)` - Set dimensions
+- `containing(content)` - Set content
+- `styled(styles)` - Apply styles
+- `build()` - Finalize and create config
+
+#### External Resource System
+- `import(resource)` - Load external CSS, JS, or JSON files
+- `loadExternal(url, name)` - Load any external resource
+- `useFont(family, url)` - Load any custom font from URL
+- `useIcons(library, url)` - Load any icon library from URL
+- `css(styles)` - Inject inline CSS styles
+
+#### Presets & Themes
+- `preset(name)` - Apply style presets: minimal, frosted, heavy, sharp, soft, neon, crystal
+- `theme(colors)` - Apply color themes: ocean, sunset, forest, purple, gold
+- `animate(type)` - Apply animation presets: bounce, smooth, snappy, slow, fast
+
+#### Advanced Methods
+- `from(syntax)` - Parse custom string syntax: "circle:100 icon:🚀 blur:80 jelly:on"
+- `batch(operations)` - Execute multiple operations at once
+- `clone()` - Clone current configuration
+- `merge(config)` - Merge with another config
+- `reset()` - Reset to defaults
+- `getResources()` - Get all loaded external resources
+- `cleanup()` - Remove all custom styles
+
+### Examples
+
+```javascript
+// Natural language syntax
+api.make('button')
+   .sized(300, 70)
+   .containing('Click Me')
+   .styled({ blur: 80, transparency: 10 })
+   .build();
+
+// External imports
+api.import('https://example.com/custom-styles.css')
+   .import(['font.css', 'icons.css'])
+   .import({ theme: 'theme.css', icons: 'icons.css' });
+
+// Presets and themes
+api.circle(100, '🚀')
+   .preset('frosted')
+   .theme('ocean')
+   .animate('bounce');
+
+// Custom syntax parsing
+api.from('circle:100 icon:🚀 blur:80 jelly:on preset:neon theme:purple');
+
+// Batch operations
+api.batch([
+  'circle:100 icon:⭐',
+  'blur:80 jelly:on',
+  api => api.preset('crystal').theme('sunset')
+]);
+
+// Custom font and icons from any URL
+api.useFont('MyFont', 'https://example.com/font.woff2')
+   .useIcons('custom', 'https://example.com/icons.css');
+```
+
+### Changed
+- Enhanced external resource loading system
+- Improved chainable API
+- Better TypeScript type definitions
+
+### Removed
+- Demo files (temporary/sample files removed)
+
 ## [1.0.6] - 2026-01-31
 
 ### Added - Simple DSL Syntax
