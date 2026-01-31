@@ -1,6 +1,6 @@
 # SmonthlAPI - HTML/JavaScript Version
 
-Pure HTML and JavaScript implementation of SmonthlAPI with liquid glass effects.
+Pure HTML and JavaScript implementation of SmonthlAPI - a flexible configuration system for creating glass UI components with custom sizes, shapes, icons, and effects.
 
 ## 📦 Installation
 
@@ -25,6 +25,32 @@ api.loadConfig().then(config => {
 // Option 3: Copy and customize your own config
 // cp node_modules/smonthl/glass-config.json ./my-config.json
 // api.loadConfig('./my-config.json');
+```
+
+## 🎨 Create Custom Components
+
+SmonthlAPI is flexible - create any glass component with custom sizes and shapes:
+
+```javascript
+const api = new SmonthlAPI();
+await api.loadConfig();
+
+// Create a small circular icon button (60x60)
+api.updateConfig('glass.width', 60);
+api.updateConfig('glass.height', 60);
+api.updateConfig('glass.borderRadius', 30);
+api.updateConfig('content.icon', '🎨');
+
+// Create a large card (500x300)
+api.updateConfig('glass.width', 500);
+api.updateConfig('glass.height', 300);
+api.updateConfig('glass.borderRadius', 20);
+api.updateConfig('content.title', 'My Card');
+
+// Create a custom window (800x600)
+api.updateConfig('glass.width', 800);
+api.updateConfig('glass.height', 600);
+api.updateConfig('glass.borderRadius', 12);
 ```
 
 ## Features

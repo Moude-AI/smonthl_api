@@ -1,20 +1,22 @@
 # SmonthlAPI
 
-Beautiful frosted glass UI components with real magnifying lens effects, jelly physics, magnetic cursor following, and dynamic lighting.
+A flexible configuration API for creating beautiful frosted glass UI components with customizable sizes, shapes, and effects. Build buttons, cards, windows, icons, menus, and custom glass elements with real magnifying lens effects, jelly physics, magnetic cursor following, and dynamic lighting.
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
 ![Version](https://img.shields.io/badge/version-1.0.0-green.svg)
 
 ## ✨ Features
 
+- 🎨 **Flexible Component System** - Create any glass component: buttons, cards, windows, icons, menus, custom shapes
+- 📐 **Customizable Sizes & Shapes** - Configure width, height, border radius, and custom dimensions
 - 🔍 **Magnifying Lens Effect** - Real backdrop-filter magnification
-- 🎨 **Liquid Glass** - Frosted glass with customizable blur and transparency
 - 🎯 **Jelly Physics** - Spring-based elastic animations
 - 🧲 **Magnetic Following** - Cursor attraction with smooth interpolation
-- � **Doynamic Lighting** - Cursor-following light effects
+- 💡 **Dynamic Lighting** - Cursor-following light effects
 - ⚙️ **JSON Configuration** - Complete API for configuration management
-- 📦 **Templates** - Pre-built components (button, card, window, icon, menu)
-- � **Imtport/Export** - Save and load configurations
+- 📦 **Templates** - Pre-built component configs (button, card, window, icon, menu)
+- 🎭 **Icon Support** - Add icons and custom content to any component
+- � **Import/Exoport** - Save and load configurations
 
 ## 📦 Installation
 
@@ -94,17 +96,25 @@ await api.loadConfig();
 
 ## ⚙️ Configuration
 
-SmonthlAPI uses JSON configuration files:
+SmonthlAPI is highly flexible - create any glass component with custom sizes, shapes, and effects:
 
 ```json
 {
+  "componentType": "button",
   "glass": {
     "transparency": 6,
     "blur": 60,
     "magnifyingBlur": 30,
     "magnifyingBrightness": 115,
     "lensSize": 40,
-    "borderRadius": 32
+    "borderRadius": 32,
+    "width": 200,
+    "height": 60
+  },
+  "content": {
+    "type": "text",
+    "title": "Click Me",
+    "icon": "✨"
   },
   "jelly": {
     "elasticity": 0.6,
@@ -118,6 +128,31 @@ SmonthlAPI uses JSON configuration files:
     "lightSize": 120
   }
 }
+```
+
+### Create Different Components
+
+```javascript
+// Small icon button (50x50)
+api.updateConfig('glass.width', 50);
+api.updateConfig('glass.height', 50);
+api.updateConfig('glass.borderRadius', 25);
+api.updateConfig('content.icon', '🎨');
+
+// Large card (400x300)
+api.updateConfig('glass.width', 400);
+api.updateConfig('glass.height', 300);
+api.updateConfig('glass.borderRadius', 20);
+
+// Circular shape
+api.updateConfig('glass.width', 100);
+api.updateConfig('glass.height', 100);
+api.updateConfig('glass.borderRadius', 50);
+
+// Custom window (800x600)
+api.updateConfig('glass.width', 800);
+api.updateConfig('glass.height', 600);
+api.updateConfig('glass.borderRadius', 12);
 ```
 
 ## 🎯 API Usage
@@ -145,9 +180,17 @@ api.updateConfig('jelly.elasticity', 0.6);
 
 ### Use Templates
 ```javascript
-const buttonConfig = api.createFromTemplate('button');
-const cardConfig = api.createFromTemplate('card');
-const windowConfig = api.createFromTemplate('window');
+// Pre-configured component templates
+const buttonConfig = api.createFromTemplate('button');    // Small button (200x60)
+const cardConfig = api.createFromTemplate('card');        // Medium card (350x200)
+const windowConfig = api.createFromTemplate('window');    // Large window (600x400)
+const iconConfig = api.createFromTemplate('icon');        // Small icon (80x80)
+const menuConfig = api.createFromTemplate('menu');        // Menu panel (250x300)
+
+// Customize any template
+api.updateConfig('glass.width', 500);
+api.updateConfig('glass.borderRadius', 40);
+api.updateConfig('content.icon', '🚀');
 ```
 
 ### Export/Import

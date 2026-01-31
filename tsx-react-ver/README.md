@@ -1,6 +1,6 @@
 # SmonthlAPI - React TypeScript Version
 
-React and TypeScript implementation of SmonthlAPI with liquid glass effects.
+React and TypeScript implementation of SmonthlAPI - a flexible configuration system for creating glass UI components with custom sizes, shapes, icons, and effects.
 
 ## 📦 Installation
 
@@ -33,6 +33,38 @@ await api.loadConfig();
 function App() {
   return <LiquidGlassDemo />;
 }
+```
+
+## 🎨 Create Custom Components
+
+SmonthlAPI is flexible - create any glass component with custom sizes and shapes:
+
+```typescript
+const api = new SmonthlAPI();
+await api.loadConfig();
+
+// Create a small circular icon (80x80)
+api.updateConfig('glass.width', 80);
+api.updateConfig('glass.height', 80);
+api.updateConfig('glass.borderRadius', 40);
+api.updateConfig('content.type', 'icon');
+api.updateConfig('content.icon', '🚀');
+
+// Create a wide button (300x70)
+api.updateConfig('glass.width', 300);
+api.updateConfig('glass.height', 70);
+api.updateConfig('glass.borderRadius', 35);
+api.updateConfig('content.title', 'Click Me');
+
+// Create a large window (1000x700)
+api.updateConfig('glass.width', 1000);
+api.updateConfig('glass.height', 700);
+api.updateConfig('glass.borderRadius', 16);
+
+// Use templates for quick setup
+const iconConfig = api.createFromTemplate('icon');
+const cardConfig = api.createFromTemplate('card');
+const menuConfig = api.createFromTemplate('menu');
 ```
 
 ## Features
