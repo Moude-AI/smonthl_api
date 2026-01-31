@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo: All Custom Shapes</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      min-height: 100vh;
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      align-items: center;
+    }
+
+    .glass-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      color: white;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      padding: 20px;
+    }
+
+    .glass-item:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .glass-item .icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .glass-item .label {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .glass-item .size {
+      font-size: 11px;
+      opacity: 0.8;
+    }
+
+    .info {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 25px;
+      border-radius: 16px;
+      font-size: 14px;
+      max-width: 350px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .info h3 {
+      margin: 0 0 15px 0;
+      font-size: 20px;
+    }
+
+    .info .method {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 8px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+    }
+
+    .info .method-name {
+      color: #60a5fa;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">
+    <h3>🎨 All Shape Methods</h3>
+    <div class="method">
+      <span class="method-name">createCircle</span>(size, icon)
+    </div>
+    <div class="method">
+      <span class="method-name">createSquare</span>(size, title)
+    </div>
+    <div class="method">
+      <span class="method-name">createRectangle</span>(w, h, title)
+    </div>
+    <div class="method">
+      <span class="method-name">createIconButton</span>(icon, size)
+    </div>
+    <div class="method">
+      <span class="method-name">createCustomComponent</span>(options)
+    </div>
+    <p style="margin-top: 15px; opacity: 0.9;">Click any shape to see its config in console!</p>
+  </div>
+
+  <!-- Circles -->
+  <div class="glass-item" id="circle1">
+    <div class="icon">🎯</div>
+    <div class="label">Circle</div>
+    <div class="size">80x80</div>
+  </div>
+
+  <div class="glass-item" id="circle2">
+    <div class="icon">🚀</div>
+    <div class="label">Circle</div>
+    <div class="size">100x100</div>
+  </div>
+
+  <!-- Squares -->
+  <div class="glass-item" id="square1">
+    <div class="icon">📦</div>
+    <div class="label">Square</div>
+    <div class="size">120x120</div>
+  </div>
+
+  <div class="glass-item" id="square2">
+    <div class="icon">⭐</div>
+    <div class="label">Square</div>
+    <div class="size">150x150</div>
+  </div>
+
+  <!-- Rectangles -->
+  <div class="glass-item" id="rect1">
+    <div class="icon">📱</div>
+    <div class="label">Rectangle</div>
+    <div class="size">180x120</div>
+  </div>
+
+  <div class="glass-item" id="rect2">
+    <div class="icon">💻</div>
+    <div class="label">Wide Rect</div>
+    <div class="size">250x100</div>
+  </div>
+
+  <!-- Icon Buttons -->
+  <div class="glass-item" id="iconbtn1">
+    <div class="icon">❤️</div>
+    <div class="label">Icon Button</div>
+    <div class="size">70x70</div>
+  </div>
+
+  <div class="glass-item" id="iconbtn2">
+    <div class="icon">🎨</div>
+    <div class="label">Icon Button</div>
+    <div class="size">90x90</div>
+  </div>
+
+  <!-- Custom shapes -->
+  <div class="glass-item" id="custom1">
+    <div class="icon">🌟</div>
+    <div class="label">Custom</div>
+    <div class="size">140x80</div>
+  </div>
+
+  <div class="glass-item" id="custom2">
+    <div class="icon">🎭</div>
+    <div class="label">Custom Pill</div>
+    <div class="size">200x60</div>
+  </div>
+
+  <script src="../html-ver/smonthl-api.js"></script>
+  <script>
+    const api = new SmonthlAPI();
+    
+    // Create all different shapes
+    const configs = {
+      circle1: api.createCircle(80, '🎯'),
+      circle2: api.createCircle(100, '🚀'),
+      square1: api.createSquare(120, 'Square'),
+      square2: api.createSquare(150, 'Square'),
+      rect1: api.createRectangle(180, 120, 'Rectangle'),
+      rect2: api.createRectangle(250, 100, 'Wide'),
+      iconbtn1: api.createIconButton('❤️', 70),
+      iconbtn2: api.createIconButton('🎨', 90),
+      custom1: api.createCustomComponent({
+        type: 'custom',
+        width: 140,
+        height: 80,
+        borderRadius: 20,
+        icon: '🌟'
+      }),
+      custom2: api.createCustomComponent({
+        type: 'custom-pill',
+        width: 200,
+        height: 60,
+        borderRadius: 9999,
+        icon: '🎭'
+      })
+    };
+
+    // Apply configurations
+    function applyConfig(id, config) {
+      const element = document.getElementById(id);
+      element.style.width = config.glass.width + 'px';
+      element.style.height = config.glass.height + 'px';
+      element.style.borderRadius = config.glass.borderRadius + 'px';
+      
+      // Adjust icon size based on component size
+      const iconSize = Math.min(config.glass.width, config.glass.height) * 0.4;
+      element.querySelector('.icon').style.fontSize = iconSize + 'px';
+      
+      // Add click handler to show config
+      element.addEventListener('click', () => {
+        console.log(`${id} Configuration:`, config);
+        alert(`${id} config logged to console!`);
+      });
+    }
+
+    // Apply all configs
+    Object.keys(configs).forEach(id => {
+      applyConfig(id, configs[id]);
+    });
+
+    console.log('All Configurations:', configs);
+  </script>
+</body>
+</html>

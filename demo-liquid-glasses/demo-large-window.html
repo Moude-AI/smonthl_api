@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo: Large Glass Window</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glass-window {
+      position: relative;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(80px);
+      -webkit-backdrop-filter: blur(80px);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 16px 64px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .window-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .window-header h1 {
+      margin: 0;
+      font-size: 32px;
+      font-weight: 600;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .control-btn {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+    }
+
+    .control-btn.close { background: #ff5f56; }
+    .control-btn.minimize { background: #ffbd2e; }
+    .control-btn.maximize { background: #27c93f; }
+
+    .window-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .content-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .content-section h2 {
+      margin: 0 0 10px 0;
+      font-size: 20px;
+    }
+
+    .content-section p {
+      margin: 0;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+
+    .info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      max-width: 300px;
+    }
+
+    .info h3 {
+      margin: 0 0 10px 0;
+      font-size: 18px;
+    }
+
+    .info code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="info">
+    <h3>🪟 Large Glass Window</h3>
+    <p>Created with SmonthlAPI:</p>
+    <code>api.createRectangle(800, 600)</code>
+    <p style="margin-top: 10px;">Perfect for modals, dialogs, or content windows</p>
+  </div>
+
+  <div class="glass-window" id="window">
+    <div class="window-header">
+      <h1>SmonthlAPI Window</h1>
+      <div class="window-controls">
+        <button class="control-btn close"></button>
+        <button class="control-btn minimize"></button>
+        <button class="control-btn maximize"></button>
+      </div>
+    </div>
+    
+    <div class="window-content">
+      <div class="content-section">
+        <h2>🎨 Flexible Design System</h2>
+        <p>Create any size glass component you need. This window is 800x600 pixels with a subtle border radius.</p>
+      </div>
+      
+      <div class="content-section">
+        <h2>✨ Beautiful Glass Effects</h2>
+        <p>Frosted glass with backdrop blur creates depth and modern aesthetics. Perfect for overlays and floating UI elements.</p>
+      </div>
+      
+      <div class="content-section">
+        <h2>🚀 Easy to Use</h2>
+        <p>Just call <code style="background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px;">api.createRectangle(width, height)</code> and apply the configuration!</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../html-ver/smonthl-api.js"></script>
+  <script>
+    const api = new SmonthlAPI();
+    
+    // Create large window
+    const windowConfig = api.createRectangle(800, 600, 'Large Window');
+    windowConfig.glass.borderRadius = 16; // Subtle rounding
+
+    // Apply to element
+    const windowElement = document.getElementById('window');
+    windowElement.style.width = windowConfig.glass.width + 'px';
+    windowElement.style.height = windowConfig.glass.height + 'px';
+    windowElement.style.borderRadius = windowConfig.glass.borderRadius + 'px';
+
+    console.log('Window Config:', windowConfig);
+
+    // Add control button handlers
+    document.querySelector('.control-btn.close').addEventListener('click', () => {
+      alert('Close button clicked!');
+    });
+    document.querySelector('.control-btn.minimize').addEventListener('click', () => {
+      alert('Minimize button clicked!');
+    });
+    document.querySelector('.control-btn.maximize').addEventListener('click', () => {
+      alert('Maximize button clicked!');
+    });
+  </script>
+</body>
+</html>

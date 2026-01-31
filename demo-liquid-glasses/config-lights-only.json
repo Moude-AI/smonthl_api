@@ -1,0 +1,41 @@
+{
+  "componentType": "lights-only",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 0,
+    "magnifyingBrightness": 100,
+    "lensSize": 0,
+    "borderRadius": 32,
+    "width": 250,
+    "height": 250
+  },
+  "content": {
+    "type": "icon",
+    "icon": "💡",
+    "title": "Cursor Lights Only",
+    "subtitle": "Hover to see the light effect"
+  },
+  "jelly": {
+    "enabled": false,
+    "elasticity": 0,
+    "friction": 0,
+    "bounceIntensity": 0,
+    "wobbleSpeed": 0,
+    "magneticRange": 0,
+    "magneticStrength": 0
+  },
+  "lighting": {
+    "cursorFollowEnabled": true,
+    "followDistance": 200,
+    "lightIntensity": 0.9,
+    "lightSize": 150,
+    "lightColor": "255, 255, 100"
+  },
+  "draggable": false,
+  "magnifyingLens": false,
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}

@@ -1,0 +1,20 @@
+{
+  "name": "demo-liquid-glasses",
+  "version": "1.0.0",
+  "description": "Demo examples for SmonthlAPI with different shapes, sizes, and icons",
+  "main": "index.html",
+  "scripts": {
+    "install-html": "npm install smonthl",
+    "install-react": "npm install smonthl-react"
+  },
+  "keywords": [
+    "smonthl",
+    "demo",
+    "liquid-glass"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "smonthl": "^1.0.3"
+  }
+}

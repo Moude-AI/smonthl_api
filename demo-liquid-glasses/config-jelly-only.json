@@ -1,0 +1,40 @@
+{
+  "componentType": "jelly-only",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 0,
+    "magnifyingBrightness": 100,
+    "lensSize": 0,
+    "borderRadius": 28,
+    "width": 220,
+    "height": 160
+  },
+  "content": {
+    "type": "text",
+    "title": "Jelly Physics",
+    "subtitle": "Drag me • Bouncy & elastic!"
+  },
+  "jelly": {
+    "enabled": true,
+    "elasticity": 0.7,
+    "friction": 0.8,
+    "bounceIntensity": 20,
+    "wobbleSpeed": 0.4,
+    "magneticRange": 0,
+    "magneticStrength": 0
+  },
+  "lighting": {
+    "cursorFollowEnabled": false,
+    "followDistance": 0,
+    "lightIntensity": 0,
+    "lightSize": 0,
+    "lightColor": "255, 255, 255"
+  },
+  "draggable": true,
+  "magnifyingLens": false,
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}

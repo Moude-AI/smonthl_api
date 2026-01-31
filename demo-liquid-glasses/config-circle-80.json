@@ -1,0 +1,39 @@
+{
+  "componentType": "circle-icon",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 30,
+    "magnifyingBrightness": 115,
+    "lensSize": 40,
+    "borderRadius": 40,
+    "width": 80,
+    "height": 80
+  },
+  "content": {
+    "type": "icon",
+    "icon": "🚀",
+    "title": "Circular Icon",
+    "subtitle": "80x80 • Perfect Circle"
+  },
+  "jelly": {
+    "enabled": true,
+    "elasticity": 0.6,
+    "friction": 0.85,
+    "bounceIntensity": 15,
+    "wobbleSpeed": 0.3,
+    "magneticRange": 150,
+    "magneticStrength": 0.3
+  },
+  "lighting": {
+    "cursorFollowEnabled": true,
+    "followDistance": 200,
+    "lightIntensity": 0.8,
+    "lightSize": 120,
+    "lightColor": "255, 255, 255"
+  },
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}

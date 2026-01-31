@@ -1,0 +1,40 @@
+{
+  "componentType": "static-card",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 30,
+    "magnifyingBrightness": 115,
+    "lensSize": 40,
+    "borderRadius": 24,
+    "width": 350,
+    "height": 200
+  },
+  "content": {
+    "type": "text",
+    "title": "Static Card",
+    "subtitle": "Not draggable • No jelly physics • Just beautiful glass"
+  },
+  "jelly": {
+    "enabled": false,
+    "elasticity": 0,
+    "friction": 0,
+    "bounceIntensity": 0,
+    "wobbleSpeed": 0,
+    "magneticRange": 0,
+    "magneticStrength": 0
+  },
+  "lighting": {
+    "cursorFollowEnabled": false,
+    "followDistance": 0,
+    "lightIntensity": 0,
+    "lightSize": 0,
+    "lightColor": "255, 255, 255"
+  },
+  "draggable": false,
+  "magnifyingLens": true,
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}

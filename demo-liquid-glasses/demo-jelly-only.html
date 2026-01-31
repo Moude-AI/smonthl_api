@@ -365,7 +365,7 @@
     let config = null;
 
     // Load configuration
-    smonthlAPI.loadConfig().then(cfg => {
+    smonthlAPI.loadConfig('./config-jelly-only.json').then(cfg => {
       config = cfg;
       applyConfig(config);
     });
@@ -416,11 +416,6 @@
     let jellyFriction = 0.85;
     let magneticStrength = 0.3;
     let magneticRange = 150;
-    let isDraggableEnabled = true;
-    let isJellyEnabled = true;
-    let isMagneticEnabled = true;
-    let isLightingEnabled = true;
-    let isMagnifyingLensEnabled = true;
 
     // Cursor following light
     let mouseX = 0;
@@ -429,52 +424,40 @@
       mouseX = e.clientX;
       mouseY = e.clientY;
       
-      // Update cursor light position (only if enabled)
-      if (isLightingEnabled) {
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
-        
-        if (distance < 200) {
-          cursorLight.style.opacity = (1 - distance / 200) * 0.8;
-          cursorLight.style.left = (mouseX - 60) + 'px';
-          cursorLight.style.top = (mouseY - 60) + 'px';
-        } else {
-          cursorLight.style.opacity = 0;
-        }
+      // Update cursor light position
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
+      
+      if (distance < 200) {
+        cursorLight.style.opacity = (1 - distance / 200) * 0.8;
+        cursorLight.style.left = (mouseX - 60) + 'px';
+        cursorLight.style.top = (mouseY - 60) + 'px';
+      } else {
+        cursorLight.style.opacity = 0;
       }
       
-      // Magnetic attraction when near (only if enabled)
-      if (isMagneticEnabled && !isDragging && magneticStrength > 0) {
-        const rect = container.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const distance = Math.sqrt(Math.pow(mouseX - centerX, 2) + Math.pow(mouseY - centerY, 2));
-        
-        if (distance < magneticRange) {
-          const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
-          const pullX = Math.cos(angle) * magneticStrength * (1 - distance / magneticRange) * 5;
-          const pullY = Math.sin(angle) * magneticStrength * (1 - distance / magneticRange) * 5;
-          targetX += pullX;
-          targetY += pullY;
-        }
+      // Magnetic attraction when near
+      if (!isDragging && distance < magneticRange) {
+        const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+        const pullX = Math.cos(angle) * magneticStrength * (1 - distance / magneticRange) * 5;
+        const pullY = Math.sin(angle) * magneticStrength * (1 - distance / magneticRange) * 5;
+        targetX += pullX;
+        targetY += pullY;
       }
     });
 
     container.addEventListener('mousedown', (e) => {
       if (e.target.classList.contains('close-btn')) return;
-      if (!isDraggableEnabled) return; // Check if dragging is enabled
       isDragging = true;
       initialX = e.clientX - currentX;
       initialY = e.clientY - currentY;
-      if (isJellyEnabled) {
-        container.classList.add('jelly-active');
-      }
+      container.classList.add('jelly-active');
     });
 
     document.addEventListener('mousemove', (e) => {
-      if (isDragging && isDraggableEnabled) {
+      if (isDragging) {
         e.preventDefault();
         targetX = e.clientX - initialX;
         targetY = e.clientY - initialY;
@@ -484,39 +467,30 @@
     document.addEventListener('mouseup', () => {
       if (isDragging) {
         isDragging = false;
-        if (isJellyEnabled) {
-          setTimeout(() => container.classList.remove('jelly-active'), 600);
-        }
+        setTimeout(() => container.classList.remove('jelly-active'), 600);
       }
     });
 
     // Jelly physics animation loop
     function jellyPhysics() {
-      if (isJellyEnabled) {
-        // Apply elastic movement
-        velocityX += (targetX - currentX) * jellyElasticity;
-        velocityY += (targetY - currentY) * jellyElasticity;
-        
-        // Apply friction
-        velocityX *= jellyFriction;
-        velocityY *= jellyFriction;
-        
-        // Update position
-        currentX += velocityX;
-        currentY += velocityY;
-        
-        // Apply transform with slight rotation for jelly effect
-        const rotation = velocityX * 0.02;
-        const scaleX = 1 + Math.abs(velocityX) * 0.001;
-        const scaleY = 1 + Math.abs(velocityY) * 0.001;
-        
-        container.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
-      } else if (isDraggableEnabled) {
-        // Simple dragging without jelly physics
-        currentX = targetX;
-        currentY = targetY;
-        container.style.transform = `translate(${currentX}px, ${currentY}px)`;
-      }
+      // Apply elastic movement
+      velocityX += (targetX - currentX) * jellyElasticity;
+      velocityY += (targetY - currentY) * jellyElasticity;
+      
+      // Apply friction
+      velocityX *= jellyFriction;
+      velocityY *= jellyFriction;
+      
+      // Update position
+      currentX += velocityX;
+      currentY += velocityY;
+      
+      // Apply transform with slight rotation for jelly effect
+      const rotation = velocityX * 0.02;
+      const scaleX = 1 + Math.abs(velocityX) * 0.001;
+      const scaleY = 1 + Math.abs(velocityY) * 0.001;
+      
+      container.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotation}deg) scale(${scaleX}, ${scaleY})`;
       
       requestAnimationFrame(jellyPhysics);
     }
@@ -649,21 +623,6 @@
             ${cfg.content.subtitle ? `<p>${cfg.content.subtitle}</p>` : ''}
           `;
         }
-      }
-      
-      // Set feature flags
-      isDraggableEnabled = cfg.draggable !== false; // Default true
-      isJellyEnabled = cfg.jelly && cfg.jelly.enabled !== false; // Default true
-      isMagneticEnabled = cfg.jelly && cfg.jelly.magneticStrength > 0;
-      isLightingEnabled = cfg.lighting && cfg.lighting.cursorFollowEnabled !== false;
-      isMagnifyingLensEnabled = cfg.magnifyingLens !== false; // Default true
-      
-      // Update cursor style
-      container.style.cursor = isDraggableEnabled ? 'move' : 'default';
-      
-      // Hide/show magnifying lens
-      if (!isMagnifyingLensEnabled) {
-        container.style.setProperty('--lens-opacity', '0');
       }
       
       transparency.value = cfg.glass.transparency;

@@ -1,0 +1,40 @@
+{
+  "componentType": "full-featured",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 30,
+    "magnifyingBrightness": 115,
+    "lensSize": 40,
+    "borderRadius": 32,
+    "width": 400,
+    "height": 180
+  },
+  "content": {
+    "type": "text",
+    "title": "All Features Enabled! ✨",
+    "subtitle": "Drag • Jelly • Magnetic • Lights • Lens"
+  },
+  "jelly": {
+    "enabled": true,
+    "elasticity": 0.6,
+    "friction": 0.85,
+    "bounceIntensity": 15,
+    "wobbleSpeed": 0.3,
+    "magneticRange": 150,
+    "magneticStrength": 0.3
+  },
+  "lighting": {
+    "cursorFollowEnabled": true,
+    "followDistance": 200,
+    "lightIntensity": 0.8,
+    "lightSize": 120,
+    "lightColor": "255, 255, 255"
+  },
+  "draggable": true,
+  "magnifyingLens": true,
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}
