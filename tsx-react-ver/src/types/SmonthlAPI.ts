@@ -1012,7 +1012,7 @@ export class SmonthlAPI {
   }
 
   version(): string {
-    return '2.0.3-beta';
+    return '2.0.3';
   }
   
   supports(feature: string): boolean {

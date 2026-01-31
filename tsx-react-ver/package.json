@@ -1,6 +1,6 @@
 {
   "name": "smonthl-react",
-  "version": "2.0.3-beta",
+  "version": "2.0.3",
   "description": "SmonthlAPI - Beautiful frosted glass UI with liquid glass text, extended creative syntax, external imports (React/TypeScript version)",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

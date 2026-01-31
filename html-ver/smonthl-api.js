@@ -952,7 +952,7 @@ class SmonthlAPI {
 
   // Version info
   version() {
-    return '2.0.3-beta';
+    return '2.0.3';
   }
   
   // Feature detection
