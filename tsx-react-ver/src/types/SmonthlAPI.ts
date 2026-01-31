@@ -18,6 +18,8 @@ export interface ContentConfig {
   icon?: string;
   label?: string;
   items?: MenuItem[];
+  iconLibrary?: string;
+  iconClass?: string;
 }
 
 export interface MenuItem {
@@ -304,7 +306,7 @@ export class SmonthlAPI {
 
   // Shortcut: button
   button(text: string, width: number = 200, height: number = 60): SmonthlConfig {
-    const config = this.glass({ width, height, text });
+    this.glass({ width, height, text });
     this.applyShape('pill', height);
     return this.config!;
   }
