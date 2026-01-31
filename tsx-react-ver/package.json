@@ -53,6 +53,7 @@
   "files": [
     "dist",
     "src",
+    "glass-config.json",
     "README.md"
   ],
   "peerDependencies": {
