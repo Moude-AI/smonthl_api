@@ -737,6 +737,241 @@ class SmonthlAPI {
     this.customStyles = [];
     return this;
   }
+
+  // ========== V2.0.2-BETA EXTENDED SYNTAX ==========
+  
+  // Pipe operator for chaining
+  pipe(...fns) {
+    fns.forEach(fn => fn(this));
+    return this;
+  }
+
+  // Conditional syntax
+  when(condition, trueFn, falseFn = null) {
+    if (condition) {
+      trueFn(this);
+    } else if (falseFn) {
+      falseFn(this);
+    }
+    return this;
+  }
+
+  // Loop syntax
+  repeat(times, fn) {
+    for (let i = 0; i < times; i++) {
+      fn(this, i);
+    }
+    return this;
+  }
+
+  // Template literals support
+  template(strings, ...values) {
+    const syntax = strings.reduce((acc, str, i) => {
+      return acc + str + (values[i] || '');
+    }, '');
+    return this.from(syntax);
+  }
+
+  // JSON-like syntax
+  define(config) {
+    if (config.shape) {
+      const shapes = {
+        circle: () => this.circle(config.size || 100, config.icon),
+        square: () => this.square(config.size || 100, config.text),
+        button: () => this.button(config.text || 'Button', config.width || 200, config.height || 60),
+        card: () => this.card(config.title || 'Title', config.subtitle || '', config.width || 300, config.height || 200)
+      };
+      if (shapes[config.shape]) shapes[config.shape]();
+    }
+    
+    if (config.effects) {
+      if (config.effects.blur) this.blur(config.effects.blur);
+      if (config.effects.transparency) this.transparent(config.effects.transparency);
+      if (config.effects.jelly) this.jelly(config.effects.jelly);
+      if (config.effects.magnetic) this.magnetic(config.effects.magnetic);
+      if (config.effects.lights) this.lights(config.effects.lights);
+    }
+    
+    if (config.style) {
+      if (config.style.preset) this.preset(config.style.preset);
+      if (config.style.theme) this.theme(config.style.theme);
+      if (config.style.animate) this.animate(config.style.animate);
+    }
+    
+    if (config.resources) {
+      if (config.resources.fonts) this.useFont(config.resources.fonts);
+      if (config.resources.icons) this.useIcons(config.resources.icons);
+      if (config.resources.css) this.import(config.resources.css);
+    }
+    
+    return this.config;
+  }
+
+  // Fluent English-like syntax
+  create(what) { return this.make(what); }
+  withSize(w, h) { return this.sized(w, h); }
+  withContent(c) { return this.containing(c); }
+  withStyle(s) { return this.styled(s); }
+  andMake() { return this.build(); }
+  
+  // Shorthand combinations
+  glassCircle(size, icon, preset = 'frosted') {
+    return this.circle(size, icon).preset(preset);
+  }
+  
+  glassSquare(size, text, preset = 'frosted') {
+    return this.square(size, text).preset(preset);
+  }
+  
+  glassButton(text, w, h, preset = 'frosted') {
+    return this.button(text, w, h).preset(preset);
+  }
+
+  // Size presets
+  tiny() { return this.sized(50, 50); }
+  small() { return this.sized(100, 100); }
+  medium() { return this.sized(200, 200); }
+  large() { return this.sized(400, 400); }
+  huge() { return this.sized(600, 600); }
+
+  // Effect combinations
+  glassy() { return this.blur(60).transparent(6); }
+  frosted() { return this.preset('frosted'); }
+  minimal() { return this.preset('minimal'); }
+  heavy() { return this.preset('heavy'); }
+  
+  // Physics presets
+  bouncy() { return this.animate('bounce').jelly(true); }
+  smooth() { return this.animate('smooth').jelly(true); }
+  snappy() { return this.animate('snappy').jelly(true); }
+  
+  // Magnetic presets
+  weakMagnetic() { return this.magnetic(0.1); }
+  normalMagnetic() { return this.magnetic(0.3); }
+  strongMagnetic() { return this.magnetic(0.7); }
+  
+  // Light presets
+  dimLights() { return this.lights(true).updateConfig('lighting.lightIntensity', 0.3); }
+  normalLights() { return this.lights(true).updateConfig('lighting.lightIntensity', 0.8); }
+  brightLights() { return this.lights(true).updateConfig('lighting.lightIntensity', 1.5); }
+
+  // Color helpers
+  withColor(color) {
+    this.updateConfig('lighting.lightColor', color);
+    return this;
+  }
+  
+  withBackground(bg) {
+    if (Array.isArray(bg)) {
+      this.updateConfig('backgrounds', bg);
+    } else {
+      this.updateConfig('backgrounds', [bg]);
+    }
+    return this;
+  }
+
+  // Advanced string parsing with operators
+  parse(expression) {
+    // Support: "circle(100) | blur(80) | jelly(true) | theme('ocean')"
+    const operations = expression.split('|').map(s => s.trim());
+    
+    operations.forEach(op => {
+      const match = op.match(/(\w+)\(([^)]*)\)/);
+      if (match) {
+        const [, method, args] = match;
+        const parsedArgs = args.split(',').map(a => {
+          a = a.trim().replace(/['"]/g, '');
+          if (a === 'true') return true;
+          if (a === 'false') return false;
+          if (!isNaN(a)) return parseFloat(a);
+          return a;
+        });
+        
+        if (typeof this[method] === 'function') {
+          this[method](...parsedArgs);
+        }
+      }
+    });
+    
+    return this.config;
+  }
+
+  // Macro system
+  macro(name, fn) {
+    if (!this._macros) this._macros = {};
+    this._macros[name] = fn;
+    return this;
+  }
+  
+  useMacro(name, ...args) {
+    if (this._macros && this._macros[name]) {
+      this._macros[name](this, ...args);
+    }
+    return this;
+  }
+
+  // Quick presets
+  quick = {
+    button: (text) => this.button(text, 200, 60).preset('frosted').bouncy(),
+    icon: (emoji) => this.icon(emoji, 80).preset('crystal').smooth(),
+    card: (title, subtitle) => this.card(title, subtitle, 300, 200).preset('soft').normalMagnetic(),
+    window: (title) => this.window(title, 600, 400).preset('minimal').smooth()
+  };
+
+  // Experimental: CSS-like syntax parser
+  fromCSS(cssString) {
+    const rules = cssString.match(/([^{]+)\{([^}]+)\}/g);
+    if (rules) {
+      rules.forEach(rule => {
+        const [selector, props] = rule.split('{');
+        const properties = props.replace('}', '').split(';').filter(p => p.trim());
+        
+        properties.forEach(prop => {
+          const [key, value] = prop.split(':').map(s => s.trim());
+          if (key === 'blur') this.blur(parseInt(value));
+          if (key === 'transparency') this.transparent(parseInt(value));
+          if (key === 'border-radius') this.rounded(parseInt(value));
+        });
+      });
+    }
+    return this;
+  }
+
+  // Experimental: YAML-like syntax
+  fromYAML(yamlString) {
+    const lines = yamlString.split('\n').filter(l => l.trim());
+    const config = {};
+    
+    lines.forEach(line => {
+      const [key, value] = line.split(':').map(s => s.trim());
+      config[key] = value;
+    });
+    
+    return this.from(Object.keys(config).map(k => `${k}:${config[k]}`).join(' '));
+  }
+
+  // Version info
+  version() {
+    return '2.0.2-beta';
+  }
+  
+  // Feature detection
+  supports(feature) {
+    const features = {
+      'backdrop-filter': CSS.supports('backdrop-filter', 'blur(10px)'),
+      'jelly': true,
+      'magnetic': true,
+      'lights': true,
+      'external-imports': true,
+      'presets': true,
+      'themes': true,
+      'animations': true,
+      'macros': true,
+      'pipe': true,
+      'parse': true
+    };
+    return features[feature] || false;
+  }
 }
 
 // Export for use
