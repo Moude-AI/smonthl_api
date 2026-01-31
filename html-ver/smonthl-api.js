@@ -1,10 +1,12 @@
-// Smonthl Configuration API v2.0.1
+// Smonthl Configuration API v2.0.4-beta
 class SmonthlAPI {
   constructor() {
     this.config = null;
     this.listeners = [];
     this.externalResources = [];
     this.customStyles = [];
+    this.plugins = [];
+    this.resourceCache = new Map();
   }
 
   // Load configuration from JSON
@@ -952,7 +954,7 @@ class SmonthlAPI {
 
   // Version info
   version() {
-    return '2.0.3';
+    return '2.0.3-beta';
   }
   
   // Feature detection
@@ -1234,6 +1236,118 @@ class SmonthlAPI {
       current: start
     };
     return config;
+  }
+
+  // ========== V2.0.4-BETA PLUGIN & RESOURCE SYSTEM ==========
+  
+  use(plugin, options = {}) {
+    if (typeof plugin === 'function') {
+      plugin(this, options);
+    } else if (typeof plugin === 'object' && plugin.install) {
+      plugin.install(this, options);
+    }
+    this.plugins.push({ plugin, options });
+    return this;
+  }
+
+  async loadResource(url, type = 'auto') {
+    if (this.resourceCache.has(url)) return this.resourceCache.get(url);
+    const detectedType = type === 'auto' ? url.split('.').pop().toLowerCase() : type;
+    try {
+      let resource;
+      if (detectedType === 'json') {
+        const response = await fetch(url);
+        resource = await response.json();
+      } else if (detectedType === 'css') {
+        resource = await this._loadCSS(url);
+      } else if (detectedType === 'js') {
+        resource = await this._loadScript(url);
+      }
+      this.resourceCache.set(url, resource);
+      return resource;
+    } catch (error) {
+      console.error(`Failed to load: ${url}`, error);
+      return null;
+    }
+  }
+
+  _loadCSS(url) {
+    return new Promise((resolve, reject) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      link.onload = () => resolve(link);
+      link.onerror = reject;
+      document.head.appendChild(link);
+    });
+  }
+
+  _loadScript(url) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = () => resolve(script);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  async loadResources(resources) {
+    return Promise.all(resources.map(r => 
+      typeof r === 'string' ? this.loadResource(r) : this.loadResource(r.url, r.type)
+    ));
+  }
+
+  loadCDN(library, version = 'latest') {
+    const cdns = {
+      'gsap': `https://cdn.jsdelivr.net/npm/gsap@${version}/dist/gsap.min.js`,
+      'anime': `https://cdn.jsdelivr.net/npm/animejs@${version}/lib/anime.min.js`,
+      'particles': `https://cdn.jsdelivr.net/npm/particles.js@${version}/particles.min.js`,
+      'chart': `https://cdn.jsdelivr.net/npm/chart.js@${version}/dist/chart.min.js`,
+      'd3': `https://cdn.jsdelivr.net/npm/d3@${version}/dist/d3.min.js`
+    };
+    return cdns[library] ? this.loadResource(cdns[library], 'js') : Promise.reject(new Error(`Unknown: ${library}`));
+  }
+
+  loadNPM(packageName, file = '') {
+    return this.loadResource(`https://unpkg.com/${packageName}${file ? '/' + file : ''}`);
+  }
+
+  loadGitHub(user, repo, path, branch = 'main') {
+    return this.loadResource(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`);
+  }
+
+  preload(resources) {
+    resources.forEach(url => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = url;
+      link.as = url.endsWith('.js') ? 'script' : url.endsWith('.css') ? 'style' : 'fetch';
+      document.head.appendChild(link);
+    });
+    return this;
+  }
+
+  clearCache() {
+    this.resourceCache.clear();
+    return this;
+  }
+
+  getCacheStats() {
+    return { size: this.resourceCache.size, keys: Array.from(this.resourceCache.keys()) };
+  }
+
+  installPlugin(name, options = {}) {
+    const plugins = {
+      'particles': () => this.loadCDN('particles'),
+      'animations': () => this.loadCDN('gsap').then(() => { this.gsap = window.gsap; }),
+      'charts': () => this.loadCDN('chart').then(() => { this.Chart = window.Chart; })
+    };
+    return plugins[name] ? plugins[name]() : Promise.reject(new Error(`Unknown plugin: ${name}`));
+  }
+
+  getPlugins() {
+    return this.plugins;
   }
 }
 

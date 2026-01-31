@@ -75,13 +75,21 @@ export class SmonthlAPI {
   listeners: ConfigListener[];
   externalResources: ExternalResource[];
   customStyles: HTMLStyleElement[];
+  plugins: Array<{ plugin: any; options: any }>;
+  resourceCache: Map<string, any>;
   private _builder?: any;
+  private _macros?: Record<string, (api: SmonthlAPI, ...args: any[]) => void>;
+  gsap?: any;
+  Chart?: any;
+  THREE?: any;
 
   constructor() {
     this.config = null;
     this.listeners = [];
     this.externalResources = [];
     this.customStyles = [];
+    this.plugins = [];
+    this.resourceCache = new Map();
   }
 
   async loadConfig(url: string = './glass-config.json'): Promise<SmonthlConfig> {
@@ -1012,7 +1020,7 @@ export class SmonthlAPI {
   }
 
   version(): string {
-    return '2.0.3';
+    return '2.0.3-beta';
   }
   
   supports(feature: string): boolean {
@@ -1277,5 +1285,117 @@ export class SmonthlAPI {
       current: start
     };
     return config;
+  }
+
+  // ========== V2.0.4-BETA PLUGIN & RESOURCE SYSTEM ==========
+  
+  use(plugin: any, options: any = {}): this {
+    if (typeof plugin === 'function') {
+      plugin(this, options);
+    } else if (typeof plugin === 'object' && plugin.install) {
+      plugin.install(this, options);
+    }
+    this.plugins.push({ plugin, options });
+    return this;
+  }
+
+  async loadResource(url: string, type: string = 'auto'): Promise<any> {
+    if (this.resourceCache.has(url)) return this.resourceCache.get(url);
+    const detectedType = type === 'auto' ? url.split('.').pop()?.toLowerCase() : type;
+    try {
+      let resource;
+      if (detectedType === 'json') {
+        const response = await fetch(url);
+        resource = await response.json();
+      } else if (detectedType === 'css') {
+        resource = await this._loadCSS(url);
+      } else if (detectedType === 'js') {
+        resource = await this._loadScript(url);
+      }
+      this.resourceCache.set(url, resource);
+      return resource;
+    } catch (error) {
+      console.error(`Failed to load: ${url}`, error);
+      return null;
+    }
+  }
+
+  private _loadCSS(url: string): Promise<HTMLLinkElement> {
+    return new Promise((resolve, reject) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      link.onload = () => resolve(link);
+      link.onerror = reject;
+      document.head.appendChild(link);
+    });
+  }
+
+  private _loadScript(url: string): Promise<HTMLScriptElement> {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = url;
+      script.onload = () => resolve(script);
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  async loadResources(resources: Array<string | { url: string; type: string }>): Promise<any[]> {
+    return Promise.all(resources.map(r => 
+      typeof r === 'string' ? this.loadResource(r) : this.loadResource(r.url, r.type)
+    ));
+  }
+
+  loadCDN(library: string, version: string = 'latest'): Promise<any> {
+    const cdns: Record<string, string> = {
+      'gsap': `https://cdn.jsdelivr.net/npm/gsap@${version}/dist/gsap.min.js`,
+      'anime': `https://cdn.jsdelivr.net/npm/animejs@${version}/lib/anime.min.js`,
+      'particles': `https://cdn.jsdelivr.net/npm/particles.js@${version}/particles.min.js`,
+      'chart': `https://cdn.jsdelivr.net/npm/chart.js@${version}/dist/chart.min.js`,
+      'd3': `https://cdn.jsdelivr.net/npm/d3@${version}/dist/d3.min.js`
+    };
+    return cdns[library] ? this.loadResource(cdns[library], 'js') : Promise.reject(new Error(`Unknown: ${library}`));
+  }
+
+  loadNPM(packageName: string, file: string = ''): Promise<any> {
+    return this.loadResource(`https://unpkg.com/${packageName}${file ? '/' + file : ''}`);
+  }
+
+  loadGitHub(user: string, repo: string, path: string, branch: string = 'main'): Promise<any> {
+    return this.loadResource(`https://raw.githubusercontent.com/${user}/${repo}/${branch}/${path}`);
+  }
+
+  preload(resources: string[]): this {
+    resources.forEach(url => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.href = url;
+      link.as = url.endsWith('.js') ? 'script' : url.endsWith('.css') ? 'style' : 'fetch';
+      document.head.appendChild(link);
+    });
+    return this;
+  }
+
+  clearCache(): this {
+    this.resourceCache.clear();
+    return this;
+  }
+
+  getCacheStats(): { size: number; keys: string[] } {
+    return { size: this.resourceCache.size, keys: Array.from(this.resourceCache.keys()) };
+  }
+
+  installPlugin(name: string, options: any = {}): Promise<any> {
+    const plugins: Record<string, () => Promise<any>> = {
+      'particles': () => this.loadCDN('particles'),
+      'animations': () => this.loadCDN('gsap').then(() => { this.gsap = (window as any).gsap; }),
+      'charts': () => this.loadCDN('chart').then(() => { this.Chart = (window as any).Chart; })
+    };
+    return plugins[name] ? plugins[name]() : Promise.reject(new Error(`Unknown plugin: ${name}`));
+  }
+
+  getPlugins(): Array<{ plugin: any; options: any }> {
+    return this.plugins;
   }
 }
