@@ -16,10 +16,8 @@ function createWindow() {
 
   mainWindow.loadFile('index.html');
   
-  // Open DevTools in development
-  if (process.env.NODE_ENV === 'development') {
-    mainWindow.webContents.openDevTools();
-  }
+  // Open DevTools to see console errors
+  mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {

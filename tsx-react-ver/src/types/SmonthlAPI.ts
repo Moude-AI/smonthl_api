@@ -1012,7 +1012,7 @@ export class SmonthlAPI {
   }
 
   version(): string {
-    return '2.0.2-beta';
+    return '2.0.3-beta';
   }
   
   supports(feature: string): boolean {
@@ -1027,8 +1027,255 @@ export class SmonthlAPI {
       'animations': true,
       'macros': true,
       'pipe': true,
-      'parse': true
+      'parse': true,
+      'liquid-text': true
     };
     return features[feature] || false;
+  }
+
+  // ========== LIQUID GLASS TEXT ==========
+  
+  text(content: string, options: any = {}): SmonthlConfig {
+    const defaults = {
+      fontSize: 48,
+      fontWeight: 600,
+      letterSpacing: 2,
+      blur: 60,
+      transparency: 6,
+      glow: true,
+      glowColor: '255, 255, 255',
+      glowIntensity: 0.8,
+      gradient: false,
+      gradientColors: ['#ffffff', '#e0e0e0'],
+      stroke: true,
+      strokeWidth: 2,
+      strokeColor: 'rgba(255, 255, 255, 0.3)',
+      shadow: true,
+      shadowBlur: 20,
+      shadowColor: 'rgba(0, 0, 0, 0.5)',
+      animate: false,
+      animationType: 'float'
+    };
+    
+    const opts = { ...defaults, ...options };
+    
+    const textStyle = {
+      content: content,
+      fontSize: opts.fontSize + 'px',
+      fontWeight: opts.fontWeight,
+      letterSpacing: opts.letterSpacing + 'px',
+      color: 'rgba(255, 255, 255, 0.9)',
+      textShadow: opts.shadow ? `0 0 ${opts.shadowBlur}px ${opts.shadowColor}` : 'none',
+      backdropFilter: `blur(${opts.blur}px)`,
+      WebkitBackdropFilter: `blur(${opts.blur}px)`,
+      background: opts.gradient 
+        ? `linear-gradient(135deg, ${opts.gradientColors.join(', ')})`
+        : `rgba(255, 255, 255, ${opts.transparency / 100})`,
+      WebkitBackgroundClip: opts.gradient ? 'text' : 'initial',
+      WebkitTextFillColor: opts.gradient ? 'transparent' : 'inherit',
+      textStroke: opts.stroke ? `${opts.strokeWidth}px ${opts.strokeColor}` : 'none',
+      WebkitTextStroke: opts.stroke ? `${opts.strokeWidth}px ${opts.strokeColor}` : 'none',
+      filter: opts.glow ? `drop-shadow(0 0 ${opts.glowIntensity * 30}px rgba(${opts.glowColor}, ${opts.glowIntensity}))` : 'none',
+      animation: opts.animate ? this._getTextAnimation(opts.animationType) : 'none'
+    };
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'liquid-text',
+      content: {
+        type: 'text',
+        title: content,
+        style: textStyle
+      } as any
+    };
+    
+    return this.config!;
+  }
+
+  number(num: number, options: any = {}): SmonthlConfig {
+    return this.text(num.toString(), {
+      fontSize: 72,
+      fontWeight: 700,
+      letterSpacing: 4,
+      gradient: true,
+      gradientColors: ['#60a5fa', '#3b82f6', '#2563eb'],
+      glow: true,
+      glowColor: '59, 130, 246',
+      ...options
+    });
+  }
+
+  heading(text: string, level: number = 1, options: any = {}): SmonthlConfig {
+    const sizes: Record<number, number> = { 1: 64, 2: 52, 3: 42, 4: 36, 5: 28, 6: 24 };
+    return this.text(text, {
+      fontSize: sizes[level] || 48,
+      fontWeight: 700,
+      ...options
+    });
+  }
+
+  paragraph(text: string, options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      fontSize: 18,
+      fontWeight: 400,
+      letterSpacing: 0.5,
+      blur: 40,
+      transparency: 8,
+      ...options
+    });
+  }
+
+  label(text: string, options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      fontSize: 14,
+      fontWeight: 500,
+      letterSpacing: 1,
+      blur: 30,
+      transparency: 10,
+      ...options
+    });
+  }
+
+  animatedText(text: string, animationType: string = 'float', options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      animate: true,
+      animationType: animationType,
+      ...options
+    });
+  }
+
+  glowText(text: string, color: string = '255, 255, 255', options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      glow: true,
+      glowColor: color,
+      glowIntensity: 1.2,
+      blur: 80,
+      ...options
+    });
+  }
+
+  gradientText(text: string, colors: string[] = ['#60a5fa', '#3b82f6'], options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      gradient: true,
+      gradientColors: colors,
+      fontSize: 56,
+      fontWeight: 700,
+      ...options
+    });
+  }
+
+  neonText(text: string, color: string = '#00ffff', options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      glow: true,
+      glowColor: color.replace('#', '').match(/.{2}/g)!.map(x => parseInt(x, 16)).join(', '),
+      glowIntensity: 1.5,
+      gradient: true,
+      gradientColors: [color, '#ffffff'],
+      animate: true,
+      animationType: 'pulse',
+      ...options
+    });
+  }
+
+  frostedText(text: string, options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      blur: 100,
+      transparency: 12,
+      stroke: true,
+      strokeWidth: 3,
+      ...options
+    });
+  }
+
+  crystalText(text: string, options: any = {}): SmonthlConfig {
+    return this.text(text, {
+      blur: 30,
+      transparency: 4,
+      gradient: true,
+      gradientColors: ['#ffffff', '#e0e0e0', '#c0c0c0'],
+      glow: true,
+      glowIntensity: 0.6,
+      ...options
+    });
+  }
+
+  private _getTextAnimation(type: string): string {
+    const animations: Record<string, string> = {
+      float: 'liquidFloat 3s ease-in-out infinite',
+      pulse: 'liquidPulse 2s ease-in-out infinite',
+      glow: 'liquidGlow 2s ease-in-out infinite',
+      wave: 'liquidWave 4s ease-in-out infinite',
+      shimmer: 'liquidShimmer 3s linear infinite'
+    };
+    return animations[type] || animations.float;
+  }
+
+  injectTextAnimations(): void {
+    if (document.getElementById('smonthl-text-animations')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'smonthl-text-animations';
+    style.textContent = `
+      @keyframes liquidFloat {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      
+      @keyframes liquidPulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.9; }
+      }
+      
+      @keyframes liquidGlow {
+        0%, 100% { filter: drop-shadow(0 0 20px currentColor); }
+        50% { filter: drop-shadow(0 0 40px currentColor); }
+      }
+      
+      @keyframes liquidWave {
+        0% { transform: translateX(0) translateY(0); }
+        25% { transform: translateX(5px) translateY(-5px); }
+        50% { transform: translateX(0) translateY(0); }
+        75% { transform: translateX(-5px) translateY(5px); }
+        100% { transform: translateX(0) translateY(0); }
+      }
+      
+      @keyframes liquidShimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+    `;
+    document.head.appendChild(style);
+    this.customStyles.push(style);
+  }
+
+  multilineText(lines: string[], options: any = {}): SmonthlConfig {
+    const configs = lines.map((line, i) => {
+      return this.text(line, {
+        ...options,
+        fontSize: (options.fontSize || 48) - (i * 4)
+      });
+    });
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'liquid-multiline-text',
+      content: {
+        type: 'text',
+        title: lines.join('\n')
+      } as any
+    };
+    
+    return this.config!;
+  }
+
+  counter(start: number, end: number, duration: number = 2000, options: any = {}): any {
+    const config = this.number(start, options);
+    (config as any).counter = {
+      start: start,
+      end: end,
+      duration: duration,
+      current: start
+    };
+    return config;
   }
 }
