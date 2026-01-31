@@ -1,4 +1,4 @@
-// SmonthlAPI TypeScript Type Definitions v2.0.1
+// SmonthlAPI TypeScript Type Definitions v2.0.4-beta
 
 export interface GlassConfig {
   transparency: number;
@@ -974,7 +974,6 @@ export class SmonthlAPI {
     return this.config;
   }
 
-  private _macros?: Record<string, (api: SmonthlAPI, ...args: any[]) => void>;
   
   macro(name: string, fn: (api: SmonthlAPI, ...args: any[]) => void): this {
     if (!this._macros) this._macros = {};
@@ -1020,7 +1019,7 @@ export class SmonthlAPI {
   }
 
   version(): string {
-    return '2.0.3-beta';
+    return '2.0.4-beta';
   }
   
   supports(feature: string): boolean {
@@ -1386,7 +1385,7 @@ export class SmonthlAPI {
     return { size: this.resourceCache.size, keys: Array.from(this.resourceCache.keys()) };
   }
 
-  installPlugin(name: string, options: any = {}): Promise<any> {
+  installPlugin(name: string, _options: any = {}): Promise<any> {
     const plugins: Record<string, () => Promise<any>> = {
       'particles': () => this.loadCDN('particles'),
       'animations': () => this.loadCDN('gsap').then(() => { this.gsap = (window as any).gsap; }),
