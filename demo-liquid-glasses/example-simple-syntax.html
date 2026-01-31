@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Syntax - No JavaScript Grammar!</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    h2 { color: #666; margin-top: 30px; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
+    pre {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-size: 12px;
+    }
+    .info {
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #4caf50;
+    }
+    .code-block {
+      background: #263238;
+      color: #aed581;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>SmonthlAPI Simple Syntax</h1>
+  <div class="info">
+    <strong>No Complex JavaScript!</strong> Create beautiful liquid glass components with simple, intuitive methods.
+  </div>
+  
+  <h2>1. Simple One-Line Creations</h2>
+  <div class="code-block">
+    // Create a circle<br>
+    const myCircle = api.circle(100, '🚀');<br>
+    <br>
+    // Create a square<br>
+    const mySquare = api.square(200, 'Square');<br>
+    <br>
+    // Create a button<br>
+    const myButton = api.button('Click Me', 300, 70);<br>
+    <br>
+    // Create a card<br>
+    const myCard = api.card('Title', 'Subtitle', 350, 200);<br>
+    <br>
+    // Create an icon<br>
+    const myIcon = api.icon('⭐', 80);<br>
+    <br>
+    // Create a window<br>
+    const myWindow = api.window('Window Title', 600, 400);
+  </div>
+
+  <h2>2. Chainable Methods</h2>
+  <div class="code-block">
+    // Create and customize in one go!<br>
+    api.circle(120, '🎨')<br>
+    &nbsp;&nbsp;&nbsp;.blur(80)<br>
+    &nbsp;&nbsp;&nbsp;.transparent(10)<br>
+    &nbsp;&nbsp;&nbsp;.rounded(60)<br>
+    &nbsp;&nbsp;&nbsp;.jelly(true)<br>
+    &nbsp;&nbsp;&nbsp;.magnetic(0.5)<br>
+    &nbsp;&nbsp;&nbsp;.lights(true)<br>
+    &nbsp;&nbsp;&nbsp;.font('Poppins');
+  </div>
+
+  <h2>3. All-in-One Glass Method</h2>
+  <div class="code-block">
+    const simple = api.glass({<br>
+    &nbsp;&nbsp;size: 150,<br>
+    &nbsp;&nbsp;shape: 'circle',<br>
+    &nbsp;&nbsp;icon: '💎',<br>
+    &nbsp;&nbsp;blur: 60,<br>
+    &nbsp;&nbsp;transparency: 8,<br>
+    &nbsp;&nbsp;font: 'Roboto',<br>
+    &nbsp;&nbsp;icons: 'fontawesome'<br>
+    });
+  </div>
+  
+  <script src="node_modules/smonthl/smonthl-api.js"></script>
+  <script>
+    const api = new SmonthlAPI();
+    
+    // ===== SIMPLE SYNTAX =====
+    
+    // Create a circle - ONE LINE!
+    const myCircle = api.circle(100, '🚀');
+    
+    // Create a square - ONE LINE!
+    const mySquare = api.square(200, 'Square');
+    
+    // Create a button - ONE LINE!
+    const myButton = api.button('Click Me', 300, 70);
+    
+    // Create a card - ONE LINE!
+    const myCard = api.card('Card Title', 'Card subtitle', 350, 200);
+    
+    // Create an icon - ONE LINE!
+    const myIcon = api.icon('⭐', 80);
+    
+    // Create a window - ONE LINE!
+    const myWindow = api.window('Window Title', 600, 400);
+    
+    // ===== CHAIN METHODS =====
+    
+    // Create and customize in one go!
+    api.circle(120, '🎨')
+       .blur(80)
+       .transparent(10)
+       .rounded(60)
+       .jelly(true)
+       .magnetic(0.5)
+       .lights(true)
+       .font('Poppins');
+    
+    const customized = api.config;
+    
+    // ===== SIMPLE GLASS METHOD =====
+    
+    // All-in-one configuration
+    const simple = api.glass({
+      size: 150,
+      shape: 'circle',
+      icon: '💎',
+      blur: 60,
+      transparency: 8,
+      font: 'Roboto',
+      icons: 'fontawesome'
+    });
+    
+    // ===== SHOW RESULTS =====
+    
+    console.log('Circle:', myCircle);
+    console.log('Square:', mySquare);
+    console.log('Button:', myButton);
+    console.log('Card:', myCard);
+    console.log('Icon:', myIcon);
+    console.log('Window:', myWindow);
+    console.log('Customized:', customized);
+    console.log('Simple:', simple);
+    
+    document.body.innerHTML += '<pre>' + JSON.stringify({
+      circle: myCircle,
+      square: mySquare,
+      button: myButton,
+      card: myCard,
+      icon: myIcon,
+      window: myWindow,
+      customized: customized,
+      simple: simple
+    }, null, 2) + '</pre>';
+  </script>
+</body>
+</html>

@@ -185,6 +185,116 @@ class SmonthlAPI {
     }
   }
 
+  // Simple DSL-style shortcuts
+  glass(config) {
+    // Simple syntax: api.glass({ size: 100, shape: 'circle', icon: '🚀' })
+    if (config.size) {
+      if (config.shape === 'circle') {
+        this.config = this.createCircle(config.size, config.icon || config.text);
+      } else if (config.shape === 'square') {
+        this.config = this.createSquare(config.size, config.text);
+      } else {
+        this.config = this.createCustomComponent({
+          width: config.size,
+          height: config.size,
+          borderRadius: config.size / 2,
+          icon: config.icon,
+          title: config.text
+        });
+      }
+    } else if (config.width && config.height) {
+      this.config = this.createRectangle(config.width, config.height, config.text);
+    }
+    
+    if (config.blur) this.updateConfig('glass.blur', config.blur);
+    if (config.transparency) this.updateConfig('glass.transparency', config.transparency);
+    if (config.radius) this.updateConfig('glass.borderRadius', config.radius);
+    if (config.font) this.loadGoogleFont(config.font);
+    if (config.icons) this.loadIconLibrary(config.icons);
+    
+    return this.config;
+  }
+
+  // Shortcut: circle
+  circle(size, icon) {
+    return this.glass({ size, shape: 'circle', icon });
+  }
+
+  // Shortcut: square
+  square(size, text) {
+    return this.glass({ size, shape: 'square', text });
+  }
+
+  // Shortcut: button
+  button(text, width = 200, height = 60) {
+    const config = this.glass({ width, height, text });
+    this.applyShape('pill', height);
+    return this.config;
+  }
+
+  // Shortcut: card
+  card(title, subtitle, width = 300, height = 200) {
+    this.config = this.createRectangle(width, height, title);
+    this.updateConfig('content.subtitle', subtitle);
+    return this.config;
+  }
+
+  // Shortcut: icon
+  icon(emoji, size = 80) {
+    return this.circle(size, emoji);
+  }
+
+  // Shortcut: window
+  window(title, width = 600, height = 400) {
+    return this.card(title, '', width, height);
+  }
+
+  // Chain-able methods
+  blur(amount) {
+    this.updateConfig('glass.blur', amount);
+    return this;
+  }
+
+  transparent(amount) {
+    this.updateConfig('glass.transparency', amount);
+    return this;
+  }
+
+  rounded(amount) {
+    this.updateConfig('glass.borderRadius', amount);
+    return this;
+  }
+
+  draggable(enabled = true) {
+    this.updateConfig('draggable', enabled);
+    return this;
+  }
+
+  jelly(enabled = true) {
+    this.updateConfig('jelly.enabled', enabled);
+    return this;
+  }
+
+  magnetic(strength = 0.3) {
+    this.updateConfig('jelly.magneticStrength', strength);
+    return this;
+  }
+
+  lights(enabled = true) {
+    this.updateConfig('lighting.cursorFollowEnabled', enabled);
+    return this;
+  }
+
+  font(name, weights = '300,400,600') {
+    this.loadGoogleFont(name, weights);
+    return this;
+  }
+
+  icons(library) {
+    this.loadIconLibrary(library);
+    return this;
+  }
+
   // Load external icon library
   loadIconLibrary(type, cdnUrl = null) {
     const libraries = {

@@ -1,6 +1,6 @@
 {
   "name": "smonthl-react",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "SmonthlAPI - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (React/TypeScript version)",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",

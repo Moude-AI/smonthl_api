@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create with Font Awesome</title>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script src="node_modules/smonthl/smonthl-api.js"></script>
+  <script>
+    // CREATE LIQUID GLASS WITH FONT AWESOME ICON
+    const api = new SmonthlAPI();
+    
+    // Load Font Awesome library
+    api.loadIconLibrary('fontawesome');
+    console.log('Font Awesome loaded!');
+    
+    // Create icon with Font Awesome
+    const iconConfig = api.createIconWithLibrary('fontawesome', 'fas fa-rocket', 100);
+    console.log('Icon config:', iconConfig);
+    
+    // Load custom font
+    api.loadGoogleFont('Poppins', '300,400,600');
+    console.log('Poppins font loaded!');
+    
+    // Set typography
+    api.config = iconConfig;
+    api.setTypography({
+      fontFamily: "'Poppins', sans-serif",
+      titleSize: '32px',
+      titleWeight: '600'
+    });
+    
+    // Export the config
+    const json = api.exportConfig();
+    console.log('Final JSON:', json);
+    
+    // Download it
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'fontawesome-icon-config.json';
+    a.textContent = 'Download Font Awesome Config';
+    document.body.appendChild(a);
+    
+    alert('Font Awesome icon created! Check console and download JSON.');
+  </script>
+</body>
+</html>

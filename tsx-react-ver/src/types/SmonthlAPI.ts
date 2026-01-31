@@ -251,6 +251,203 @@ export class SmonthlAPI {
     }
   }
 
+  // Simple DSL-style shortcuts
+  glass(config: {
+    size?: number;
+    width?: number;
+    height?: number;
+    shape?: 'circle' | 'square';
+    icon?: string;
+    text?: string;
+    blur?: number;
+    transparency?: number;
+    radius?: number;
+    font?: string;
+    icons?: string;
+  }): SmonthlConfig {
+    if (config.size) {
+      if (config.shape === 'circle') {
+        this.config = this.createCircle(config.size, config.icon || config.text);
+      } else if (config.shape === 'square') {
+        this.config = this.createSquare(config.size, config.text);
+      } else {
+        this.config = this.createCustomComponent({
+          width: config.size,
+          height: config.size,
+          borderRadius: config.size / 2,
+          icon: config.icon,
+          title: config.text
+        });
+      }
+    } else if (config.width && config.height) {
+      this.config = this.createRectangle(config.width, config.height, config.text);
+    }
+    
+    if (config.blur) this.updateConfig('glass.blur', config.blur);
+    if (config.transparency) this.updateConfig('glass.transparency', config.transparency);
+    if (config.radius) this.updateConfig('glass.borderRadius', config.radius);
+    if (config.font) this.loadGoogleFont(config.font);
+    if (config.icons) this.loadIconLibrary(config.icons);
+    
+    return this.config!;
+  }
+
+  // Shortcut: circle
+  circle(size: number, icon?: string): SmonthlConfig {
+    return this.glass({ size, shape: 'circle', icon });
+  }
+
+  // Shortcut: square
+  square(size: number, text?: string): SmonthlConfig {
+    return this.glass({ size, shape: 'square', text });
+  }
+
+  // Shortcut: button
+  button(text: string, width: number = 200, height: number = 60): SmonthlConfig {
+    const config = this.glass({ width, height, text });
+    this.applyShape('pill', height);
+    return this.config!;
+  }
+
+  // Shortcut: card
+  card(title: string, subtitle: string, width: number = 300, height: number = 200): SmonthlConfig {
+    this.config = this.createRectangle(width, height, title);
+    this.updateConfig('content.subtitle', subtitle);
+    return this.config!;
+  }
+
+  // Shortcut: icon
+  icon(emoji: string, size: number = 80): SmonthlConfig {
+    return this.circle(size, emoji);
+  }
+
+  // Shortcut: window
+  window(title: string, width: number = 600, height: number = 400): SmonthlConfig {
+    return this.card(title, '', width, height);
+  }
+
+  // Chain-able methods
+  blur(amount: number): this {
+    this.updateConfig('glass.blur', amount);
+    return this;
+  }
+
+  transparent(amount: number): this {
+    this.updateConfig('glass.transparency', amount);
+    return this;
+  }
+
+  rounded(amount: number): this {
+    this.updateConfig('glass.borderRadius', amount);
+    return this;
+  }
+
+  draggable(enabled: boolean = true): this {
+    this.updateConfig('draggable', enabled);
+    return this;
+  }
+
+  jelly(enabled: boolean = true): this {
+    this.updateConfig('jelly.enabled', enabled);
+    return this;
+  }
+
+  magnetic(strength: number = 0.3): this {
+    this.updateConfig('jelly.magneticStrength', strength);
+    return this;
+  }
+
+  lights(enabled: boolean = true): this {
+    this.updateConfig('lighting.cursorFollowEnabled', enabled);
+    return this;
+  }
+
+  font(name: string, weights: string = '300,400,600'): this {
+    this.loadGoogleFont(name, weights);
+    return this;
+  }
+
+  icons(library: string): this {
+    this.loadIconLibrary(library);
+    return this;
+  }
+
+  // Load external icon library
+  loadIconLibrary(type: string, cdnUrl: string | null = null): boolean {
+    const libraries: Record<string, string> = {
+      'fontawesome': 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+      'material': 'https://fonts.googleapis.com/icon?family=Material+Icons',
+      'bootstrap': 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+      'feather': 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css',
+      'ionicons': 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.css'
+    };
+
+    const url = cdnUrl || libraries[type];
+    if (!url) {
+      console.error(`Unknown icon library: ${type}`);
+      return false;
+    }
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+
+    this.updateConfig('iconLibrary.type', type);
+    this.updateConfig('iconLibrary.cdnUrl', url);
+    
+    return true;
+  }
+
+  // Load custom font
+  loadFont(fontFamily: string, fontUrl: string | null = null): boolean {
+    if (fontUrl) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = fontUrl;
+      document.head.appendChild(link);
+    }
+    
+    this.updateConfig('typography.fontFamily', fontFamily);
+    return true;
+  }
+
+  // Load Google Font
+  loadGoogleFont(fontName: string, weights: string = '300,400,600'): boolean {
+    const url = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@${weights}&display=swap`;
+    return this.loadFont(fontName, url);
+  }
+
+  // Set typography
+  setTypography(options: {
+    fontFamily?: string;
+    titleSize?: string;
+    subtitleSize?: string;
+    titleWeight?: number;
+    subtitleWeight?: number;
+    letterSpacing?: string;
+    lineHeight?: number;
+  }): void {
+    if (options.fontFamily) this.updateConfig('typography.fontFamily', options.fontFamily);
+    if (options.titleSize) this.updateConfig('typography.titleSize', options.titleSize);
+    if (options.subtitleSize) this.updateConfig('typography.subtitleSize', options.subtitleSize);
+    if (options.titleWeight) this.updateConfig('typography.titleWeight', options.titleWeight);
+    if (options.subtitleWeight) this.updateConfig('typography.subtitleWeight', options.subtitleWeight);
+    if (options.letterSpacing) this.updateConfig('typography.letterSpacing', options.letterSpacing);
+    if (options.lineHeight) this.updateConfig('typography.lineHeight', options.lineHeight);
+  }
+
+  // Create icon with library
+  createIconWithLibrary(libraryType: string, iconClass: string, size: number = 64): SmonthlConfig {
+    const config = this.createCircle(size);
+    config.content = {
+      type: 'icon',
+      iconLibrary: libraryType,
+      iconClass: iconClass
+    };
+    return config;
+  }
+
   getTemplates(): Record<string, Partial<SmonthlConfig>> {
     return this.config?.templates || {};
   }
