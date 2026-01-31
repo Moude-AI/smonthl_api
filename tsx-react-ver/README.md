@@ -21,17 +21,34 @@ npm install
 
 ## Running
 
-### Development Mode
+### Development Mode (Browser)
 ```bash
 npm run dev
 ```
-
 This will start Vite dev server at http://localhost:5173
+
+### Development Mode (Electron)
+```bash
+npm run dev:electron
+```
+This will start Electron app (make sure Vite dev server is running first)
+
+### Development Mode (Both)
+```bash
+npm run dev:all
+```
+This will start both Vite dev server and Electron app concurrently
 
 ### Build for Production
 ```bash
 npm run build
 ```
+
+### Build Electron App
+```bash
+npm run build:electron
+```
+This will create distributable Electron apps in `dist-electron/`
 
 ## Project Structure
 

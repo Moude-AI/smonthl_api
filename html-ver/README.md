@@ -16,10 +16,15 @@ Pure HTML and JavaScript implementation of SmonthlAPI with liquid glass effects.
 ### Option 1: Direct Browser
 Simply open `index.html` in your browser.
 
-### Option 2: Electron
+### Option 2: Electron (Recommended)
 ```bash
 npm install
 npm start
+```
+
+Or for development:
+```bash
+npm run dev
 ```
 
 ## Files
