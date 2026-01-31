@@ -20,8 +20,7 @@
 
 .glass-container {
   position: relative;
-  width: 700px;
-  height: 140px;
+  /* Dimensions set dynamically via inline styles */
   background: rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(60px) saturate(180%);
   -webkit-backdrop-filter: blur(60px) saturate(180%);

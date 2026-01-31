@@ -397,6 +397,8 @@ const LiquidGlassDemo: React.FC = () => {
         className="glass-container"
         onMouseDown={handleMouseDown}
         style={{
+          width: config?.glass.width ? `${config.glass.width}px` : '700px',
+          height: config?.glass.height ? `${config.glass.height}px` : '140px',
           background: `rgba(255, 255, 255, ${transparency / 100})`,
           backdropFilter: `blur(${blur}px) saturate(180%)`,
           WebkitBackdropFilter: `blur(${blur}px) saturate(180%)`,
@@ -405,8 +407,16 @@ const LiquidGlassDemo: React.FC = () => {
       >
         <button className="close-btn" onClick={() => window.close()}>×</button>
         <div className="content">
-          <h1>{config?.content.title || 'Magnifying Liquid Glass'}</h1>
-          <p>{config?.content.subtitle || 'Real lens magnification • Beautiful backgrounds • Light shadows'}</p>
+          {config?.content.type === 'icon' && config.content.icon ? (
+            <div style={{ fontSize: `${Math.min(config.glass.width || 700, config.glass.height || 140) * 0.4}px` }}>
+              {config.content.icon}
+            </div>
+          ) : (
+            <>
+              <h1>{config?.content.title || 'Magnifying Liquid Glass'}</h1>
+              <p>{config?.content.subtitle || 'Real lens magnification • Beautiful backgrounds • Light shadows'}</p>
+            </>
+          )}
         </div>
       </div>
     </div>

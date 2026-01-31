@@ -33,12 +33,11 @@
     /* Liquid glass container - lighter shadows */
     .glass-container {
       position: relative;
-      width: 700px;
-      height: 140px;
+      /* Dimensions set dynamically by JavaScript */
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(60px) saturate(180%);
       -webkit-backdrop-filter: blur(60px) saturate(180%);
-      border-radius: 32px;
+      /* Border radius set dynamically by JavaScript */
       border: 2px solid rgba(255, 255, 255, 0.3);
       box-shadow: 
         0 4px 16px rgba(0, 0, 0, 0.15),
@@ -602,6 +601,30 @@
 
     // Apply configuration
     function applyConfig(cfg) {
+      // Apply glass dimensions
+      if (cfg.glass.width) {
+        container.style.width = cfg.glass.width + 'px';
+      }
+      if (cfg.glass.height) {
+        container.style.height = cfg.glass.height + 'px';
+      }
+      if (cfg.glass.borderRadius) {
+        container.style.borderRadius = cfg.glass.borderRadius + 'px';
+      }
+      
+      // Apply content
+      const contentDiv = container.querySelector('.content');
+      if (cfg.content) {
+        if (cfg.content.type === 'icon' && cfg.content.icon) {
+          contentDiv.innerHTML = `<div style="font-size: ${Math.min(cfg.glass.width, cfg.glass.height) * 0.4}px;">${cfg.content.icon}</div>`;
+        } else if (cfg.content.type === 'text') {
+          contentDiv.innerHTML = `
+            ${cfg.content.title ? `<h1>${cfg.content.title}</h1>` : ''}
+            ${cfg.content.subtitle ? `<p>${cfg.content.subtitle}</p>` : ''}
+          `;
+        }
+      }
+      
       transparency.value = cfg.glass.transparency;
       blur.value = cfg.glass.blur;
       magBlur.value = cfg.glass.magnifyingBlur;
