@@ -876,15 +876,21 @@ export class SmonthlAPI {
   andMake(): SmonthlConfig { return this.build(); }
   
   glassCircle(size: number, icon?: string, preset: string = 'frosted'): SmonthlConfig {
-    return this.circle(size, icon).preset(preset).config!;
+    this.circle(size, icon);
+    this.preset(preset);
+    return this.config!;
   }
   
   glassSquare(size: number, text?: string, preset: string = 'frosted'): SmonthlConfig {
-    return this.square(size, text).preset(preset).config!;
+    this.square(size, text);
+    this.preset(preset);
+    return this.config!;
   }
   
   glassButton(text: string, w?: number, h?: number, preset: string = 'frosted'): SmonthlConfig {
-    return this.button(text, w, h).preset(preset).config!;
+    this.button(text, w, h);
+    this.preset(preset);
+    return this.config!;
   }
 
   tiny(): this { return this.sized(50, 50); }
@@ -906,9 +912,21 @@ export class SmonthlAPI {
   normalMagnetic(): this { return this.magnetic(0.3); }
   strongMagnetic(): this { return this.magnetic(0.7); }
   
-  dimLights(): this { return this.lights(true).updateConfig('lighting.lightIntensity', 0.3); }
-  normalLights(): this { return this.lights(true).updateConfig('lighting.lightIntensity', 0.8); }
-  brightLights(): this { return this.lights(true).updateConfig('lighting.lightIntensity', 1.5); }
+  dimLights(): this { 
+    this.lights(true);
+    this.updateConfig('lighting.lightIntensity', 0.3);
+    return this;
+  }
+  normalLights(): this { 
+    this.lights(true);
+    this.updateConfig('lighting.lightIntensity', 0.8);
+    return this;
+  }
+  brightLights(): this { 
+    this.lights(true);
+    this.updateConfig('lighting.lightIntensity', 1.5);
+    return this;
+  }
 
   withColor(color: string): this {
     this.updateConfig('lighting.lightColor', color);
