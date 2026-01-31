@@ -140,6 +140,117 @@ export class SmonthlAPI {
     } as SmonthlConfig;
   }
 
+  createCustomComponent(options: {
+    type?: string;
+    width?: number;
+    height?: number;
+    borderRadius?: number;
+    transparency?: number;
+    blur?: number;
+    contentType?: 'text' | 'icon' | 'menu';
+    title?: string;
+    subtitle?: string;
+    icon?: string;
+    label?: string;
+  }): SmonthlConfig {
+    const defaults = this.getDefaultConfig();
+    return {
+      ...defaults,
+      componentType: options.type || 'custom',
+      glass: {
+        ...defaults.glass,
+        width: options.width || 200,
+        height: options.height || 200,
+        borderRadius: options.borderRadius || 16,
+        transparency: options.transparency || defaults.glass.transparency,
+        blur: options.blur || defaults.glass.blur
+      },
+      content: {
+        type: options.contentType || 'text',
+        title: options.title || '',
+        subtitle: options.subtitle || '',
+        icon: options.icon || '',
+        label: options.label || ''
+      }
+    };
+  }
+
+  createCircle(size: number, icon?: string): SmonthlConfig {
+    return this.createCustomComponent({
+      type: 'circle',
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      icon: icon,
+      contentType: 'icon'
+    });
+  }
+
+  createSquare(size: number, title?: string): SmonthlConfig {
+    return this.createCustomComponent({
+      type: 'square',
+      width: size,
+      height: size,
+      borderRadius: size * 0.15,
+      title: title,
+      contentType: 'text'
+    });
+  }
+
+  createRectangle(width: number, height: number, title?: string): SmonthlConfig {
+    return this.createCustomComponent({
+      type: 'rectangle',
+      width: width,
+      height: height,
+      borderRadius: Math.min(width, height) * 0.1,
+      title: title,
+      contentType: 'text'
+    });
+  }
+
+  createIconButton(icon: string, size: number = 60): SmonthlConfig {
+    return this.createCustomComponent({
+      type: 'icon-button',
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      icon: icon,
+      contentType: 'icon'
+    });
+  }
+
+  applyShape(shape: 'circle' | 'rounded' | 'square' | 'sharp' | 'pill', size: number): void {
+    const shapes = {
+      circle: { borderRadius: size / 2 },
+      rounded: { borderRadius: size * 0.25 },
+      square: { borderRadius: size * 0.1 },
+      sharp: { borderRadius: 0 },
+      pill: { borderRadius: 9999 }
+    };
+    
+    if (shapes[shape]) {
+      this.updateConfig('glass.borderRadius', shapes[shape].borderRadius);
+    }
+  }
+
+  setSize(width: number, height: number): void {
+    this.updateConfig('glass.width', width);
+    this.updateConfig('glass.height', height);
+  }
+
+  setIcon(icon: string): void {
+    this.updateConfig('content.type', 'icon');
+    this.updateConfig('content.icon', icon);
+  }
+
+  setTitle(title: string, subtitle: string = ''): void {
+    this.updateConfig('content.type', 'text');
+    this.updateConfig('content.title', title);
+    if (subtitle) {
+      this.updateConfig('content.subtitle', subtitle);
+    }
+  }
+
   getTemplates(): Record<string, Partial<SmonthlConfig>> {
     return this.config?.templates || {};
   }

@@ -258,6 +258,84 @@ const api = new SmonthlAPI();
 const defaultConfig = api.getDefaultConfig();
 ```
 
+#### `createCustomComponent(options): SmonthlConfig`
+Create a custom component with specific size, shape, and content.
+
+```javascript
+const customConfig = api.createCustomComponent({
+  type: 'custom-card',
+  width: 400,
+  height: 300,
+  borderRadius: 20,
+  transparency: 8,
+  blur: 80,
+  contentType: 'text',
+  title: 'My Custom Component',
+  subtitle: 'With custom dimensions',
+  icon: '🎨'
+});
+```
+
+#### `createCircle(size, icon?): SmonthlConfig`
+Create a circular glass component.
+
+```javascript
+const circle = api.createCircle(100, '🌟');
+```
+
+#### `createSquare(size, title?): SmonthlConfig`
+Create a square glass component.
+
+```javascript
+const square = api.createSquare(150, 'Square');
+```
+
+#### `createRectangle(width, height, title?): SmonthlConfig`
+Create a rectangular glass component.
+
+```javascript
+const rect = api.createRectangle(400, 200, 'Rectangle');
+```
+
+#### `createIconButton(icon, size?): SmonthlConfig`
+Create a circular icon button.
+
+```javascript
+const iconBtn = api.createIconButton('🚀', 60);
+```
+
+#### `applyShape(shape, size): void`
+Apply a shape preset to current component.
+
+```javascript
+api.applyShape('circle', 100);    // Perfect circle
+api.applyShape('rounded', 100);   // Rounded corners (25%)
+api.applyShape('square', 100);    // Slightly rounded (10%)
+api.applyShape('sharp', 100);     // No rounding
+api.applyShape('pill', 100);      // Pill shape
+```
+
+#### `setSize(width, height): void`
+Set component dimensions.
+
+```javascript
+api.setSize(500, 300);
+```
+
+#### `setIcon(icon): void`
+Set component icon.
+
+```javascript
+api.setIcon('🎨');
+```
+
+#### `setTitle(title, subtitle?): void`
+Set component title and subtitle.
+
+```javascript
+api.setTitle('My Title', 'My Subtitle');
+```
+
 #### `updateConfig(path: string, value: any): void`
 Update configuration value using dot notation.
 
@@ -350,7 +428,53 @@ api.on('configImported', (config) => {
 
 ## 🎨 Examples
 
-### Example 1: Dynamic Blur Control
+### Example 1: Create Different Shapes
+
+```javascript
+const api = new SmonthlAPI();
+await api.loadConfig();
+
+// Create a small circular icon
+const circle = api.createCircle(80, '🎨');
+
+// Create a square card
+const square = api.createSquare(200, 'Square Card');
+
+// Create a wide rectangle
+const rect = api.createRectangle(500, 150, 'Wide Panel');
+
+// Create an icon button
+const btn = api.createIconButton('🚀', 60);
+```
+
+### Example 2: Custom Component Sizes
+
+```javascript
+const api = new SmonthlAPI();
+await api.loadConfig();
+
+// Tiny icon (40x40)
+api.setSize(40, 40);
+api.applyShape('circle', 40);
+api.setIcon('⭐');
+
+// Medium card (300x200)
+api.setSize(300, 200);
+api.applyShape('rounded', 300);
+api.setTitle('Card Title', 'Card subtitle');
+
+// Large window (800x600)
+api.setSize(800, 600);
+api.applyShape('square', 800);
+api.setTitle('Window Title');
+
+// Pill button (200x60)
+api.setSize(200, 60);
+api.applyShape('pill', 60);
+api.setTitle('Click Me');
+```
+
+### Example 3: Dynamic Blur Control
 
 ```html
 <input type="range" id="blurSlider" min="10" max="150" value="60">

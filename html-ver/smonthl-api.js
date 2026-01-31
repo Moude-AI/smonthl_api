@@ -77,6 +77,114 @@ class SmonthlAPI {
     };
   }
 
+  // Create custom component with specific size and shape
+  createCustomComponent(options) {
+    const defaults = this.getDefaultConfig();
+    return {
+      ...defaults,
+      componentType: options.type || 'custom',
+      glass: {
+        ...defaults.glass,
+        width: options.width || 200,
+        height: options.height || 200,
+        borderRadius: options.borderRadius || 16,
+        transparency: options.transparency || defaults.glass.transparency,
+        blur: options.blur || defaults.glass.blur
+      },
+      content: {
+        type: options.contentType || 'text',
+        title: options.title || '',
+        subtitle: options.subtitle || '',
+        icon: options.icon || '',
+        label: options.label || ''
+      }
+    };
+  }
+
+  // Create circular component
+  createCircle(size, icon) {
+    return this.createCustomComponent({
+      type: 'circle',
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      icon: icon,
+      contentType: 'icon'
+    });
+  }
+
+  // Create square component
+  createSquare(size, title) {
+    return this.createCustomComponent({
+      type: 'square',
+      width: size,
+      height: size,
+      borderRadius: size * 0.15,
+      title: title,
+      contentType: 'text'
+    });
+  }
+
+  // Create rectangle component
+  createRectangle(width, height, title) {
+    return this.createCustomComponent({
+      type: 'rectangle',
+      width: width,
+      height: height,
+      borderRadius: Math.min(width, height) * 0.1,
+      title: title,
+      contentType: 'text'
+    });
+  }
+
+  // Create icon button
+  createIconButton(icon, size = 60) {
+    return this.createCustomComponent({
+      type: 'icon-button',
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      icon: icon,
+      contentType: 'icon'
+    });
+  }
+
+  // Apply shape preset
+  applyShape(shape, size) {
+    const shapes = {
+      circle: { borderRadius: size / 2 },
+      rounded: { borderRadius: size * 0.25 },
+      square: { borderRadius: size * 0.1 },
+      sharp: { borderRadius: 0 },
+      pill: { borderRadius: 9999 }
+    };
+    
+    if (shapes[shape]) {
+      this.updateConfig('glass.borderRadius', shapes[shape].borderRadius);
+    }
+  }
+
+  // Set component size
+  setSize(width, height) {
+    this.updateConfig('glass.width', width);
+    this.updateConfig('glass.height', height);
+  }
+
+  // Set icon
+  setIcon(icon) {
+    this.updateConfig('content.type', 'icon');
+    this.updateConfig('content.icon', icon);
+  }
+
+  // Set title
+  setTitle(title, subtitle = '') {
+    this.updateConfig('content.type', 'text');
+    this.updateConfig('content.title', title);
+    if (subtitle) {
+      this.updateConfig('content.subtitle', subtitle);
+    }
+  }
+
   // Get all available templates
   getTemplates() {
     return this.config?.templates || {};
