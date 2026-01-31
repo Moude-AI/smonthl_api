@@ -1,4 +1,4 @@
-// SmonthlAPI TypeScript Type Definitions
+// SmonthlAPI TypeScript Type Definitions v2.0.1
 
 export interface GlassConfig {
   transparency: number;
@@ -56,6 +56,13 @@ export interface SmonthlConfig {
   templates?: Record<string, Partial<SmonthlConfig>>;
 }
 
+export interface ExternalResource {
+  type: 'css' | 'js' | 'json';
+  url: string;
+  name: string | null;
+  data?: any;
+}
+
 export type ConfigEventType = 'configLoaded' | 'configUpdated' | 'configImported';
 
 export interface ConfigListener {
@@ -66,10 +73,15 @@ export interface ConfigListener {
 export class SmonthlAPI {
   config: SmonthlConfig | null;
   listeners: ConfigListener[];
+  externalResources: ExternalResource[];
+  customStyles: HTMLStyleElement[];
+  private _builder?: any;
 
   constructor() {
     this.config = null;
     this.listeners = [];
+    this.externalResources = [];
+    this.customStyles = [];
   }
 
   async loadConfig(url: string = './glass-config.json'): Promise<SmonthlConfig> {
@@ -512,5 +524,258 @@ export class SmonthlAPI {
       return this.importConfig(saved);
     }
     return false;
+  }
+
+  // ========== V2.0.1 CREATIVE SYNTAX ==========
+  
+  make(what: string): this {
+    this._builder = { type: what };
+    return this;
+  }
+
+  with(props: any): this {
+    Object.assign(this._builder, props);
+    return this;
+  }
+
+  sized(width: number, height: number = width): this {
+    if (!this._builder) this._builder = {};
+    this._builder.width = width;
+    this._builder.height = height;
+    return this;
+  }
+
+  containing(content: string): this {
+    if (!this._builder) this._builder = {};
+    this._builder.content = content;
+    return this;
+  }
+
+  styled(styles: any): this {
+    if (!this._builder) this._builder = {};
+    this._builder.styles = styles;
+    return this;
+  }
+
+  build(): SmonthlConfig {
+    const b = this._builder || {};
+    const config = this.createCustomComponent({
+      type: b.type || 'custom',
+      width: b.width || 200,
+      height: b.height || 200,
+      borderRadius: b.borderRadius || 16,
+      icon: b.content,
+      title: b.content,
+      contentType: b.content ? (b.content.length <= 2 ? 'icon' : 'text') : 'text'
+    });
+    
+    if (b.styles) {
+      Object.keys(b.styles).forEach(key => {
+        this.updateConfig(`glass.${key}`, b.styles[key]);
+      });
+    }
+    
+    this.config = config;
+    this._builder = undefined;
+    return config;
+  }
+
+  import(resource: string | string[] | Record<string, string>): this {
+    if (typeof resource === 'string') {
+      this.loadExternal(resource);
+    } else if (Array.isArray(resource)) {
+      resource.forEach(r => this.loadExternal(r));
+    } else {
+      Object.keys(resource).forEach(key => {
+        this.loadExternal(resource[key], key);
+      });
+    }
+    return this;
+  }
+
+  loadExternal(url: string, name: string | null = null): this {
+    const ext = url.split('.').pop()?.toLowerCase();
+    
+    if (ext === 'css') {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      if (name) link.id = `smonthl-${name}`;
+      document.head.appendChild(link);
+      this.externalResources.push({ type: 'css', url, name });
+    } else if (ext === 'js') {
+      const script = document.createElement('script');
+      script.src = url;
+      if (name) script.id = `smonthl-${name}`;
+      document.head.appendChild(script);
+      this.externalResources.push({ type: 'js', url, name });
+    } else if (ext === 'json') {
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          this.config = data;
+          this.externalResources.push({ type: 'json', url, name, data });
+        });
+    }
+    
+    return this;
+  }
+
+  preset(name: string): this {
+    const presets: Record<string, any> = {
+      minimal: { blur: 20, transparency: 3, borderRadius: 8 },
+      frosted: { blur: 60, transparency: 6, borderRadius: 32 },
+      heavy: { blur: 100, transparency: 12, borderRadius: 48 },
+      sharp: { blur: 40, transparency: 5, borderRadius: 0 },
+      soft: { blur: 80, transparency: 8, borderRadius: 64 },
+      neon: { blur: 50, transparency: 10, borderRadius: 24 },
+      crystal: { blur: 30, transparency: 4, borderRadius: 16 }
+    };
+    
+    if (presets[name]) {
+      Object.keys(presets[name]).forEach(key => {
+        this.updateConfig(`glass.${key}`, presets[name][key]);
+      });
+    }
+    
+    return this;
+  }
+
+  theme(colors: string | { light?: string; bg?: string }): this {
+    if (typeof colors === 'string') {
+      const themes: Record<string, any> = {
+        ocean: { light: '100, 200, 255', bg: '#1e3a8a' },
+        sunset: { light: '255, 150, 100', bg: '#7c2d12' },
+        forest: { light: '150, 255, 150', bg: '#14532d' },
+        purple: { light: '200, 150, 255', bg: '#581c87' },
+        gold: { light: '255, 215, 0', bg: '#78350f' }
+      };
+      
+      if (themes[colors]) {
+        this.updateConfig('lighting.lightColor', themes[colors].light);
+        document.body.style.background = themes[colors].bg;
+      }
+    } else {
+      if (colors.light) this.updateConfig('lighting.lightColor', colors.light);
+      if (colors.bg) document.body.style.background = colors.bg;
+    }
+    
+    return this;
+  }
+
+  css(styles: string): this {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = styles;
+    styleEl.id = `smonthl-custom-${Date.now()}`;
+    document.head.appendChild(styleEl);
+    this.customStyles.push(styleEl);
+    return this;
+  }
+
+  useFont(family: string, url: string | null = null): this {
+    if (url) {
+      this.css(`@font-face { font-family: '${family}'; src: url('${url}'); }`);
+    } else {
+      this.loadGoogleFont(family);
+    }
+    this.updateConfig('typography.fontFamily', family);
+    return this;
+  }
+
+  useIcons(library: string, url: string | null = null): this {
+    if (url) {
+      this.loadExternal(url, `icons-${library}`);
+    } else {
+      this.loadIconLibrary(library);
+    }
+    return this;
+  }
+
+  animate(type: string): this {
+    const animations: Record<string, any> = {
+      bounce: { elasticity: 0.8, friction: 0.7 },
+      smooth: { elasticity: 0.4, friction: 0.9 },
+      snappy: { elasticity: 0.9, friction: 0.6 },
+      slow: { elasticity: 0.3, friction: 0.95 },
+      fast: { elasticity: 0.7, friction: 0.75 }
+    };
+    
+    if (animations[type]) {
+      this.updateConfig('jelly.elasticity', animations[type].elasticity);
+      this.updateConfig('jelly.friction', animations[type].friction);
+    }
+    
+    return this;
+  }
+
+  from(syntax: string): SmonthlConfig | null {
+    const parts = syntax.split(' ');
+    const config: Record<string, string> = {};
+    
+    parts.forEach(part => {
+      const [key, value] = part.split(':');
+      config[key] = value;
+    });
+    
+    if (config.circle) {
+      this.circle(parseInt(config.circle), config.icon);
+    } else if (config.square) {
+      this.square(parseInt(config.square), config.text);
+    } else if (config.button) {
+      this.button(config.text || 'Button', parseInt(config.button), 60);
+    }
+    
+    if (config.blur) this.blur(parseInt(config.blur));
+    if (config.jelly === 'on') this.jelly(true);
+    if (config.magnetic) this.magnetic(parseFloat(config.magnetic));
+    if (config.preset) this.preset(config.preset);
+    if (config.theme) this.theme(config.theme);
+    
+    return this.config;
+  }
+
+  batch(operations: Array<((api: SmonthlAPI) => void) | string>): this {
+    operations.forEach(op => {
+      if (typeof op === 'function') {
+        op(this);
+      } else if (typeof op === 'string') {
+        this.from(op);
+      }
+    });
+    return this;
+  }
+
+  clone(): SmonthlAPI {
+    const api = new SmonthlAPI();
+    api.config = JSON.parse(JSON.stringify(this.config));
+    return api;
+  }
+
+  merge(otherConfig: Partial<SmonthlConfig>): this {
+    this.config = {
+      ...this.config!,
+      ...otherConfig,
+      glass: { ...this.config!.glass, ...(otherConfig.glass || {}) },
+      content: { ...this.config!.content, ...(otherConfig.content || {}) }
+    };
+    return this;
+  }
+
+  reset(): this {
+    this.config = this.getDefaultConfig();
+    return this;
+  }
+
+  getResources(): { external: ExternalResource[]; styles: HTMLStyleElement[] } {
+    return {
+      external: this.externalResources,
+      styles: this.customStyles
+    };
+  }
+
+  cleanup(): this {
+    this.customStyles.forEach(style => style.remove());
+    this.customStyles = [];
+    return this;
   }
 }

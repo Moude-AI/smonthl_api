@@ -1,7 +1,7 @@
 {
   "name": "smonthl",
-  "version": "1.0.6",
-  "description": "SmonthlAPI - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (HTML/JavaScript version)",
+  "version": "2.0.1",
+  "description": "SmonthlAPI - Beautiful frosted glass UI with creative syntax, external imports, jelly physics, and magnetic effects (HTML/JavaScript version)",
   "main": "smonthl-api.js",
   "scripts": {
     "start": "electron .",

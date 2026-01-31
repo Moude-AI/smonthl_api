@@ -1,8 +1,10 @@
-// Smonthl Configuration API
+// Smonthl Configuration API v2.0.1
 class SmonthlAPI {
   constructor() {
     this.config = null;
     this.listeners = [];
+    this.externalResources = [];
+    this.customStyles = [];
   }
 
   // Load configuration from JSON
@@ -436,6 +438,304 @@ class SmonthlAPI {
       return this.importConfig(saved);
     }
     return false;
+  }
+
+  // ========== V2.0.1 CREATIVE SYNTAX ==========
+  
+  // Natural language-like syntax
+  make(what) {
+    this._builder = { type: what };
+    return this;
+  }
+
+  with(props) {
+    Object.assign(this._builder, props);
+    return this;
+  }
+
+  sized(width, height = width) {
+    if (!this._builder) this._builder = {};
+    this._builder.width = width;
+    this._builder.height = height;
+    return this;
+  }
+
+  containing(content) {
+    if (!this._builder) this._builder = {};
+    this._builder.content = content;
+    return this;
+  }
+
+  styled(styles) {
+    if (!this._builder) this._builder = {};
+    this._builder.styles = styles;
+    return this;
+  }
+
+  build() {
+    const b = this._builder || {};
+    const config = this.createCustomComponent({
+      type: b.type || 'custom',
+      width: b.width || 200,
+      height: b.height || 200,
+      borderRadius: b.borderRadius || 16,
+      icon: b.content,
+      title: b.content,
+      contentType: b.content ? (b.content.length <= 2 ? 'icon' : 'text') : 'text'
+    });
+    
+    if (b.styles) {
+      Object.keys(b.styles).forEach(key => {
+        this.updateConfig(`glass.${key}`, b.styles[key]);
+      });
+    }
+    
+    this.config = config;
+    this._builder = null;
+    return config;
+  }
+
+  // Emoji-based syntax
+  '🔵'(size, content) { return this.circle(size, content); }
+  '🟦'(size, content) { return this.square(size, content); }
+  '🔘'(text, w, h) { return this.button(text, w, h); }
+  '🎴'(title, subtitle, w, h) { return this.card(title, subtitle, w, h); }
+  '⭐'(emoji, size) { return this.icon(emoji, size); }
+  '🪟'(title, w, h) { return this.window(title, w, h); }
+
+  // Shorthand operators
+  '@'(size) { return this.circle(size); }
+  '#'(size) { return this.square(size); }
+  '~'(blur) { return this.blur(blur); }
+  '%'(transparency) { return this.transparent(transparency); }
+  '+'(enabled) { return this.jelly(enabled); }
+  '*'(strength) { return this.magnetic(strength); }
+  '!'(enabled) { return this.lights(enabled); }
+
+  // External resource loading
+  import(resource) {
+    if (typeof resource === 'string') {
+      // URL import
+      return this.loadExternal(resource);
+    } else if (typeof resource === 'object') {
+      // Multiple resources
+      if (Array.isArray(resource)) {
+        resource.forEach(r => this.loadExternal(r));
+      } else {
+        // Named resources
+        Object.keys(resource).forEach(key => {
+          this.loadExternal(resource[key], key);
+        });
+      }
+    }
+    return this;
+  }
+
+  loadExternal(url, name = null) {
+    const ext = url.split('.').pop().toLowerCase();
+    
+    if (ext === 'css') {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = url;
+      if (name) link.id = `smonthl-${name}`;
+      document.head.appendChild(link);
+      this.externalResources.push({ type: 'css', url, name });
+    } else if (ext === 'js') {
+      const script = document.createElement('script');
+      script.src = url;
+      if (name) script.id = `smonthl-${name}`;
+      document.head.appendChild(script);
+      this.externalResources.push({ type: 'js', url, name });
+    } else if (ext === 'json') {
+      // Load JSON config
+      fetch(url)
+        .then(r => r.json())
+        .then(data => {
+          this.config = data;
+          this.externalResources.push({ type: 'json', url, name, data });
+        });
+    }
+    
+    return this;
+  }
+
+  // Style presets
+  preset(name) {
+    const presets = {
+      minimal: { blur: 20, transparency: 3, borderRadius: 8 },
+      frosted: { blur: 60, transparency: 6, borderRadius: 32 },
+      heavy: { blur: 100, transparency: 12, borderRadius: 48 },
+      sharp: { blur: 40, transparency: 5, borderRadius: 0 },
+      soft: { blur: 80, transparency: 8, borderRadius: 64 },
+      neon: { blur: 50, transparency: 10, borderRadius: 24 },
+      crystal: { blur: 30, transparency: 4, borderRadius: 16 }
+    };
+    
+    if (presets[name]) {
+      Object.keys(presets[name]).forEach(key => {
+        this.updateConfig(`glass.${key}`, presets[name][key]);
+      });
+    }
+    
+    return this;
+  }
+
+  // Theme system
+  theme(colors) {
+    if (typeof colors === 'string') {
+      // Predefined themes
+      const themes = {
+        ocean: { light: '100, 200, 255', bg: '#1e3a8a' },
+        sunset: { light: '255, 150, 100', bg: '#7c2d12' },
+        forest: { light: '150, 255, 150', bg: '#14532d' },
+        purple: { light: '200, 150, 255', bg: '#581c87' },
+        gold: { light: '255, 215, 0', bg: '#78350f' }
+      };
+      
+      if (themes[colors]) {
+        this.updateConfig('lighting.lightColor', themes[colors].light);
+        document.body.style.background = themes[colors].bg;
+      }
+    } else if (typeof colors === 'object') {
+      // Custom theme
+      if (colors.light) this.updateConfig('lighting.lightColor', colors.light);
+      if (colors.bg) document.body.style.background = colors.bg;
+    }
+    
+    return this;
+  }
+
+  // Inline CSS injection
+  css(styles) {
+    const styleEl = document.createElement('style');
+    styleEl.textContent = styles;
+    styleEl.id = `smonthl-custom-${Date.now()}`;
+    document.head.appendChild(styleEl);
+    this.customStyles.push(styleEl);
+    return this;
+  }
+
+  // Load any external font
+  useFont(family, url = null) {
+    if (url) {
+      // Custom font URL
+      this.css(`@font-face { font-family: '${family}'; src: url('${url}'); }`);
+    } else {
+      // Try Google Fonts
+      this.loadGoogleFont(family);
+    }
+    this.updateConfig('typography.fontFamily', family);
+    return this;
+  }
+
+  // Load any icon set
+  useIcons(library, url = null) {
+    if (url) {
+      // Custom icon library
+      this.loadExternal(url, `icons-${library}`);
+    } else {
+      // Predefined libraries
+      this.loadIconLibrary(library);
+    }
+    return this;
+  }
+
+  // Animation presets
+  animate(type) {
+    const animations = {
+      bounce: { elasticity: 0.8, friction: 0.7 },
+      smooth: { elasticity: 0.4, friction: 0.9 },
+      snappy: { elasticity: 0.9, friction: 0.6 },
+      slow: { elasticity: 0.3, friction: 0.95 },
+      fast: { elasticity: 0.7, friction: 0.75 }
+    };
+    
+    if (animations[type]) {
+      this.updateConfig('jelly.elasticity', animations[type].elasticity);
+      this.updateConfig('jelly.friction', animations[type].friction);
+    }
+    
+    return this;
+  }
+
+  // Quick config from string
+  from(syntax) {
+    // Parse custom syntax: "circle:100 icon:🚀 blur:80 jelly:on"
+    const parts = syntax.split(' ');
+    const config = {};
+    
+    parts.forEach(part => {
+      const [key, value] = part.split(':');
+      config[key] = value;
+    });
+    
+    if (config.circle) {
+      this.circle(parseInt(config.circle), config.icon);
+    } else if (config.square) {
+      this.square(parseInt(config.square), config.text);
+    } else if (config.button) {
+      this.button(config.text || 'Button', parseInt(config.button), 60);
+    }
+    
+    if (config.blur) this.blur(parseInt(config.blur));
+    if (config.jelly === 'on') this.jelly(true);
+    if (config.magnetic) this.magnetic(parseFloat(config.magnetic));
+    if (config.preset) this.preset(config.preset);
+    if (config.theme) this.theme(config.theme);
+    
+    return this.config;
+  }
+
+  // Batch operations
+  batch(operations) {
+    operations.forEach(op => {
+      if (typeof op === 'function') {
+        op(this);
+      } else if (typeof op === 'string') {
+        this.from(op);
+      }
+    });
+    return this;
+  }
+
+  // Clone current config
+  clone() {
+    const api = new SmonthlAPI();
+    api.config = JSON.parse(JSON.stringify(this.config));
+    return api;
+  }
+
+  // Merge configs
+  merge(otherConfig) {
+    this.config = {
+      ...this.config,
+      ...otherConfig,
+      glass: { ...this.config.glass, ...otherConfig.glass },
+      content: { ...this.config.content, ...otherConfig.content }
+    };
+    return this;
+  }
+
+  // Reset to defaults
+  reset() {
+    this.config = this.getDefaultConfig();
+    return this;
+  }
+
+  // Get all loaded resources
+  getResources() {
+    return {
+      external: this.externalResources,
+      styles: this.customStyles
+    };
+  }
+
+  // Clean up resources
+  cleanup() {
+    this.customStyles.forEach(style => style.remove());
+    this.customStyles = [];
+    return this;
   }
 }
 
