@@ -54,10 +54,11 @@ See [VERSIONS.md](./VERSIONS.md) for detailed comparison.
 
 ### HTML Version
 ```html
-<script src="smonthl-api.js"></script>
+<script src="node_modules/smonthl/smonthl-api.js"></script>
 <script>
   const api = new SmonthlAPI();
-  api.loadConfig('./glass-config.json').then(config => {
+  // Load the included glass-config.json
+  api.loadConfig('./node_modules/smonthl/glass-config.json').then(config => {
     console.log('Loaded:', config);
   });
 </script>
@@ -65,11 +66,12 @@ See [VERSIONS.md](./VERSIONS.md) for detailed comparison.
 
 ### React Version
 ```typescript
-import { SmonthlAPI } from './types/SmonthlAPI';
-import LiquidGlassDemo from './components/LiquidGlassDemo';
+import { SmonthlAPI } from 'smonthl-react';
+import { LiquidGlassDemo } from 'smonthl-react';
 
 const api = new SmonthlAPI();
-await api.loadConfig();
+// Load the included glass-config.json
+await api.loadConfig('./node_modules/smonthl-react/glass-config.json');
 
 <LiquidGlassDemo />
 ```
@@ -117,7 +119,12 @@ SmonthlAPI uses JSON configuration files:
 ### Load Configuration
 ```javascript
 const api = new SmonthlAPI();
-await api.loadConfig('./glass-config.json');
+// Use the included glass-config.json
+await api.loadConfig('./node_modules/smonthl/glass-config.json');
+
+// Or copy and customize it
+// cp node_modules/smonthl/glass-config.json ./my-config.json
+// await api.loadConfig('./my-config.json');
 ```
 
 ### Update Configuration

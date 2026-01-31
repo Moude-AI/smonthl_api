@@ -9,6 +9,23 @@ Pure HTML and JavaScript implementation of SmonthlAPI with liquid glass effects.
 npm install smonthl
 ```
 
+## 🚀 Quick Start
+
+After installation, you'll need the configuration file:
+
+```javascript
+const api = new SmonthlAPI();
+// Load the included glass-config.json
+api.loadConfig('./node_modules/smonthl/glass-config.json').then(config => {
+  console.log('Configuration loaded:', config);
+});
+```
+
+Or copy `glass-config.json` to your project and customize it:
+```bash
+cp node_modules/smonthl/glass-config.json ./my-config.json
+```
+
 ## Features
 
 - Liquid glass effects with magnifying lens

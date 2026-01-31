@@ -16,9 +16,14 @@ import { SmonthlAPI } from 'smonthl-react';
 import { LiquidGlassDemo } from 'smonthl-react';
 import 'smonthl-react/dist/style.css';
 
-// Initialize API
+// Initialize API and load configuration
 const api = new SmonthlAPI();
-await api.loadConfig();
+// Load the included glass-config.json
+await api.loadConfig('./node_modules/smonthl-react/glass-config.json');
+
+// Or copy and customize the config file
+// cp node_modules/smonthl-react/glass-config.json ./my-config.json
+// await api.loadConfig('./my-config.json');
 
 // Use component
 function App() {
