@@ -1,0 +1,122 @@
+{
+  "componentType": "liquid-glass",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 30,
+    "magnifyingBrightness": 115,
+    "lensSize": 40,
+    "borderRadius": 32,
+    "width": 700,
+    "height": 140
+  },
+  "content": {
+    "type": "text",
+    "title": "Magnifying Liquid Glass",
+    "subtitle": "Real lens magnification • Beautiful backgrounds • Light shadows"
+  },
+  "jelly": {
+    "enabled": true,
+    "elasticity": 0.6,
+    "friction": 0.85,
+    "bounceIntensity": 15,
+    "wobbleSpeed": 0.3,
+    "magneticRange": 150,
+    "magneticStrength": 0.3
+  },
+  "lighting": {
+    "cursorFollowEnabled": true,
+    "followDistance": 200,
+    "lightIntensity": 0.8,
+    "lightSize": 120,
+    "lightColor": "255, 255, 255"
+  },
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80",
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80",
+    "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&q=80",
+    "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1920&q=80",
+    "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000,
+  "templates": {
+    "button": {
+      "componentType": "button",
+      "glass": {
+        "transparency": 10,
+        "blur": 20,
+        "borderRadius": 12,
+        "width": 150,
+        "height": 50
+      },
+      "content": {
+        "type": "text",
+        "title": "Glass Button"
+      }
+    },
+    "card": {
+      "componentType": "card",
+      "glass": {
+        "transparency": 8,
+        "blur": 30,
+        "borderRadius": 16,
+        "width": 300,
+        "height": 200
+      },
+      "content": {
+        "type": "text",
+        "title": "Glass Card",
+        "subtitle": "Card content here"
+      }
+    },
+    "window": {
+      "componentType": "window",
+      "glass": {
+        "transparency": 8,
+        "blur": 40,
+        "borderRadius": 16,
+        "width": 500,
+        "height": 400
+      },
+      "content": {
+        "type": "text",
+        "title": "Glass Window",
+        "subtitle": "Window content"
+      },
+      "draggable": true,
+      "resizable": true
+    },
+    "icon": {
+      "componentType": "icon",
+      "glass": {
+        "transparency": 10,
+        "blur": 20,
+        "borderRadius": 50,
+        "width": 64,
+        "height": 64
+      },
+      "content": {
+        "type": "icon",
+        "icon": "🏠",
+        "label": "Home"
+      }
+    },
+    "menu": {
+      "componentType": "menu",
+      "glass": {
+        "transparency": 10,
+        "blur": 40,
+        "borderRadius": 12,
+        "width": 200
+      },
+      "content": {
+        "type": "menu",
+        "items": [
+          { "label": "New File", "icon": "📄" },
+          { "label": "Open", "icon": "📂" },
+          { "label": "Save", "icon": "💾" }
+        ]
+      }
+    }
+  }
+}
