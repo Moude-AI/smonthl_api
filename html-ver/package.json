@@ -1,16 +1,19 @@
 {
-  "name": "@liquid-glass/html",
+  "name": "@smonthl/liquid-glass-html",
   "version": "1.0.0",
-  "description": "Liquid Glass - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (HTML/JavaScript version)",
-  "main": "electron-main.js",
+  "description": "SmonthlAPI - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (HTML/JavaScript version)",
+  "main": "smonthl-api.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
     "build": "npm run package",
     "package": "electron-builder",
-    "publish": "npm publish --access public"
+    "prepublishOnly": "echo 'Ready to publish'",
+    "publish:npm": "npm publish --access public"
   },
   "keywords": [
+    "smonthl",
+    "smonthl-api",
     "liquid-glass",
     "frosted-glass",
     "glassmorphism",
@@ -24,18 +27,20 @@
     "ui-component",
     "glass-effect",
     "backdrop-filter",
-    "magnifying-lens"
+    "magnifying-lens",
+    "configuration-api"
   ],
-  "author": "Your Name",
-  "license": "MIT",
+  "author": "Arthurc1Moude <arch_cheng@163.com>",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/liquid-glass-html"
+    "url": "https://github.com/Moude-AI/smonthl_api.git",
+    "directory": "html-ver"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/liquid-glass-html/issues"
+    "url": "https://github.com/Moude-AI/smonthl_api/issues"
   },
-  "homepage": "https://github.com/yourusername/liquid-glass-html#readme",
+  "homepage": "https://github.com/Moude-AI/smonthl_api#readme",
   "files": [
     "index.html",
     "smonthl-api.js",

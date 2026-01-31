@@ -16,6 +16,18 @@ Beautiful frosted glass UI components with real magnifying lens effects, jelly p
 - 📦 **Templates** - Pre-built components (button, card, window, icon, menu)
 - � **Imtport/Export** - Save and load configurations
 
+## 📦 Installation
+
+### HTML/JavaScript Version
+```bash
+npm install @smonthl/liquid-glass-html
+```
+
+### React TypeScript Version
+```bash
+npm install @smonthl/liquid-glass-react
+```
+
 ## 📁 Available Versions
 
 SmonthlAPI comes in two versions:
@@ -23,6 +35,12 @@ SmonthlAPI comes in two versions:
 ### [HTML/JavaScript Version](./html-ver)
 Pure HTML and vanilla JavaScript - zero dependencies, runs directly in browser.
 
+**Install:**
+```bash
+npm install @smonthl/liquid-glass-html
+```
+
+**Or clone:**
 ```bash
 cd html-ver
 npm install
@@ -32,6 +50,12 @@ npm start
 ### [React TypeScript Version](./tsx-react-ver)
 Modern React with TypeScript, Vite, and full type safety.
 
+**Install:**
+```bash
+npm install @smonthl/liquid-glass-react
+```
+
+**Or clone:**
 ```bash
 cd tsx-react-ver
 npm install

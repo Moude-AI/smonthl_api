@@ -1,0 +1,12 @@
+node_modules/
+dist-electron/
+.vscode/
+*.log
+.DS_Store
+.env
+.env.local
+src/
+vite.config.ts
+tsconfig.json
+tsconfig.node.json
+electron-main.js

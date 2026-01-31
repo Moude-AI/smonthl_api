@@ -1,20 +1,26 @@
 {
-  "name": "@liquid-glass/react",
+  "name": "@smonthl/liquid-glass-react",
   "version": "1.0.0",
-  "description": "Liquid Glass - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (React/TypeScript version)",
-  "main": "electron-main.js",
+  "description": "SmonthlAPI - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (React/TypeScript version)",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "dev:electron": "NODE_ENV=development electron .",
+    "dev:electron": "NODE_ENV=development electron electron-main.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:electron\"",
     "build": "tsc && vite build",
+    "build:lib": "tsc && vite build --mode lib",
     "build:electron": "npm run build && electron-builder",
-    "start": "electron .",
+    "start": "electron electron-main.js",
     "preview": "vite preview",
     "test": "jest",
-    "publish": "npm publish --access public"
+    "prepublishOnly": "npm run build:lib",
+    "publish:npm": "npm publish --access public"
   },
   "keywords": [
+    "smonthl",
+    "smonthl-api",
     "liquid-glass",
     "frosted-glass",
     "glassmorphism",
@@ -30,18 +36,20 @@
     "backdrop-filter",
     "magnifying-lens",
     "tsx",
-    "hooks"
+    "hooks",
+    "configuration-api"
   ],
-  "author": "Your Name",
-  "license": "MIT",
+  "author": "Arthurc1Moude <arch_cheng@163.com>",
+  "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/liquid-glass-react"
+    "url": "https://github.com/Moude-AI/smonthl_api.git",
+    "directory": "tsx-react-ver"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/liquid-glass-react/issues"
+    "url": "https://github.com/Moude-AI/smonthl_api/issues"
   },
-  "homepage": "https://github.com/yourusername/liquid-glass-react#readme",
+  "homepage": "https://github.com/Moude-AI/smonthl_api#readme",
   "files": [
     "dist",
     "src",

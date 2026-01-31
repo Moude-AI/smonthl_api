@@ -2,6 +2,20 @@
 
 Pure HTML and JavaScript implementation of SmonthlAPI with liquid glass effects.
 
+## 📦 Installation
+
+### Via npm
+```bash
+npm install @smonthl/liquid-glass-html
+```
+
+### Via GitHub
+```bash
+git clone https://github.com/Moude-AI/smonthl_api.git
+cd smonthl_api/html-ver
+npm install
+```
+
 ## Features
 
 - Liquid glass effects with magnifying lens
