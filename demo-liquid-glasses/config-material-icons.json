@@ -1,0 +1,53 @@
+{
+  "componentType": "material-icon",
+  "glass": {
+    "transparency": 6,
+    "blur": 60,
+    "magnifyingBlur": 30,
+    "magnifyingBrightness": 115,
+    "lensSize": 40,
+    "borderRadius": 16,
+    "width": 200,
+    "height": 150
+  },
+  "content": {
+    "type": "text",
+    "title": "Material Design",
+    "subtitle": "With custom Roboto font"
+  },
+  "typography": {
+    "fontFamily": "'Roboto', sans-serif",
+    "titleSize": "32px",
+    "subtitleSize": "16px",
+    "titleWeight": "500",
+    "subtitleWeight": "300",
+    "letterSpacing": "0px",
+    "lineHeight": "1.5"
+  },
+  "externalLibraries": [
+    "https://fonts.googleapis.com/icon?family=Material+Icons",
+    "https://fonts.googleapis.com/css2?family=Roboto:wght@300,400,500,700&display=swap"
+  ],
+  "jelly": {
+    "enabled": true,
+    "elasticity": 0.6,
+    "friction": 0.85,
+    "bounceIntensity": 15,
+    "wobbleSpeed": 0.3,
+    "magneticRange": 150,
+    "magneticStrength": 0.3
+  },
+  "lighting": {
+    "cursorFollowEnabled": true,
+    "followDistance": 200,
+    "lightIntensity": 0.8,
+    "lightSize": 120,
+    "lightColor": "255, 255, 255"
+  },
+  "draggable": true,
+  "magnifyingLens": true,
+  "backgrounds": [
+    "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80"
+  ],
+  "backgroundChangeInterval": 10000
+}

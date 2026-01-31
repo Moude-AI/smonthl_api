@@ -185,6 +185,80 @@ class SmonthlAPI {
     }
   }
 
+  // Load external icon library
+  loadIconLibrary(type, cdnUrl = null) {
+    const libraries = {
+      'fontawesome': 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+      'material': 'https://fonts.googleapis.com/icon?family=Material+Icons',
+      'bootstrap': 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css',
+      'feather': 'https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css',
+      'ionicons': 'https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.css'
+    };
+
+    const url = cdnUrl || libraries[type];
+    if (!url) {
+      console.error(`Unknown icon library: ${type}`);
+      return false;
+    }
+
+    // Load CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = url;
+    document.head.appendChild(link);
+
+    this.updateConfig('iconLibrary.type', type);
+    this.updateConfig('iconLibrary.cdnUrl', url);
+    
+    return true;
+  }
+
+  // Load custom font
+  loadFont(fontFamily, fontUrl = null) {
+    if (fontUrl) {
+      // Load from URL
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = fontUrl;
+      document.head.appendChild(link);
+    }
+    
+    this.updateConfig('typography.fontFamily', fontFamily);
+    return true;
+  }
+
+  // Load Google Font
+  loadGoogleFont(fontName, weights = '300,400,600') {
+    const url = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@${weights}&display=swap`;
+    return this.loadFont(fontName, url);
+  }
+
+  // Set typography
+  setTypography(options) {
+    if (options.fontFamily) this.updateConfig('typography.fontFamily', options.fontFamily);
+    if (options.titleSize) this.updateConfig('typography.titleSize', options.titleSize);
+    if (options.subtitleSize) this.updateConfig('typography.subtitleSize', options.subtitleSize);
+    if (options.titleWeight) this.updateConfig('typography.titleWeight', options.titleWeight);
+    if (options.subtitleWeight) this.updateConfig('typography.subtitleWeight', options.subtitleWeight);
+    if (options.letterSpacing) this.updateConfig('typography.letterSpacing', options.letterSpacing);
+    if (options.lineHeight) this.updateConfig('typography.lineHeight', options.lineHeight);
+  }
+
+  // Create icon with library
+  createIconWithLibrary(libraryType, iconClass, size = 64) {
+    const config = this.createCircle(size);
+    config.content = {
+      type: 'icon-library',
+      iconLibrary: libraryType,
+      iconClass: iconClass
+    };
+    config.iconLibrary = {
+      type: libraryType,
+      className: iconClass
+    };
+    return config;
+  }
+
   // Get all available templates
   getTemplates() {
     return this.config?.templates || {};

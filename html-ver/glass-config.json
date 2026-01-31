@@ -15,6 +15,21 @@
     "title": "Magnifying Liquid Glass",
     "subtitle": "Real lens magnification • Beautiful backgrounds • Light shadows"
   },
+  "typography": {
+    "fontFamily": "'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "titleSize": "28px",
+    "subtitleSize": "14px",
+    "titleWeight": "300",
+    "subtitleWeight": "400",
+    "letterSpacing": "-0.5px",
+    "lineHeight": "1.4"
+  },
+  "iconLibrary": {
+    "type": "emoji",
+    "cdnUrl": null,
+    "className": null
+  },
+  "externalLibraries": [],
   "jelly": {
     "enabled": true,
     "elasticity": 0.6,

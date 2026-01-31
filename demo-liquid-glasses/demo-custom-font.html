@@ -365,7 +365,7 @@
     let config = null;
 
     // Load configuration
-    smonthlAPI.loadConfig().then(cfg => {
+    smonthlAPI.loadConfig('./config-custom-font.json').then(cfg => {
       config = cfg;
       applyConfig(config);
     });
@@ -638,46 +638,15 @@
         container.style.borderRadius = cfg.glass.borderRadius + 'px';
       }
       
-      // Apply typography
-      if (cfg.typography) {
-        if (cfg.typography.fontFamily) {
-          document.body.style.fontFamily = cfg.typography.fontFamily;
-        }
-      }
-      
-      // Load external libraries
-      if (cfg.externalLibraries && cfg.externalLibraries.length > 0) {
-        cfg.externalLibraries.forEach(lib => {
-          const link = document.createElement('link');
-          link.rel = 'stylesheet';
-          link.href = lib;
-          document.head.appendChild(link);
-        });
-      }
-      
       // Apply content
       const contentDiv = container.querySelector('.content');
       if (cfg.content) {
         if (cfg.content.type === 'icon' && cfg.content.icon) {
           contentDiv.innerHTML = `<div style="font-size: ${Math.min(cfg.glass.width, cfg.glass.height) * 0.4}px;">${cfg.content.icon}</div>`;
-        } else if (cfg.content.type === 'icon-library' && cfg.content.iconClass) {
-          // Icon from external library
-          const iconSize = Math.min(cfg.glass.width, cfg.glass.height) * 0.4;
-          contentDiv.innerHTML = `<i class="${cfg.content.iconClass}" style="font-size: ${iconSize}px;"></i>`;
         } else if (cfg.content.type === 'text') {
-          const titleStyle = cfg.typography ? `
-            font-size: ${cfg.typography.titleSize || '28px'};
-            font-weight: ${cfg.typography.titleWeight || '300'};
-            letter-spacing: ${cfg.typography.letterSpacing || '-0.5px'};
-          ` : '';
-          const subtitleStyle = cfg.typography ? `
-            font-size: ${cfg.typography.subtitleSize || '14px'};
-            font-weight: ${cfg.typography.subtitleWeight || '400'};
-          ` : '';
-          
           contentDiv.innerHTML = `
-            ${cfg.content.title ? `<h1 style="${titleStyle}">${cfg.content.title}</h1>` : ''}
-            ${cfg.content.subtitle ? `<p style="${subtitleStyle}">${cfg.content.subtitle}</p>` : ''}
+            ${cfg.content.title ? `<h1>${cfg.content.title}</h1>` : ''}
+            ${cfg.content.subtitle ? `<p>${cfg.content.subtitle}</p>` : ''}
           `;
         }
       }
