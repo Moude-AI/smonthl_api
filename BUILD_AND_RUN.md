@@ -26,13 +26,6 @@ This guide covers building and running SmonthlAPI in different configurations. S
 
 ## Installation
 
-### Clone the Repository
-
-```bash
-git clone <repository-url>
-cd Smonthl_API
-```
-
 ### Install Dependencies
 
 ```bash

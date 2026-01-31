@@ -9,13 +9,6 @@ React and TypeScript implementation of SmonthlAPI with liquid glass effects.
 npm install smonthl-react
 ```
 
-### Via GitHub
-```bash
-git clone https://github.com/Moude-AI/smonthl_api.git
-cd smonthl_api/tsx-react-ver
-npm install
-```
-
 ## 🚀 Usage in Your Project
 
 ```typescript

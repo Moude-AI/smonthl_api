@@ -40,26 +40,12 @@ Pure HTML and vanilla JavaScript - zero dependencies, runs directly in browser.
 npm install smonthl
 ```
 
-**Or clone:**
-```bash
-cd html-ver
-npm install
-npm start
-```
-
 ### [React TypeScript Version](./tsx-react-ver)
 Modern React with TypeScript, Vite, and full type safety.
 
 **Install:**
 ```bash
 npm install smonthl-react
-```
-
-**Or clone:**
-```bash
-cd tsx-react-ver
-npm install
-npm run dev:all
 ```
 
 See [VERSIONS.md](./VERSIONS.md) for detailed comparison.
