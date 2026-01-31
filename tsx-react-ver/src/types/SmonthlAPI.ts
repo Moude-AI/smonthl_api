@@ -75,10 +75,12 @@ export class SmonthlAPI {
       const response = await fetch(url);
       this.config = await response.json();
       this.notifyListeners('configLoaded', this.config);
-      return this.config;
+      return this.config!;
     } catch (error) {
       console.error('Failed to load config:', error);
-      return this.getDefaultConfig();
+      const defaultConfig = this.getDefaultConfig();
+      this.config = defaultConfig;
+      return defaultConfig;
     }
   }
 

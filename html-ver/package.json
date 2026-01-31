@@ -1,5 +1,5 @@
 {
-  "name": "@smonthl/liquid-glass-html",
+  "name": "smonthl-liquid-glass-html",
   "version": "1.0.0",
   "description": "SmonthlAPI - Beautiful frosted glass UI with jelly physics, magnetic following, and cursor lights (HTML/JavaScript version)",
   "main": "smonthl-api.js",
