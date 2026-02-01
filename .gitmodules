@@ -4,3 +4,6 @@
 [submodule "html-ver"]
 	path = html-ver
 	url = https://github.com/Moude-AI/smonthl-html.git
+[submodule "build-tools"]
+	path = build-tools
+	url = https://github.com/Moude-AI/smonthl-build-tools.git
