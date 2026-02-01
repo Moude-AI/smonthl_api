@@ -1,7 +1,7 @@
 # SmonthlAPI
 
 <p align="center">
-  <img src="./logo.svg" alt="SmonthlAPI Logo" width="200"/>
+  <img src="./favicon.svg" alt="SmonthlAPI Logo" width="200"/>
 </p>
 
 <p align="center">
