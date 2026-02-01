@@ -2,12 +2,13 @@
   "name": "smonthl",
   "version": "2.0.7",
   "description": "SmonthlAPI - Beautiful frosted glass UI with liquid glass text, extended creative syntax, external imports (HTML/JavaScript version)",
-  "main": "smonthl-api.js",
+  "main": "electron-main.js",
   "scripts": {
     "start": "electron .",
     "dev": "electron .",
     "build": "npm run package",
     "package": "electron-builder",
+    "package:all": "electron-builder --linux --mac --win",
     "prepublishOnly": "echo 'Ready to publish'",
     "publish:npm": "npm publish --access public"
   },
