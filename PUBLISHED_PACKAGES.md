@@ -5,16 +5,31 @@
 ### 📦 HTML Version
 - **Package:** `@moude-ai/smonthl@2.0.7`
 - **Registry:** https://npm.pkg.github.com
-- **Repository:** https://github.com/Moude-AI/smonthl-html
+- **Published from:** https://github.com/Moude-AI/smonthl-html (submodule)
 - **Size:** 27.5 kB
 - **Status:** ✅ Published
 
 ### 📦 React Version
 - **Package:** `@moude-ai/smonthl-react@2.0.7`
 - **Registry:** https://npm.pkg.github.com
-- **Repository:** https://github.com/Moude-AI/smonthl-react
+- **Published from:** https://github.com/Moude-AI/smonthl-react (submodule)
 - **Size:** 342.3 kB
 - **Status:** ✅ Published
+
+### 📦 Documentation Package (Main Repository)
+- **Package:** `@moude-ai/smonthl-api@2.0.7`
+- **Registry:** https://npm.pkg.github.com
+- **Published from:** https://github.com/Moude-AI/smonthl_api (main repository)
+- **Size:** 31.3 kB
+- **Status:** ✅ Published
+- **Contains:** All documentation, guides, and usage instructions
+
+## View All Packages
+
+- **Organization Packages:** https://github.com/orgs/Moude-AI/packages
+- **Main Repository:** https://github.com/Moude-AI/smonthl_api/packages
+- **HTML Submodule:** https://github.com/Moude-AI/smonthl-html/packages
+- **React Submodule:** https://github.com/Moude-AI/smonthl-react/packages
 
 ## Installation
 
@@ -58,8 +73,10 @@ function App() {
 ## Package URLs
 
 View packages on GitHub:
-- HTML: https://github.com/orgs/Moude-AI/packages?repo_name=smonthl-html
-- React: https://github.com/orgs/Moude-AI/packages?repo_name=smonthl-react
+- **All Packages:** https://github.com/orgs/Moude-AI/packages
+- **HTML Package:** https://github.com/orgs/Moude-AI/packages?repo_name=smonthl-html
+- **React Package:** https://github.com/orgs/Moude-AI/packages?repo_name=smonthl-react
+- **Documentation Package:** https://github.com/orgs/Moude-AI/packages?repo_name=smonthl_api
 
 ## What's Included
 
