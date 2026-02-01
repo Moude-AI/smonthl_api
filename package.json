@@ -1,8 +1,53 @@
 {
-  "name": "tiprun",
-  "version": "1.0.0",
-  "description": "A powerful native cross-platform desktop application for creating and displaying highly customizable tip/hint windows with advanced features.",
-  "main": "electron-main.js",
+  "name": "@moude-ai/smonthl-api",
+  "version": "2.0.7",
+  "description": "SmonthlAPI - Beautiful frosted glass UI with liquid glass text, jelly physics, magnetic interactions, and advanced visual effects. Main repository with both HTML and React versions.",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moude-AI/smonthl_api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Moude-AI/smonthl_api/issues"
+  },
+  "homepage": "https://github.com/Moude-AI/smonthl_api#readme",
+  "keywords": [
+    "smonthl",
+    "smonthl-api",
+    "liquid-glass",
+    "frosted-glass",
+    "glassmorphism",
+    "jelly-physics",
+    "elastic-ui",
+    "magnetic-ui",
+    "cursor-effects",
+    "electron",
+    "react",
+    "typescript",
+    "html",
+    "javascript",
+    "ui-component",
+    "glass-effect",
+    "backdrop-filter",
+    "magnifying-lens"
+  ],
+  "author": "Arthurc1Moude <arch_cheng@163.com>",
+  "license": "Apache-2.0",
+  "files": [
+    "README.md",
+    "LICENSE",
+    "FEATURES.md",
+    "USAGE.md",
+    "DSL_SYNTAX_GUIDE.md",
+    "JSON_CONFIG_GUIDE.md",
+    "LIQUID_GLASS_GUIDE.md",
+    "STYLE_GUIDE.md",
+    "PUBLISHED_PACKAGES.md",
+    "PUBLISH_INSTRUCTIONS.md"
+  ],
   "devDependencies": {
     "@types/node": "^25.1.0",
     "@types/react": "^19.2.10",
@@ -20,11 +65,10 @@
     "dev:electron": "NODE_ENV=development electron electron-react.js",
     "dev": "concurrently \"npm run dev:react\" \"npm run dev:electron\"",
     "build:react": "tsc && vite build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "echo 'Publishing SmonthlAPI documentation package'",
+    "publish:github": "npm publish --registry=https://npm.pkg.github.com"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
