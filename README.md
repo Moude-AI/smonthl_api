@@ -1,5 +1,13 @@
 # SmonthlAPI
 
+<p align="center">
+  <img src="./logo.svg" alt="SmonthlAPI Logo" width="200"/>
+</p>
+
+<p align="center">
+  <img src="./badge.svg" alt="SmonthlAPI Badge"/>
+</p>
+
 A powerful, flexible configuration API for creating beautiful frosted glass UI components with liquid glass effects, advanced code execution, AI-style chain builders, and performance monitoring. Build buttons, cards, windows, icons, menus, and custom glass elements with real magnifying lens effects, jelly physics, magnetic cursor following, dynamic lighting, and much more.
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)
