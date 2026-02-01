@@ -30,9 +30,6 @@
     </filter>
   </defs>
   
-  <!-- Black Background -->
-  <rect width="256" height="256" fill="#000000"/>
-  
   <!-- Circle 1 (Yellow-Orange 25-30% opacity) - Left -->
   <circle cx="78" cy="128" r="40" fill="url(#iconGlass1)" filter="url(#iconShadow)"/>
   

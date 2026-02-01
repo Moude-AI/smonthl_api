@@ -32,9 +32,6 @@
     </filter>
   </defs>
   
-  <!-- Black Background -->
-  <rect width="200" height="60" rx="30" fill="#000000"/>
-  
   <!-- Logo Circles - Horizontally Lined Up -->
   <g transform="translate(10, 30)">
     <circle cx="8" cy="0" r="8" fill="url(#badgeGlass1)" filter="url(#badgeShadow)"/>

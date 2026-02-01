@@ -27,9 +27,6 @@
     </filter>
   </defs>
   
-  <!-- Black Background -->
-  <rect width="32" height="32" fill="#000000"/>
-  
   <!-- Circle 1 (Yellow-Orange 25-30% opacity) - Left -->
   <circle cx="9.75" cy="16" r="5" fill="url(#favGlass1)" filter="url(#favShadow)"/>
   
