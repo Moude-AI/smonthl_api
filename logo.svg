@@ -1,112 +1,55 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Clean Glass Gradients -->
+    <!-- Yellow Gradients with varying opacity -->
     <linearGradient id="glass1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.95" />
-      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.85" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.2" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.2" />
     </linearGradient>
     
     <linearGradient id="glass2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:0.95" />
-      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.85" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.5" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.5" />
     </linearGradient>
     
     <linearGradient id="glass3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.95" />
-      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.85" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.85" />
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.85" />
     </linearGradient>
-    
-    <!-- Subtle Shadow -->
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
-      <feOffset dx="0" dy="4" result="offsetblur"/>
-      <feComponentTransfer>
-        <feFuncA type="linear" slope="0.2"/>
-      </feComponentTransfer>
-      <feMerge>
-        <feMergeNode/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-    
-    <!-- Minimal Glow -->
-    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
   
-  <!-- Circle 1 (Blue) - Left -->
-  <circle cx="200" cy="256" r="120" 
-          fill="url(#glass1)" 
-          filter="url(#shadow)"
-          opacity="0.9"/>
-  <circle cx="200" cy="256" r="120" 
-          fill="none" 
-          stroke="rgba(255,255,255,0.4)" 
-          stroke-width="2"/>
+  <!-- Black Background -->
+  <rect width="512" height="512" fill="#000000"/>
   
-  <!-- Highlight on Circle 1 -->
-  <ellipse cx="180" cy="230" rx="40" ry="50" 
-           fill="rgba(255,255,255,0.3)" 
-           opacity="0.6"/>
+  <!-- Circle 1 (Yellow 20% opacity) - Left -->
+  <circle cx="156" cy="256" r="80" fill="url(#glass1)"/>
+  <circle cx="156" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.2)" stroke-width="2"/>
   
-  <!-- Circle 2 (Purple) - Top Right -->
-  <circle cx="312" cy="200" r="120" 
-          fill="url(#glass2)" 
-          filter="url(#shadow)"
-          opacity="0.9"/>
-  <circle cx="312" cy="200" r="120" 
-          fill="none" 
-          stroke="rgba(255,255,255,0.4)" 
-          stroke-width="2"/>
+  <!-- Circle 2 (Yellow 50% opacity) - Center -->
+  <circle cx="256" cy="256" r="80" fill="url(#glass2)"/>
+  <circle cx="256" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.5)" stroke-width="2"/>
   
-  <!-- Highlight on Circle 2 -->
-  <ellipse cx="292" cy="174" rx="40" ry="50" 
-           fill="rgba(255,255,255,0.3)" 
-           opacity="0.6"/>
-  
-  <!-- Circle 3 (Green) - Bottom Right -->
-  <circle cx="312" cy="312" r="120" 
-          fill="url(#glass3)" 
-          filter="url(#shadow)"
-          opacity="0.9"/>
-  <circle cx="312" cy="312" r="120" 
-          fill="none" 
-          stroke="rgba(255,255,255,0.4)" 
-          stroke-width="2"/>
-  
-  <!-- Highlight on Circle 3 -->
-  <ellipse cx="292" cy="286" rx="40" ry="50" 
-           fill="rgba(255,255,255,0.3)" 
-           opacity="0.6"/>
-  
-  <!-- Center Intersection Glow -->
-  <circle cx="256" cy="256" r="40" 
-          fill="rgba(255,255,255,0.2)" 
-          filter="url(#glow)"/>
+  <!-- Circle 3 (Yellow 85% opacity) - Right -->
+  <circle cx="356" cy="256" r="80" fill="url(#glass3)"/>
+  <circle cx="356" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.85)" stroke-width="2"/>
   
   <!-- Text: SmonthlAPI -->
-  <text x="256" y="460" 
+  <text x="256" y="420" 
         font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" 
         font-size="48" 
         font-weight="700" 
         text-anchor="middle" 
-        fill="#1e293b"
+        fill="#ffffff"
         letter-spacing="-1">
     SmonthlAPI
   </text>
   
   <!-- Subtitle -->
-  <text x="256" y="490" 
+  <text x="256" y="455" 
         font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" 
         font-size="18" 
         font-weight="500"
         text-anchor="middle" 
-        fill="#64748b"
+        fill="#94a3b8"
         letter-spacing="0.5">
     Liquid Glass UI Framework
   </text>
