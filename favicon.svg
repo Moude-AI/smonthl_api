@@ -1,0 +1,45 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa" />
+      <stop offset="100%" style="stop-color:#2563eb" />
+    </linearGradient>
+    <filter id="favGlow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="32" height="32" rx="8" fill="url(#favGradient)"/>
+  
+  <!-- Letter 'S' -->
+  <path d="M 16 6 
+           Q 21 6, 23 9
+           Q 25 12, 23 15
+           Q 21 18, 16 18
+           Q 11 18, 9 21
+           Q 7 24, 9 27
+           Q 11 30, 16 30
+           L 18 30
+           Q 21 30, 23 28
+           L 23 27
+           Q 23 26, 21 26
+           L 18 26
+           Q 15 26, 14 24
+           Q 13 22, 14 21
+           Q 15 20, 18 20
+           L 21 20
+           Q 24 20, 26 17
+           Q 28 14, 26 11
+           Q 24 8, 21 6
+           L 16 6 Z" 
+        fill="white" 
+        filter="url(#favGlow)"/>
+  
+  <!-- Droplet -->
+  <circle cx="12" cy="11" r="1.5" fill="rgba(255,255,255,0.7)"/>
+</svg>

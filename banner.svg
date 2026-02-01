@@ -1,0 +1,185 @@
+<svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a" />
+      <stop offset="50%" style="stop-color:#1e40af" />
+      <stop offset="100%" style="stop-color:#1d4ed8" />
+    </linearGradient>
+    
+    <!-- Glass Gradient -->
+    <linearGradient id="bannerGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.8" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#2563eb;stop-opacity:0.9" />
+    </linearGradient>
+    
+    <!-- Glow Effect -->
+    <filter id="bannerGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Glass Blur -->
+    <filter id="bannerBlur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.6 0"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative Circles -->
+  <circle cx="100" cy="100" r="150" fill="rgba(96,165,250,0.1)" filter="url(#bannerBlur)"/>
+  <circle cx="1100" cy="300" r="120" fill="rgba(59,130,246,0.1)" filter="url(#bannerBlur)"/>
+  <circle cx="950" cy="80" r="80" fill="rgba(37,99,235,0.1)" filter="url(#bannerBlur)"/>
+  
+  <!-- Main Glass Panel -->
+  <rect x="50" y="80" width="500" height="240" rx="30" 
+        fill="url(#bannerGlass)" 
+        filter="url(#bannerGlow)" 
+        opacity="0.85"/>
+  
+  <!-- Frosted Layer -->
+  <rect x="50" y="80" width="500" height="240" rx="30" 
+        fill="rgba(255,255,255,0.1)" 
+        filter="url(#bannerBlur)"/>
+  
+  <!-- Logo Circle -->
+  <circle cx="150" cy="200" r="80" fill="url(#bannerGlass)" filter="url(#bannerGlow)"/>
+  <circle cx="150" cy="200" r="80" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="3"/>
+  
+  <!-- Letter 'S' in Circle -->
+  <path d="M 150 160 
+           Q 170 160, 177 172
+           Q 184 184, 177 196
+           Q 170 208, 150 208
+           Q 130 208, 123 220
+           Q 116 232, 123 244
+           Q 130 256, 150 256
+           L 158 256
+           Q 170 256, 177 248
+           L 177 244
+           Q 177 240, 170 240
+           L 158 240
+           Q 146 240, 142 232
+           Q 138 224, 142 220
+           Q 146 216, 158 216
+           L 170 216
+           Q 182 216, 189 204
+           Q 196 192, 189 180
+           Q 182 168, 170 160
+           L 150 160 Z" 
+        fill="rgba(255,255,255,0.95)" 
+        filter="url(#bannerGlow)"/>
+  
+  <!-- Title Text -->
+  <text x="280" y="180" font-family="Arial, sans-serif" font-size="64" font-weight="bold" 
+        fill="white" filter="url(#bannerGlow)">
+    SmonthlAPI
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="280" y="220" font-family="Arial, sans-serif" font-size="28" 
+        fill="rgba(255,255,255,0.9)">
+    Liquid Glass UI Framework
+  </text>
+  
+  <!-- Version Badge -->
+  <rect x="280" y="240" width="100" height="35" rx="17.5" 
+        fill="rgba(96,165,250,0.3)" 
+        stroke="rgba(255,255,255,0.5)" 
+        stroke-width="2"/>
+  <text x="330" y="265" font-family="Arial, sans-serif" font-size="18" font-weight="bold"
+        text-anchor="middle" fill="white">
+    v2.0.7
+  </text>
+  
+  <!-- Feature Pills -->
+  <g transform="translate(650, 120)">
+    <!-- Pill 1 -->
+    <rect x="0" y="0" width="180" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="90" y="32" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      🎨 Glassmorphism
+    </text>
+    
+    <!-- Pill 2 -->
+    <rect x="200" y="0" width="160" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="280" y="32" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      ⚡ Performance
+    </text>
+    
+    <!-- Pill 3 -->
+    <rect x="0" y="70" width="150" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="75" y="102" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      🔗 Chainable
+    </text>
+    
+    <!-- Pill 4 -->
+    <rect x="170" y="70" width="190" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="265" y="102" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      💻 Code Execution
+    </text>
+    
+    <!-- Pill 5 -->
+    <rect x="0" y="140" width="160" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="80" y="172" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      🎭 Themeable
+    </text>
+    
+    <!-- Pill 6 -->
+    <rect x="180" y="140" width="180" height="50" rx="25" 
+          fill="rgba(255,255,255,0.15)" 
+          filter="url(#bannerBlur)"/>
+    <text x="270" y="172" font-family="Arial, sans-serif" font-size="18" 
+          text-anchor="middle" fill="white">
+      📊 Monitoring
+    </text>
+  </g>
+  
+  <!-- Animated Droplets -->
+  <circle cx="400" cy="120" r="6" fill="rgba(255,255,255,0.6)" filter="url(#bannerGlow)">
+    <animate attributeName="cy" values="120;130;120" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.6;0.3;0.6" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="520" cy="280" r="5" fill="rgba(255,255,255,0.5)" filter="url(#bannerGlow)">
+    <animate attributeName="cy" values="280;290;280" dur="2.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="200" cy="300" r="5.5" fill="rgba(255,255,255,0.55)" filter="url(#bannerGlow)">
+    <animate attributeName="cy" values="300;310;300" dur="2.2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.55;0.25;0.55" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Sparkles -->
+  <circle cx="600" cy="60" r="3" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1050" cy="150" r="2.5" fill="white" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.2;0.7" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="850" cy="320" r="3" fill="white" opacity="0.75">
+    <animate attributeName="opacity" values="0.75;0.2;0.75" dur="1.6s" repeatCount="indefinite"/>
+  </circle>
+</svg>
