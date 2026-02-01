@@ -6,3 +6,7 @@ dist/
 .env
 .env.local
 package-lock.json
+releases/
+GitHub.com
+tsx-react-ver/dist-electron/
+html-ver/dist/
