@@ -1,3 +1,6 @@
 [submodule "tsx-react-ver"]
 	path = tsx-react-ver
 	url = https://github.com/Moude-AI/smonthl-react.git
+[submodule "html-ver"]
+	path = html-ver
+	url = https://github.com/Moude-AI/smonthl-html.git
