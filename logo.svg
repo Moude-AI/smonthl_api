@@ -1,36 +1,36 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Yellow Gradients with varying opacity -->
+    <!-- Yellow-Orange Gradients with varying opacity -->
     <linearGradient id="glass1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.2" />
-      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.2" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.25" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:0.3" />
     </linearGradient>
     
     <linearGradient id="glass2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.5" />
-      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.5" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.65" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:0.7" />
     </linearGradient>
     
     <linearGradient id="glass3" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.85" />
-      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.85" />
+      <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
     </linearGradient>
   </defs>
   
   <!-- Black Background -->
   <rect width="512" height="512" fill="#000000"/>
   
-  <!-- Circle 1 (Yellow 20% opacity) - Left -->
+  <!-- Circle 1 (Yellow-Orange 25-30% opacity) - Left -->
   <circle cx="156" cy="256" r="80" fill="url(#glass1)"/>
-  <circle cx="156" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.2)" stroke-width="2"/>
+  <circle cx="156" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.3)" stroke-width="2"/>
   
-  <!-- Circle 2 (Yellow 50% opacity) - Center -->
+  <!-- Circle 2 (Yellow-Orange 65-70% opacity) - Center -->
   <circle cx="256" cy="256" r="80" fill="url(#glass2)"/>
-  <circle cx="256" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.5)" stroke-width="2"/>
+  <circle cx="256" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.7)" stroke-width="2"/>
   
-  <!-- Circle 3 (Yellow 85% opacity) - Right -->
+  <!-- Circle 3 (Yellow-Orange 95-100% opacity) - Right -->
   <circle cx="356" cy="256" r="80" fill="url(#glass3)"/>
-  <circle cx="356" cy="256" r="80" fill="none" stroke="rgba(251,191,36,0.85)" stroke-width="2"/>
+  <circle cx="356" cy="256" r="80" fill="none" stroke="rgba(251,191,36,1)" stroke-width="2"/>
   
   <!-- Text: SmonthlAPI -->
   <text x="256" y="420" 
