@@ -1,45 +1,34 @@
 <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="favGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="favGlass1" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#60a5fa" />
-      <stop offset="100%" style="stop-color:#2563eb" />
+      <stop offset="100%" style="stop-color:#3b82f6" />
     </linearGradient>
-    <filter id="favGlow">
-      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-      <feMerge>
-        <feMergeNode in="coloredBlur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
+    <linearGradient id="favGlass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa" />
+      <stop offset="100%" style="stop-color:#8b5cf6" />
+    </linearGradient>
+    <linearGradient id="favGlass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34d399" />
+      <stop offset="100%" style="stop-color:#10b981" />
+    </linearGradient>
   </defs>
   
   <!-- Background -->
-  <rect width="32" height="32" rx="8" fill="url(#favGradient)"/>
+  <rect width="32" height="32" rx="8" fill="#ffffff"/>
   
-  <!-- Letter 'S' -->
-  <path d="M 16 6 
-           Q 21 6, 23 9
-           Q 25 12, 23 15
-           Q 21 18, 16 18
-           Q 11 18, 9 21
-           Q 7 24, 9 27
-           Q 11 30, 16 30
-           L 18 30
-           Q 21 30, 23 28
-           L 23 27
-           Q 23 26, 21 26
-           L 18 26
-           Q 15 26, 14 24
-           Q 13 22, 14 21
-           Q 15 20, 18 20
-           L 21 20
-           Q 24 20, 26 17
-           Q 28 14, 26 11
-           Q 24 8, 21 6
-           L 16 6 Z" 
-        fill="white" 
-        filter="url(#favGlow)"/>
+  <!-- Circle 1 (Blue) -->
+  <circle cx="12.5" cy="16" r="7.5" fill="url(#favGlass1)"/>
+  <circle cx="12.5" cy="16" r="7.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
   
-  <!-- Droplet -->
-  <circle cx="12" cy="11" r="1.5" fill="rgba(255,255,255,0.7)"/>
+  <!-- Circle 2 (Purple) -->
+  <circle cx="19.5" cy="12.5" r="7.5" fill="url(#favGlass2)"/>
+  <circle cx="19.5" cy="12.5" r="7.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+  
+  <!-- Circle 3 (Green) -->
+  <circle cx="19.5" cy="19.5" r="7.5" fill="url(#favGlass3)"/>
+  <circle cx="19.5" cy="19.5" r="7.5" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="0.5"/>
+  
+  <!-- Center -->
+  <circle cx="16" cy="16" r="2.5" fill="rgba(255,255,255,0.4)"/>
 </svg>

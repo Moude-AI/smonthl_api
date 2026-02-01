@@ -1,160 +1,72 @@
 <svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Ultra Glass Gradient -->
-    <linearGradient id="iconUltraGlass" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.25" />
-      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.2" />
-      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:0.3" />
+    <!-- Clean Glass Gradients -->
+    <linearGradient id="iconGlass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.85" />
     </linearGradient>
     
-    <!-- Frosted Overlay -->
-    <radialGradient id="iconFrosted" cx="30%" cy="30%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.35" />
-      <stop offset="100%" style="stop-color:#bae6fd;stop-opacity:0.1" />
-    </radialGradient>
+    <linearGradient id="iconGlass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.85" />
+    </linearGradient>
     
-    <!-- Heavy Blur -->
-    <filter id="iconHeavyBlur" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="20"/>
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.35 0"/>
-    </filter>
+    <linearGradient id="iconGlass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.85" />
+    </linearGradient>
     
-    <!-- Medium Blur -->
-    <filter id="iconMediumBlur" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="12"/>
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.45 0"/>
-    </filter>
-    
-    <!-- Soft Blur -->
-    <filter id="iconSoftBlur">
-      <feGaussianBlur stdDeviation="6"/>
-    </filter>
-    
-    <!-- Ultra Glow -->
-    <filter id="iconUltraGlow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
-      <feFlood flood-color="#60a5fa" flood-opacity="0.6"/>
-      <feComposite in2="coloredBlur" operator="in"/>
+    <!-- Subtle Shadow -->
+    <filter id="iconShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="3" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
       <feMerge>
         <feMergeNode/>
-        <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
   
-  <!-- Dark Background -->
-  <rect width="256" height="256" rx="64" fill="#0f172a"/>
+  <!-- Background -->
+  <rect width="256" height="256" rx="64" fill="#ffffff"/>
   
-  <!-- Ambient Glow -->
-  <rect width="256" height="256" rx="64" fill="url(#iconUltraGlass)" opacity="0.6" filter="url(#iconHeavyBlur)"/>
+  <!-- Circle 1 (Blue) - Left -->
+  <circle cx="100" cy="128" r="60" 
+          fill="url(#iconGlass1)" 
+          filter="url(#iconShadow)"/>
+  <circle cx="100" cy="128" r="60" 
+          fill="none" 
+          stroke="rgba(255,255,255,0.4)" 
+          stroke-width="1.5"/>
+  <ellipse cx="90" cy="115" rx="20" ry="25" 
+           fill="rgba(255,255,255,0.3)"/>
   
-  <!-- Main Glass Layer -->
-  <rect width="256" height="256" rx="64" fill="url(#iconUltraGlass)" filter="url(#iconMediumBlur)" opacity="0.7"/>
+  <!-- Circle 2 (Purple) - Top Right -->
+  <circle cx="156" cy="100" r="60" 
+          fill="url(#iconGlass2)" 
+          filter="url(#iconShadow)"/>
+  <circle cx="156" cy="100" r="60" 
+          fill="none" 
+          stroke="rgba(255,255,255,0.4)" 
+          stroke-width="1.5"/>
+  <ellipse cx="146" cy="87" rx="20" ry="25" 
+           fill="rgba(255,255,255,0.3)"/>
   
-  <!-- Frosted Layer -->
-  <rect width="256" height="256" rx="64" fill="url(#iconFrosted)" filter="url(#iconSoftBlur)" opacity="0.5"/>
+  <!-- Circle 3 (Green) - Bottom Right -->
+  <circle cx="156" cy="156" r="60" 
+          fill="url(#iconGlass3)" 
+          filter="url(#iconShadow)"/>
+  <circle cx="156" cy="156" r="60" 
+          fill="none" 
+          stroke="rgba(255,255,255,0.4)" 
+          stroke-width="1.5"/>
+  <ellipse cx="146" cy="143" rx="20" ry="25" 
+           fill="rgba(255,255,255,0.3)"/>
   
-  <!-- Additional Blur Layer -->
-  <rect width="256" height="256" rx="64" fill="rgba(255,255,255,0.08)" filter="url(#iconMediumBlur)"/>
-  
-  <!-- Inner Glow Ring -->
-  <rect x="10" y="10" width="236" height="236" rx="58" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" filter="url(#iconSoftBlur)">
-    <animate attributeName="opacity" values="0.15;0.3;0.15" dur="3s" repeatCount="indefinite"/>
-  </rect>
-  
-  <!-- Letter 'S' with Ultra Glass -->
-  <g filter="url(#iconUltraGlow)">
-    <path d="M 128 45 
-             C 160 45, 185 55, 195 75
-             C 205 95, 195 115, 170 125
-             C 155 130, 128 135, 128 135
-             C 128 135, 101 130, 86 125
-             C 61 115, 51 95, 61 75
-             C 71 55, 96 45, 128 45
-             
-             M 128 135
-             C 128 135, 101 140, 86 145
-             C 61 155, 51 175, 61 195
-             C 71 215, 96 225, 128 225
-             C 160 225, 185 215, 195 195
-             L 195 185
-             C 195 175, 180 170, 160 170
-             L 145 170
-             C 125 170, 115 165, 110 155
-             C 105 145, 110 135, 120 130
-             C 130 125, 145 125, 160 130
-             C 175 135, 185 140, 195 145
-             L 195 125
-             C 185 115, 160 125, 128 135 Z" 
-          fill="rgba(255,255,255,0.12)" 
-          filter="url(#iconHeavyBlur)"/>
-    
-    <path d="M 128 50 
-             Q 165 50, 185 70
-             Q 205 90, 185 115
-             Q 165 140, 128 140
-             Q 91 140, 71 115
-             Q 51 90, 71 70
-             Q 91 50, 128 50
-             
-             M 128 140
-             Q 91 145, 71 170
-             Q 51 195, 71 220
-             Q 91 245, 128 245
-             L 145 245
-             Q 170 245, 185 230
-             L 185 220
-             Q 185 210, 170 210
-             L 145 210
-             Q 120 210, 110 195
-             Q 100 180, 110 170
-             Q 120 160, 145 160
-             L 170 160
-             Q 195 160, 210 135
-             Q 225 110, 210 85
-             Q 195 60, 170 55
-             Q 150 50, 128 50 Z" 
-          fill="rgba(255,255,255,0.9)" 
-          stroke="rgba(255,255,255,0.3)"
-          stroke-width="3"
-          filter="url(#iconMediumBlur)"/>
-  </g>
-  
-  <!-- Liquid Droplets -->
-  <g filter="url(#iconUltraGlow)">
-    <ellipse cx="85" cy="80" rx="8" ry="11" fill="rgba(255,255,255,0.35)" filter="url(#iconSoftBlur)">
-      <animate attributeName="cy" values="80;87;80" dur="2.5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.35;0.15;0.35" dur="2.5s" repeatCount="indefinite"/>
-    </ellipse>
-    
-    <ellipse cx="171" cy="105" rx="6" ry="9" fill="rgba(255,255,255,0.3)" filter="url(#iconSoftBlur)">
-      <animate attributeName="cy" values="105;112;105" dur="3s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.3;0.1;0.3" dur="3s" repeatCount="indefinite"/>
-    </ellipse>
-    
-    <ellipse cx="110" cy="185" rx="7" ry="10" fill="rgba(255,255,255,0.32)" filter="url(#iconSoftBlur)">
-      <animate attributeName="cy" values="185;192;185" dur="2.7s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.32;0.12;0.32" dur="2.7s" repeatCount="indefinite"/>
-    </ellipse>
-  </g>
-  
-  <!-- Highlight Spots -->
-  <ellipse cx="95" cy="85" rx="20" ry="30" fill="rgba(255,255,255,0.12)" filter="url(#iconHeavyBlur)"/>
-  <ellipse cx="160" cy="130" rx="18" ry="25" fill="rgba(255,255,255,0.1)" filter="url(#iconHeavyBlur)"/>
-  
-  <!-- Outer Border Glow -->
-  <rect width="256" height="256" rx="64" fill="none" stroke="rgba(96,165,250,0.25)" stroke-width="2" filter="url(#iconSoftBlur)">
-    <animate attributeName="opacity" values="0.25;0.45;0.25" dur="3s" repeatCount="indefinite"/>
-  </rect>
-  
-  <!-- Floating Particles -->
-  <circle cx="70" cy="60" r="1.5" fill="rgba(255,255,255,0.5)">
-    <animate attributeName="cy" values="60;55;60" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.1;0.5" dur="3s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="186" cy="75" r="1.2" fill="rgba(255,255,255,0.45)">
-    <animate attributeName="cy" values="75;70;75" dur="3.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.45;0.05;0.45" dur="3.5s" repeatCount="indefinite"/>
-  </circle>
+  <!-- Center Glow -->
+  <circle cx="128" cy="128" r="20" 
+          fill="rgba(255,255,255,0.3)"/>
 </svg>

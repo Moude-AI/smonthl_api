@@ -1,318 +1,203 @@
 <svg width="1200" height="400" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Dark Background Gradient -->
-    <linearGradient id="darkBg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#0c1222" />
-      <stop offset="50%" style="stop-color:#0f172a" />
-      <stop offset="100%" style="stop-color:#1e293b" />
+    <!-- Background Gradient -->
+    <linearGradient id="bannerBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc" />
+      <stop offset="100%" style="stop-color:#e2e8f0" />
     </linearGradient>
     
-    <!-- Ultra Glass -->
-    <linearGradient id="bannerUltraGlass" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.2" />
-      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:0.15" />
-      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:0.25" />
+    <!-- Glass Gradients -->
+    <linearGradient id="bannerGlass1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.85" />
     </linearGradient>
     
-    <!-- Frosted -->
-    <radialGradient id="bannerFrosted" cx="20%" cy="20%">
-      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.3" />
-      <stop offset="100%" style="stop-color:#bae6fd;stop-opacity:0.05" />
-    </radialGradient>
+    <linearGradient id="bannerGlass2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.85" />
+    </linearGradient>
     
-    <!-- Heavy Blur -->
-    <filter id="bannerHeavyBlur" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="30"/>
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.3 0"/>
-    </filter>
+    <linearGradient id="bannerGlass3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34d399;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#10b981;stop-opacity:0.85" />
+    </linearGradient>
     
-    <!-- Medium Blur -->
-    <filter id="bannerMediumBlur" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="18"/>
-      <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.4 0"/>
-    </filter>
-    
-    <!-- Soft Blur -->
-    <filter id="bannerSoftBlur">
-      <feGaussianBlur stdDeviation="10"/>
-    </filter>
-    
-    <!-- Ultra Glow -->
-    <filter id="bannerUltraGlow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur stdDeviation="20" result="coloredBlur"/>
-      <feFlood flood-color="#60a5fa" flood-opacity="0.5"/>
-      <feComposite in2="coloredBlur" operator="in"/>
+    <!-- Shadow -->
+    <filter id="bannerShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.15"/>
+      </feComponentTransfer>
       <feMerge>
         <feMergeNode/>
-        <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
   </defs>
   
-  <!-- Dark Background -->
-  <rect width="1200" height="400" fill="url(#darkBg)"/>
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bannerBg)"/>
   
-  <!-- Ambient Glow Circles -->
-  <circle cx="150" cy="150" r="200" fill="rgba(96,165,250,0.15)" filter="url(#bannerHeavyBlur)">
-    <animate attributeName="r" values="200;220;200" dur="5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="1050" cy="250" r="180" fill="rgba(59,130,246,0.12)" filter="url(#bannerHeavyBlur)">
-    <animate attributeName="r" values="180;200;180" dur="5.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="900" cy="100" r="120" fill="rgba(37,99,235,0.1)" filter="url(#bannerHeavyBlur)">
-    <animate attributeName="r" values="120;140;120" dur="6s" repeatCount="indefinite"/>
-  </circle>
-  
-  <!-- Main Ultra Glass Panel -->
-  <rect x="40" y="60" width="550" height="280" rx="40" 
-        fill="url(#bannerUltraGlass)" 
-        filter="url(#bannerHeavyBlur)" 
-        opacity="0.8"/>
-  
-  <!-- Frosted Layers -->
-  <rect x="40" y="60" width="550" height="280" rx="40" 
-        fill="url(#bannerFrosted)" 
-        filter="url(#bannerMediumBlur)" 
-        opacity="0.6"/>
-  
-  <rect x="40" y="60" width="550" height="280" rx="40" 
-        fill="rgba(255,255,255,0.05)" 
-        filter="url(#bannerMediumBlur)"/>
-  
-  <!-- Inner Glow Border -->
-  <rect x="45" y="65" width="540" height="270" rx="37" 
-        fill="none" 
-        stroke="rgba(255,255,255,0.15)" 
-        stroke-width="2" 
-        filter="url(#bannerSoftBlur)">
-    <animate attributeName="opacity" values="0.15;0.3;0.15" dur="3s" repeatCount="indefinite"/>
-  </rect>
-  
-  <!-- Logo Circle with Ultra Glass -->
-  <g filter="url(#bannerUltraGlow)">
-    <circle cx="160" cy="200" r="90" fill="url(#bannerUltraGlass)" filter="url(#bannerMediumBlur)" opacity="0.8"/>
-    <circle cx="160" cy="200" r="90" fill="url(#bannerFrosted)" filter="url(#bannerSoftBlur)" opacity="0.5"/>
-    <circle cx="160" cy="200" r="90" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="3" filter="url(#bannerSoftBlur)"/>
+  <!-- Logo Section -->
+  <g transform="translate(100, 100)">
+    <!-- Circle 1 (Blue) -->
+    <circle cx="80" cy="100" r="80" 
+            fill="url(#bannerGlass1)" 
+            filter="url(#bannerShadow)"/>
+    <circle cx="80" cy="100" r="80" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.4)" 
+            stroke-width="2"/>
+    <ellipse cx="65" cy="80" rx="30" ry="35" 
+             fill="rgba(255,255,255,0.3)"/>
     
-    <!-- 'S' in Circle -->
-    <path d="M 160 155 
-             Q 180 155, 190 165
-             Q 200 175, 190 190
-             Q 180 205, 160 205
-             Q 140 205, 130 220
-             Q 120 235, 130 250
-             Q 140 265, 160 265
-             L 170 265
-             Q 185 265, 195 255
-             L 195 250
-             Q 195 245, 185 245
-             L 170 245
-             Q 155 245, 150 235
-             Q 145 225, 150 220
-             Q 155 215, 170 215
-             L 185 215
-             Q 200 215, 210 200
-             Q 220 185, 210 170
-             Q 200 155, 185 155
-             L 160 155 Z" 
-          fill="rgba(255,255,255,0.1)" 
-          filter="url(#bannerHeavyBlur)"/>
+    <!-- Circle 2 (Purple) -->
+    <circle cx="180" cy="60" r="80" 
+            fill="url(#bannerGlass2)" 
+            filter="url(#bannerShadow)"/>
+    <circle cx="180" cy="60" r="80" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.4)" 
+            stroke-width="2"/>
+    <ellipse cx="165" cy="40" rx="30" ry="35" 
+             fill="rgba(255,255,255,0.3)"/>
     
-    <path d="M 160 160 
-             Q 177 160, 187 170
-             Q 197 180, 187 195
-             Q 177 210, 160 210
-             Q 143 210, 133 225
-             Q 123 240, 133 255
-             Q 143 270, 160 270
-             L 168 270
-             Q 180 270, 187 263
-             L 187 255
-             Q 187 250, 180 250
-             L 168 250
-             Q 156 250, 152 240
-             Q 148 230, 152 225
-             Q 156 220, 168 220
-             L 180 220
-             Q 192 220, 199 205
-             Q 206 190, 199 175
-             Q 192 160, 180 160
-             L 160 160 Z" 
-          fill="rgba(255,255,255,0.9)" 
-          stroke="rgba(255,255,255,0.3)"
-          stroke-width="2"
-          filter="url(#bannerMediumBlur)"/>
+    <!-- Circle 3 (Green) -->
+    <circle cx="180" cy="140" r="80" 
+            fill="url(#bannerGlass3)" 
+            filter="url(#bannerShadow)"/>
+    <circle cx="180" cy="140" r="80" 
+            fill="none" 
+            stroke="rgba(255,255,255,0.4)" 
+            stroke-width="2"/>
+    <ellipse cx="165" cy="120" rx="30" ry="35" 
+             fill="rgba(255,255,255,0.3)"/>
+    
+    <!-- Center Glow -->
+    <circle cx="130" cy="100" r="30" 
+            fill="rgba(255,255,255,0.3)"/>
   </g>
   
-  <!-- Title with Ultra Glass Effect -->
-  <g filter="url(#bannerUltraGlow)">
-    <text x="300" y="170" font-family="Arial, sans-serif" font-size="72" font-weight="bold" 
-          fill="rgba(255,255,255,0.95)" filter="url(#bannerSoftBlur)">
-      SmonthlAPI
-    </text>
-    
-    <text x="300" y="215" font-family="Arial, sans-serif" font-size="32" 
-          fill="rgba(255,255,255,0.8)">
-      Ultra Liquid Glass Framework
-    </text>
-  </g>
+  <!-- Title -->
+  <text x="450" y="180" 
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" 
+        font-size="72" 
+        font-weight="700" 
+        fill="#1e293b"
+        letter-spacing="-2">
+    SmonthlAPI
+  </text>
   
-  <!-- Version Badge with Glass -->
-  <g filter="url(#bannerUltraGlow)">
-    <rect x="300" y="240" width="110" height="40" rx="20" 
-          fill="url(#bannerUltraGlass)" 
-          filter="url(#bannerMediumBlur)" 
-          opacity="0.7"/>
-    <rect x="300" y="240" width="110" height="40" rx="20" 
-          fill="rgba(255,255,255,0.08)" 
-          filter="url(#bannerSoftBlur)"/>
-    <rect x="300" y="240" width="110" height="40" rx="20" 
-          fill="none" 
-          stroke="rgba(255,255,255,0.3)" 
-          stroke-width="2"/>
-    <text x="355" y="267" font-family="Arial, sans-serif" font-size="20" font-weight="bold"
-          text-anchor="middle" fill="rgba(255,255,255,0.95)">
+  <!-- Subtitle -->
+  <text x="450" y="230" 
+        font-family="'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" 
+        font-size="32" 
+        font-weight="500"
+        fill="#64748b"
+        letter-spacing="-0.5">
+    Liquid Glass UI Framework
+  </text>
+  
+  <!-- Version Badge -->
+  <g transform="translate(450, 250)">
+    <rect width="100" height="40" rx="20" 
+          fill="#3b82f6" 
+          filter="url(#bannerShadow)"/>
+    <text x="50" y="27" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="20" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="white">
       v2.0.7
     </text>
   </g>
   
-  <!-- Feature Pills with Ultra Glass -->
-  <g transform="translate(650, 100)">
-    <g filter="url(#bannerUltraGlow)">
-      <!-- Pill 1 -->
-      <rect x="0" y="0" width="200" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="0" y="0" width="200" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="0" y="0" width="200" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="100" y="35" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        🎨 Glassmorphism
-      </text>
-      
-      <!-- Pill 2 -->
-      <rect x="220" y="0" width="170" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="220" y="0" width="170" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="220" y="0" width="170" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="305" y="35" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        ⚡ Performance
-      </text>
-      
-      <!-- Pill 3 -->
-      <rect x="0" y="75" width="160" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="0" y="75" width="160" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="0" y="75" width="160" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="80" y="110" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        🔗 Chainable
-      </text>
-      
-      <!-- Pill 4 -->
-      <rect x="180" y="75" width="210" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="180" y="75" width="210" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="180" y="75" width="210" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="285" y="110" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        💻 Code Execution
-      </text>
-      
-      <!-- Pill 5 -->
-      <rect x="0" y="150" width="180" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="0" y="150" width="180" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="0" y="150" width="180" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="90" y="185" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        📊 Monitoring
-      </text>
-      
-      <!-- Pill 6 -->
-      <rect x="200" y="150" width="190" height="55" rx="27.5" 
-            fill="url(#bannerUltraGlass)" 
-            filter="url(#bannerMediumBlur)" 
-            opacity="0.6"/>
-      <rect x="200" y="150" width="190" height="55" rx="27.5" 
-            fill="rgba(255,255,255,0.06)" 
-            filter="url(#bannerSoftBlur)"/>
-      <rect x="200" y="150" width="190" height="55" rx="27.5" 
-            fill="none" 
-            stroke="rgba(255,255,255,0.2)" 
-            stroke-width="1.5"/>
-      <text x="295" y="185" font-family="Arial, sans-serif" font-size="20" 
-            text-anchor="middle" fill="rgba(255,255,255,0.9)">
-        🎭 Ultra Blurred
-      </text>
-    </g>
-  </g>
-  
-  <!-- Liquid Droplets -->
-  <g filter="url(#bannerUltraGlow)">
-    <ellipse cx="450" cy="100" rx="10" ry="14" fill="rgba(255,255,255,0.3)" filter="url(#bannerSoftBlur)">
-      <animate attributeName="cy" values="100;110;100" dur="2.5s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2.5s" repeatCount="indefinite"/>
-    </ellipse>
+  <!-- Feature Tags -->
+  <g transform="translate(750, 120)">
+    <!-- Tag 1 -->
+    <rect x="0" y="0" width="180" height="45" rx="22.5" 
+          fill="rgba(96,165,250,0.15)" 
+          stroke="rgba(96,165,250,0.3)" 
+          stroke-width="1.5"/>
+    <text x="90" y="29" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#3b82f6">
+      Glassmorphism
+    </text>
     
-    <ellipse cx="550" cy="310" rx="8" ry="12" fill="rgba(255,255,255,0.25)" filter="url(#bannerSoftBlur)">
-      <animate attributeName="cy" values="310;320;310" dur="3s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.25;0.05;0.25" dur="3s" repeatCount="indefinite"/>
-    </ellipse>
+    <!-- Tag 2 -->
+    <rect x="200" y="0" width="150" height="45" rx="22.5" 
+          fill="rgba(139,92,246,0.15)" 
+          stroke="rgba(139,92,246,0.3)" 
+          stroke-width="1.5"/>
+    <text x="275" y="29" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#8b5cf6">
+      Performance
+    </text>
     
-    <ellipse cx="220" cy="320" rx="9" ry="13" fill="rgba(255,255,255,0.28)" filter="url(#bannerSoftBlur)">
-      <animate attributeName="cy" values="320;330;320" dur="2.7s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.28;0.08;0.28" dur="2.7s" repeatCount="indefinite"/>
-    </ellipse>
+    <!-- Tag 3 -->
+    <rect x="0" y="60" width="140" height="45" rx="22.5" 
+          fill="rgba(16,185,129,0.15)" 
+          stroke="rgba(16,185,129,0.3)" 
+          stroke-width="1.5"/>
+    <text x="70" y="89" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#10b981">
+      Chainable
+    </text>
+    
+    <!-- Tag 4 -->
+    <rect x="160" y="60" width="190" height="45" rx="22.5" 
+          fill="rgba(96,165,250,0.15)" 
+          stroke="rgba(96,165,250,0.3)" 
+          stroke-width="1.5"/>
+    <text x="255" y="89" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#3b82f6">
+      Code Execution
+    </text>
+    
+    <!-- Tag 5 -->
+    <rect x="0" y="120" width="150" height="45" rx="22.5" 
+          fill="rgba(139,92,246,0.15)" 
+          stroke="rgba(139,92,246,0.3)" 
+          stroke-width="1.5"/>
+    <text x="75" y="149" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#8b5cf6">
+      Themeable
+    </text>
+    
+    <!-- Tag 6 -->
+    <rect x="170" y="120" width="180" height="45" rx="22.5" 
+          fill="rgba(16,185,129,0.15)" 
+          stroke="rgba(16,185,129,0.3)" 
+          stroke-width="1.5"/>
+    <text x="260" y="149" 
+          font-family="'SF Pro Display', Arial, sans-serif" 
+          font-size="18" 
+          font-weight="600"
+          text-anchor="middle" 
+          fill="#10b981">
+      Monitoring
+    </text>
   </g>
-  
-  <!-- Floating Particles -->
-  <circle cx="600" cy="50" r="2.5" fill="rgba(255,255,255,0.6)">
-    <animate attributeName="cy" values="50;40;50" dur="3s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.6;0.1;0.6" dur="3s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="1100" cy="120" r="2" fill="rgba(255,255,255,0.5)">
-    <animate attributeName="cy" values="120;110;120" dur="3.5s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.5;0.05;0.5" dur="3.5s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="850" cy="350" r="2.2" fill="rgba(255,255,255,0.55)">
-    <animate attributeName="cy" values="350;360;350" dur="3.2s" repeatCount="indefinite"/>
-    <animate attributeName="opacity" values="0.55;0.1;0.55" dur="3.2s" repeatCount="indefinite"/>
-  </circle>
 </svg>
