@@ -60,26 +60,50 @@
     "files": [
       "index.html",
       "smonthl-api.js",
-      "glass-config.json"
+      "glass-config.json",
+      "electron-main.js",
+      "package.json"
     ],
+    "extraMetadata": {
+      "main": "electron-main.js"
+    },
     "mac": {
       "category": "public.app-category.utilities",
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
       ]
     },
     "win": {
       "target": [
-        "nsis",
-        "portable"
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64", "ia32"]
+        }
       ]
     },
     "linux": {
       "target": [
-        "AppImage",
-        "deb"
-      ]
+        {
+          "target": "AppImage",
+          "arch": ["x64", "arm64", "armv7l"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64", "arm64", "armv7l"]
+        }
+      ],
+      "category": "Utility"
     }
   }
 }
