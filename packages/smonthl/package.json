@@ -1,0 +1,133 @@
+{
+  "name": "@moude-ai/smonthl",
+  "version": "2.0.8",
+  "description": "SmonthlAPI - Beautiful frosted glass UI with liquid glass text, extended creative syntax, external imports (HTML/JavaScript version)",
+  "main": "electron-main.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "build": "npm run package",
+    "package": "electron-builder",
+    "package:all": "electron-builder --linux --mac --win",
+    "prepublishOnly": "echo 'Ready to publish'",
+    "publish:npm": "npm publish",
+    "publish:github": "npm publish --registry=https://npm.pkg.github.com"
+  },
+  "keywords": [
+    "smonthl",
+    "smonthl-api",
+    "liquid-glass",
+    "frosted-glass",
+    "glassmorphism",
+    "jelly-physics",
+    "elastic-ui",
+    "magnetic-ui",
+    "cursor-effects",
+    "electron",
+    "html",
+    "javascript",
+    "ui-component",
+    "glass-effect",
+    "backdrop-filter",
+    "magnifying-lens",
+    "configuration-api"
+  ],
+  "author": "Arthurc1Moude <arch_cheng@163.com>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Moude-AI/smonthl-html.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Moude-AI/smonthl_api/issues"
+  },
+  "homepage": "https://github.com/Moude-AI/smonthl_api#readme",
+  "files": [
+    "index.html",
+    "smonthl-api.js",
+    "glass-config.json",
+    "README.md"
+  ],
+  "devDependencies": {
+    "electron": "^40.1.0",
+    "electron-builder": "^26.4.0"
+  },
+  "build": {
+    "appId": "com.liquidglass.html",
+    "productName": "Liquid Glass HTML",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.html",
+      "smonthl-api.js",
+      "glass-config.json",
+      "electron-main.js",
+      "package.json"
+    ],
+    "extraMetadata": {
+      "main": "electron-main.js"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64",
+            "arm64",
+            "armv7l"
+          ]
+        }
+      ],
+      "category": "Utility"
+    }
+  }
+}
