@@ -1,6 +1,6 @@
 {
   "name": "smonthl",
-  "version": "2.0.4-beta",
+  "version": "2.0.7",
   "description": "SmonthlAPI - Beautiful frosted glass UI with liquid glass text, extended creative syntax, external imports (HTML/JavaScript version)",
   "main": "smonthl-api.js",
   "scripts": {

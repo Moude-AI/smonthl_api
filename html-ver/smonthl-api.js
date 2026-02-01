@@ -954,7 +954,7 @@ class SmonthlAPI {
 
   // Version info
   version() {
-    return '2.0.3-beta';
+    return '2.0.7';
   }
   
   // Feature detection
@@ -1348,6 +1348,1395 @@ class SmonthlAPI {
 
   getPlugins() {
     return this.plugins;
+  }
+
+  // ========== V2.0.5 FULL CODE FEATURES ==========
+  
+  // Code execution engine
+  code(source, language = 'javascript', options = {}) {
+    const defaults = {
+      execute: false,
+      sandbox: true,
+      timeout: 5000,
+      context: {},
+      returnValue: true,
+      async: false
+    };
+    const opts = { ...defaults, ...options };
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-block',
+      content: {
+        type: 'code',
+        source: source,
+        language: language,
+        options: opts,
+        result: null
+      }
+    };
+    
+    if (opts.execute) {
+      this.config.content.result = this._executeCode(source, language, opts);
+    }
+    
+    return this.config;
+  }
+
+  // Execute code safely
+  _executeCode(source, language, options) {
+    try {
+      if (language === 'javascript' || language === 'js') {
+        if (options.sandbox) {
+          const sandbox = { ...options.context, console: console };
+          const fn = new Function(...Object.keys(sandbox), `"use strict"; ${options.returnValue ? 'return ' : ''}${source}`);
+          return fn(...Object.values(sandbox));
+        } else {
+          return options.returnValue ? eval(source) : (eval(source), undefined);
+        }
+      } else if (language === 'json') {
+        return JSON.parse(source);
+      } else if (language === 'expression') {
+        return this._evaluateExpression(source, options.context);
+      }
+    } catch (error) {
+      return { error: error.message, stack: error.stack };
+    }
+  }
+
+  // Evaluate mathematical/logical expressions
+  _evaluateExpression(expr, context = {}) {
+    const safeEval = (expression, vars) => {
+      const fn = new Function(...Object.keys(vars), `"use strict"; return ${expression}`);
+      return fn(...Object.values(vars));
+    };
+    return safeEval(expr, context);
+  }
+
+  // Code syntax highlighting
+  highlight(source, language = 'javascript', theme = 'dark') {
+    const highlighted = this._highlightSyntax(source, language, theme);
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-highlight',
+      content: {
+        type: 'highlighted-code',
+        source: source,
+        language: language,
+        theme: theme,
+        html: highlighted
+      }
+    };
+    return this.config;
+  }
+
+  // Simple syntax highlighter
+  _highlightSyntax(source, language, theme) {
+    const themes = {
+      dark: { keyword: '#ff79c6', string: '#f1fa8c', number: '#bd93f9', comment: '#6272a4', function: '#50fa7b' },
+      light: { keyword: '#d73a49', string: '#032f62', number: '#005cc5', comment: '#6a737d', function: '#6f42c1' }
+    };
+    const colors = themes[theme] || themes.dark;
+    
+    let highlighted = source;
+    
+    if (language === 'javascript' || language === 'js') {
+      const keywords = ['const', 'let', 'var', 'function', 'return', 'if', 'else', 'for', 'while', 'class', 'new', 'this', 'async', 'await'];
+      keywords.forEach(kw => {
+        highlighted = highlighted.replace(new RegExp(`\\b${kw}\\b`, 'g'), `<span style="color:${colors.keyword}">${kw}</span>`);
+      });
+      highlighted = highlighted.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, `<span style="color:${colors.string}">$&</span>`);
+      highlighted = highlighted.replace(/\b\d+\b/g, `<span style="color:${colors.number}">$&</span>`);
+      highlighted = highlighted.replace(/\/\/.*/g, `<span style="color:${colors.comment}">$&</span>`);
+    }
+    
+    return `<pre style="background:${theme === 'dark' ? '#282a36' : '#f6f8fa'};padding:20px;border-radius:8px;overflow:auto;"><code>${highlighted}</code></pre>`;
+  }
+
+  // Code transformation
+  transform(source, transformer, options = {}) {
+    const transformers = {
+      minify: (code) => code.replace(/\s+/g, ' ').trim(),
+      beautify: (code) => this._beautifyCode(code),
+      obfuscate: (code) => this._obfuscateCode(code),
+      transpile: (code) => this._transpileCode(code, options),
+      optimize: (code) => this._optimizeCode(code)
+    };
+    
+    const transformed = transformers[transformer] ? transformers[transformer](source) : source;
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-transform',
+      content: {
+        type: 'transformed-code',
+        original: source,
+        transformed: transformed,
+        transformer: transformer
+      }
+    };
+    
+    return this.config;
+  }
+
+  _beautifyCode(code) {
+    let indent = 0;
+    let beautified = '';
+    const lines = code.split(/[;{}]/);
+    
+    lines.forEach(line => {
+      line = line.trim();
+      if (line.includes('}')) indent--;
+      beautified += '  '.repeat(Math.max(0, indent)) + line + '\n';
+      if (line.includes('{')) indent++;
+    });
+    
+    return beautified;
+  }
+
+  _obfuscateCode(code) {
+    const varMap = {};
+    let counter = 0;
+    return code.replace(/\b([a-z_][a-z0-9_]*)\b/gi, (match) => {
+      if (!varMap[match]) varMap[match] = '_0x' + (counter++).toString(16);
+      return varMap[match];
+    });
+  }
+
+  _transpileCode(code, options) {
+    // Simple ES6 to ES5 transpilation
+    let transpiled = code;
+    transpiled = transpiled.replace(/const\s+/g, 'var ');
+    transpiled = transpiled.replace(/let\s+/g, 'var ');
+    transpiled = transpiled.replace(/=>\s*{/g, 'function() {');
+    transpiled = transpiled.replace(/=>\s*/g, 'function() { return ');
+    return transpiled;
+  }
+
+  _optimizeCode(code) {
+    // Basic optimization
+    let optimized = code;
+    optimized = optimized.replace(/console\.log\([^)]*\);?/g, ''); // Remove console.logs
+    optimized = optimized.replace(/\/\*[\s\S]*?\*\//g, ''); // Remove block comments
+    optimized = optimized.replace(/\/\/.*/g, ''); // Remove line comments
+    optimized = optimized.replace(/\s+/g, ' ').trim(); // Minify whitespace
+    return optimized;
+  }
+
+  // Code analysis
+  analyze(source, language = 'javascript') {
+    const analysis = {
+      lines: source.split('\n').length,
+      characters: source.length,
+      words: source.split(/\s+/).length,
+      functions: (source.match(/function\s+\w+/g) || []).length,
+      variables: (source.match(/(?:const|let|var)\s+\w+/g) || []).length,
+      complexity: this._calculateComplexity(source),
+      dependencies: this._extractDependencies(source)
+    };
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-analysis',
+      content: {
+        type: 'analysis',
+        source: source,
+        language: language,
+        metrics: analysis
+      }
+    };
+    
+    return this.config;
+  }
+
+  _calculateComplexity(code) {
+    let complexity = 1;
+    const patterns = [/if\s*\(/g, /for\s*\(/g, /while\s*\(/g, /case\s+/g, /&&|\|\|/g];
+    patterns.forEach(pattern => {
+      const matches = code.match(pattern);
+      if (matches) complexity += matches.length;
+    });
+    return complexity;
+  }
+
+  _extractDependencies(code) {
+    const imports = code.match(/import\s+.*?from\s+['"]([^'"]+)['"]/g) || [];
+    const requires = code.match(/require\s*\(\s*['"]([^'"]+)['"]\s*\)/g) || [];
+    return [...imports, ...requires].map(dep => dep.match(/['"]([^'"]+)['"]/)[1]);
+  }
+
+  // Code templates
+  codeTemplate(name, variables = {}) {
+    const templates = {
+      component: (vars) => `
+class ${vars.name || 'Component'} {
+  constructor(props) {
+    this.props = props;
+    this.state = {};
+  }
+  
+  render() {
+    return ${vars.template || 'null'};
+  }
+}`,
+      function: (vars) => `
+function ${vars.name || 'myFunction'}(${vars.params || ''}) {
+  ${vars.body || '// TODO: implement'}
+  return ${vars.return || 'null'};
+}`,
+      class: (vars) => `
+class ${vars.name || 'MyClass'} {
+  constructor(${vars.params || ''}) {
+    ${vars.constructor || '// Initialize'}
+  }
+  
+  ${vars.methods || '// Add methods'}
+}`,
+      api: (vars) => `
+async function ${vars.name || 'fetchData'}(${vars.params || 'url'}) {
+  try {
+    const response = await fetch(${vars.endpoint || 'url'});
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;
+  }
+}`,
+      module: (vars) => `
+// ${vars.name || 'Module'} v${vars.version || '1.0.0'}
+export const ${vars.name || 'module'} = {
+  ${vars.exports || '// Add exports'}
+};
+
+export default ${vars.name || 'module'};`
+    };
+    
+    const generated = templates[name] ? templates[name](variables) : '';
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-template',
+      content: {
+        type: 'template',
+        name: name,
+        variables: variables,
+        code: generated
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code snippets library
+  snippet(name, language = 'javascript') {
+    const snippets = {
+      debounce: `function debounce(fn, delay) {
+  let timer;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
+}`,
+      throttle: `function throttle(fn, limit) {
+  let inThrottle;
+  return function(...args) {
+    if (!inThrottle) {
+      fn.apply(this, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
+    }
+  };
+}`,
+      deepClone: `function deepClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}`,
+      curry: `function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    }
+    return (...args2) => curried.apply(this, args.concat(args2));
+  };
+}`,
+      memoize: `function memoize(fn) {
+  const cache = new Map();
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache.has(key)) return cache.get(key);
+    const result = fn.apply(this, args);
+    cache.set(key, result);
+    return result;
+  };
+}`
+    };
+    
+    return this.code(snippets[name] || '', language);
+  }
+
+  // Code playground
+  playground(initialCode = '', options = {}) {
+    const defaults = {
+      language: 'javascript',
+      theme: 'dark',
+      autoRun: false,
+      showOutput: true,
+      editable: true
+    };
+    const opts = { ...defaults, ...options };
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-playground',
+      content: {
+        type: 'playground',
+        code: initialCode,
+        options: opts,
+        output: null
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code diff/comparison
+  diff(code1, code2, options = {}) {
+    const differences = this._computeDiff(code1, code2);
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-diff',
+      content: {
+        type: 'diff',
+        original: code1,
+        modified: code2,
+        differences: differences,
+        options: options
+      }
+    };
+    
+    return this.config;
+  }
+
+  _computeDiff(str1, str2) {
+    const lines1 = str1.split('\n');
+    const lines2 = str2.split('\n');
+    const diff = [];
+    
+    const maxLen = Math.max(lines1.length, lines2.length);
+    for (let i = 0; i < maxLen; i++) {
+      if (lines1[i] !== lines2[i]) {
+        diff.push({
+          line: i + 1,
+          removed: lines1[i] || null,
+          added: lines2[i] || null
+        });
+      }
+    }
+    
+    return diff;
+  }
+
+  // Code linting
+  lint(source, rules = {}) {
+    const issues = [];
+    
+    // Basic linting rules
+    if (rules.noConsole !== false && source.includes('console.')) {
+      issues.push({ type: 'warning', message: 'Avoid console statements', line: -1 });
+    }
+    if (rules.noVar !== false && source.includes('var ')) {
+      issues.push({ type: 'warning', message: 'Use const/let instead of var', line: -1 });
+    }
+    if (rules.semicolons !== false && !source.match(/;$/m)) {
+      issues.push({ type: 'warning', message: 'Missing semicolons', line: -1 });
+    }
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-lint',
+      content: {
+        type: 'lint',
+        source: source,
+        issues: issues,
+        rules: rules
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code formatting
+  format(source, style = 'standard') {
+    const styles = {
+      standard: { indent: 2, semicolons: true, quotes: 'single' },
+      compact: { indent: 0, semicolons: false, quotes: 'double' },
+      google: { indent: 2, semicolons: true, quotes: 'single' },
+      airbnb: { indent: 2, semicolons: true, quotes: 'single' }
+    };
+    
+    const config = styles[style] || styles.standard;
+    let formatted = source;
+    
+    // Apply formatting
+    if (config.quotes === 'single') {
+      formatted = formatted.replace(/"/g, "'");
+    } else {
+      formatted = formatted.replace(/'/g, '"');
+    }
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-format',
+      content: {
+        type: 'formatted',
+        original: source,
+        formatted: formatted,
+        style: style
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code documentation generator
+  document(source, format = 'jsdoc') {
+    const docs = this._generateDocs(source, format);
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-docs',
+      content: {
+        type: 'documentation',
+        source: source,
+        format: format,
+        docs: docs
+      }
+    };
+    
+    return this.config;
+  }
+
+  _generateDocs(source, format) {
+    const functions = source.match(/function\s+(\w+)\s*\(([^)]*)\)/g) || [];
+    const docs = functions.map(fn => {
+      const match = fn.match(/function\s+(\w+)\s*\(([^)]*)\)/);
+      return {
+        name: match[1],
+        params: match[2].split(',').map(p => p.trim()).filter(p => p),
+        description: `Function ${match[1]}`
+      };
+    });
+    
+    return docs;
+  }
+
+  // Code testing
+  test(source, tests = [], options = {}) {
+    const results = tests.map(test => {
+      try {
+        const result = this._executeCode(source, 'javascript', { ...options, returnValue: true });
+        const passed = test.assert(result);
+        return { name: test.name, passed: passed, result: result };
+      } catch (error) {
+        return { name: test.name, passed: false, error: error.message };
+      }
+    });
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-test',
+      content: {
+        type: 'test-results',
+        source: source,
+        tests: tests,
+        results: results
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code performance profiling
+  profile(fn, iterations = 1000) {
+    const start = performance.now();
+    for (let i = 0; i < iterations; i++) {
+      fn();
+    }
+    const end = performance.now();
+    const avgTime = (end - start) / iterations;
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-profile',
+      content: {
+        type: 'performance',
+        iterations: iterations,
+        totalTime: end - start,
+        averageTime: avgTime,
+        opsPerSecond: 1000 / avgTime
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code bundler (simple)
+  bundle(modules, options = {}) {
+    let bundled = '(function() {\n';
+    bundled += '  const modules = {};\n';
+    
+    Object.keys(modules).forEach(name => {
+      bundled += `  modules['${name}'] = function() {\n${modules[name]}\n  };\n`;
+    });
+    
+    bundled += '  const require = (name) => modules[name]();\n';
+    bundled += '  ' + (options.entry || 'require("main")') + ';\n';
+    bundled += '})();';
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-bundle',
+      content: {
+        type: 'bundle',
+        modules: modules,
+        bundled: bundled,
+        options: options
+      }
+    };
+    
+    return this.config;
+  }
+
+  // ========== V2.0.6 EXPANDED FEATURES ==========
+  
+  // Advanced style system
+  style(styleObject) {
+    Object.keys(styleObject).forEach(key => {
+      const value = styleObject[key];
+      if (key === 'blur') this.blur(value);
+      else if (key === 'transparency') this.transparent(value);
+      else if (key === 'rounded') this.rounded(value);
+      else if (key === 'glow') this.glow(value);
+      else if (key === 'shadow') this.shadow(value);
+      else if (key === 'border') this.border(value);
+      else if (key === 'gradient') this.gradient(...value);
+    });
+    return this;
+  }
+
+  // CSS-in-JS style builder
+  css(styles) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    if (!this.config.customCSS) this.config.customCSS = {};
+    Object.assign(this.config.customCSS, styles);
+    return this;
+  }
+
+  // Tailwind-like utility classes
+  tw(classes) {
+    const classMap = {
+      'blur-sm': () => this.blur(20),
+      'blur-md': () => this.blur(40),
+      'blur-lg': () => this.blur(60),
+      'blur-xl': () => this.blur(80),
+      'rounded-sm': () => this.rounded(4),
+      'rounded-md': () => this.rounded(8),
+      'rounded-lg': () => this.rounded(16),
+      'rounded-xl': () => this.rounded(24),
+      'rounded-full': () => this.rounded(9999),
+      'shadow-sm': () => this.shadow(10),
+      'shadow-md': () => this.shadow(20),
+      'shadow-lg': () => this.shadow(30),
+      'shadow-xl': () => this.shadow(40),
+      'glow-sm': () => this.glow(10),
+      'glow-md': () => this.glow(20),
+      'glow-lg': () => this.glow(30),
+      'glow-xl': () => this.glow(40)
+    };
+    
+    classes.split(' ').forEach(cls => {
+      if (classMap[cls]) classMap[cls]();
+    });
+    
+    return this;
+  }
+
+  // Advanced animations
+  animate(name, options = {}) {
+    const animations = {
+      fadeIn: { keyframes: 'fadeIn 0.5s ease-in', duration: 500 },
+      fadeOut: { keyframes: 'fadeOut 0.5s ease-out', duration: 500 },
+      slideIn: { keyframes: 'slideIn 0.5s ease-out', duration: 500 },
+      slideOut: { keyframes: 'slideOut 0.5s ease-in', duration: 500 },
+      zoomIn: { keyframes: 'zoomIn 0.5s ease-out', duration: 500 },
+      zoomOut: { keyframes: 'zoomOut 0.5s ease-in', duration: 500 },
+      rotate: { keyframes: 'rotate 1s linear infinite', duration: 1000 },
+      pulse: { keyframes: 'pulse 2s ease-in-out infinite', duration: 2000 },
+      bounce: { keyframes: 'bounce 1s ease-in-out infinite', duration: 1000 },
+      shake: { keyframes: 'shake 0.5s ease-in-out', duration: 500 },
+      flip: { keyframes: 'flip 1s ease-in-out', duration: 1000 },
+      swing: { keyframes: 'swing 1s ease-in-out', duration: 1000 }
+    };
+    
+    const anim = animations[name] || animations.fadeIn;
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.animation = { ...anim, ...options };
+    
+    return this;
+  }
+
+  // Keyframe animation builder
+  keyframes(name, frames) {
+    const style = document.createElement('style');
+    let css = `@keyframes ${name} {\n`;
+    Object.keys(frames).forEach(key => {
+      css += `  ${key} { ${Object.entries(frames[key]).map(([k, v]) => `${k}: ${v}`).join('; ')} }\n`;
+    });
+    css += '}';
+    style.textContent = css;
+    document.head.appendChild(style);
+    this.customStyles.push(style);
+    return this;
+  }
+
+  // Transition builder
+  transition(property, duration = 300, easing = 'ease') {
+    if (!this.config) this.config = this.getDefaultConfig();
+    if (!this.config.transition) this.config.transition = [];
+    this.config.transition.push(`${property} ${duration}ms ${easing}`);
+    return this;
+  }
+
+  // Transform builder
+  transform(transforms) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.transform = transforms;
+    return this;
+  }
+
+  // Filter builder
+  filter(filters) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.filter = filters;
+    return this;
+  }
+
+  // Advanced code execution with workers
+  async executeAsync(code, options = {}) {
+    return new Promise((resolve, reject) => {
+      const blob = new Blob([`
+        self.onmessage = function(e) {
+          try {
+            const result = eval(e.data);
+            self.postMessage({ success: true, result: result });
+          } catch (error) {
+            self.postMessage({ success: false, error: error.message });
+          }
+        }
+      `], { type: 'application/javascript' });
+      
+      const worker = new Worker(URL.createObjectURL(blob));
+      
+      const timeout = setTimeout(() => {
+        worker.terminate();
+        reject(new Error('Execution timeout'));
+      }, options.timeout || 5000);
+      
+      worker.onmessage = (e) => {
+        clearTimeout(timeout);
+        worker.terminate();
+        if (e.data.success) resolve(e.data.result);
+        else reject(new Error(e.data.error));
+      };
+      
+      worker.postMessage(code);
+    });
+  }
+
+  // Code compiler
+  compile(source, target = 'es5', options = {}) {
+    const compiled = this._transpileCode(source, options);
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-compile',
+      content: {
+        type: 'compiled',
+        source: source,
+        compiled: compiled,
+        target: target,
+        options: options
+      }
+    };
+    
+    return this.config;
+  }
+
+  // AST parser
+  parse(source, language = 'javascript') {
+    const ast = this._parseToAST(source, language);
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-ast',
+      content: {
+        type: 'ast',
+        source: source,
+        language: language,
+        ast: ast
+      }
+    };
+    
+    return this.config;
+  }
+
+  _parseToAST(source, language) {
+    // Simple AST representation
+    const ast = {
+      type: 'Program',
+      body: [],
+      functions: (source.match(/function\s+(\w+)/g) || []).map(f => f.replace('function ', '')),
+      variables: (source.match(/(?:const|let|var)\s+(\w+)/g) || []).map(v => v.split(' ')[1]),
+      imports: (source.match(/import\s+.*?from\s+['"]([^'"]+)['"]/g) || [])
+    };
+    return ast;
+  }
+
+  // Code refactoring
+  refactor(source, rules = {}) {
+    let refactored = source;
+    
+    if (rules.removeComments) {
+      refactored = refactored.replace(/\/\*[\s\S]*?\*\//g, '');
+      refactored = refactored.replace(/\/\/.*/g, '');
+    }
+    
+    if (rules.modernize) {
+      refactored = refactored.replace(/var\s+/g, 'const ');
+      refactored = refactored.replace(/function\s*\(/g, '() => {');
+    }
+    
+    if (rules.addTypes) {
+      refactored = refactored.replace(/function\s+(\w+)\s*\(/g, 'function $1(');
+    }
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-refactor',
+      content: {
+        type: 'refactored',
+        original: source,
+        refactored: refactored,
+        rules: rules
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code search
+  search(source, pattern, options = {}) {
+    const regex = new RegExp(pattern, options.flags || 'g');
+    const matches = [];
+    let match;
+    
+    while ((match = regex.exec(source)) !== null) {
+      matches.push({
+        match: match[0],
+        index: match.index,
+        line: source.substring(0, match.index).split('\n').length
+      });
+    }
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-search',
+      content: {
+        type: 'search-results',
+        source: source,
+        pattern: pattern,
+        matches: matches,
+        count: matches.length
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Code replace
+  replace(source, pattern, replacement, options = {}) {
+    const regex = new RegExp(pattern, options.flags || 'g');
+    const replaced = source.replace(regex, replacement);
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'code-replace',
+      content: {
+        type: 'replaced',
+        original: source,
+        replaced: replaced,
+        pattern: pattern,
+        replacement: replacement
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Extended syntax parser
+  parseSyntax(syntax, extended = true) {
+    if (extended) {
+      // Support for advanced syntax patterns
+      syntax = syntax.replace(/\$\{([^}]+)\}/g, (_, expr) => {
+        try {
+          return eval(expr);
+        } catch {
+          return '';
+        }
+      });
+      
+      // Support for loops
+      syntax = syntax.replace(/@for\s+(\w+)\s+in\s+(\[.*?\])/g, (_, varName, array) => {
+        const items = eval(array);
+        return items.map(item => `${varName}:${item}`).join(' ');
+      });
+      
+      // Support for conditionals
+      syntax = syntax.replace(/@if\s+\(([^)]+)\)\s+\{([^}]+)\}/g, (_, condition, content) => {
+        try {
+          return eval(condition) ? content : '';
+        } catch {
+          return '';
+        }
+      });
+    }
+    
+    return this.from(syntax);
+  }
+
+  // Macro expansion
+  expandMacros(syntax) {
+    let expanded = syntax;
+    
+    if (this._macros) {
+      Object.keys(this._macros).forEach(name => {
+        const regex = new RegExp(`@${name}\\(([^)]*)\\)`, 'g');
+        expanded = expanded.replace(regex, (_, args) => {
+          const argList = args.split(',').map(a => a.trim());
+          return this._macros[name](this, ...argList);
+        });
+      });
+    }
+    
+    return expanded;
+  }
+
+  // Style presets expansion
+  presetExpanded(name, customizations = {}) {
+    const presets = {
+      glass: { blur: 60, transparency: 10, rounded: 16, shadow: 20 },
+      frosted: { blur: 80, transparency: 8, rounded: 20, glow: 15 },
+      crystal: { blur: 40, transparency: 5, rounded: 12, shadow: 30 },
+      neon: { blur: 50, transparency: 15, glow: 40, rounded: 8 },
+      minimal: { blur: 30, transparency: 12, rounded: 4, shadow: 10 },
+      bold: { blur: 70, transparency: 6, rounded: 24, glow: 30 },
+      soft: { blur: 90, transparency: 18, rounded: 32, shadow: 15 },
+      sharp: { blur: 20, transparency: 4, rounded: 0, shadow: 40 },
+      liquid: { blur: 100, transparency: 20, rounded: 40, glow: 25 },
+      metallic: { blur: 35, transparency: 7, rounded: 8, shadow: 35 }
+    };
+    
+    const preset = presets[name] || presets.glass;
+    const merged = { ...preset, ...customizations };
+    
+    return this.style(merged);
+  }
+
+  // Component composition
+  compose(...components) {
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'composition',
+      content: {
+        type: 'composed',
+        components: components
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Layout system
+  layout(type, children = [], options = {}) {
+    const layouts = {
+      flex: { display: 'flex', ...options },
+      grid: { display: 'grid', ...options },
+      stack: { display: 'flex', flexDirection: 'column', ...options },
+      row: { display: 'flex', flexDirection: 'row', ...options },
+      center: { display: 'flex', justifyContent: 'center', alignItems: 'center', ...options }
+    };
+    
+    this.config = {
+      ...this.getDefaultConfig(),
+      componentType: 'layout',
+      content: {
+        type: 'layout',
+        layoutType: type,
+        style: layouts[type] || layouts.flex,
+        children: children
+      }
+    };
+    
+    return this.config;
+  }
+
+  // Responsive design
+  responsive(breakpoints) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.responsive = breakpoints;
+    return this;
+  }
+
+  // Dark mode support
+  darkMode(darkStyles) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.darkMode = darkStyles;
+    return this;
+  }
+
+  // Theme builder
+  createTheme(name, theme) {
+    if (!this.themes) this.themes = {};
+    this.themes[name] = theme;
+    return this;
+  }
+
+  // Apply theme
+  applyTheme(name) {
+    if (this.themes && this.themes[name]) {
+      return this.style(this.themes[name]);
+    }
+    return this;
+  }
+
+  // Variable system
+  setVar(name, value) {
+    if (!this._vars) this._vars = {};
+    this._vars[name] = value;
+    return this;
+  }
+
+  getVar(name, defaultValue = null) {
+    return this._vars && this._vars[name] !== undefined ? this._vars[name] : defaultValue;
+  }
+
+  // Computed properties
+  computed(fn) {
+    if (!this.config) this.config = this.getDefaultConfig();
+    this.config.computed = fn;
+    return this;
+  }
+
+  // Watchers
+  watch(property, callback) {
+    if (!this._watchers) this._watchers = {};
+    this._watchers[property] = callback;
+    return this;
+  }
+
+  // Event system
+  on(event, handler) {
+    if (!this._events) this._events = {};
+    if (!this._events[event]) this._events[event] = [];
+    this._events[event].push(handler);
+    return this;
+  }
+
+  emit(event, data) {
+    if (this._events && this._events[event]) {
+      this._events[event].forEach(handler => handler(data));
+    }
+    return this;
+  }
+
+  // State management
+  state(initialState = {}) {
+    this._state = new Proxy(initialState, {
+      set: (target, property, value) => {
+        target[property] = value;
+        if (this._watchers && this._watchers[property]) {
+          this._watchers[property](value);
+        }
+        this.emit('stateChange', { property, value });
+        return true;
+      }
+    });
+    return this;
+  }
+
+  getState() {
+    return this._state;
+  }
+
+  setState(updates) {
+    Object.assign(this._state, updates);
+    return this;
+  }
+
+  // ========== V2.0.7 NEW FEATURES ==========
+  
+  // Feature 1: AI-Style Chain Builder with Natural Language
+  chain() {
+    const chainBuilder = {
+      _operations: [],
+      _api: this,
+      
+      then(operation) {
+        this._operations.push(operation);
+        return this;
+      },
+      
+      if(condition, trueOp, falseOp) {
+        this._operations.push(() => {
+          if (condition()) {
+            trueOp(this._api);
+          } else if (falseOp) {
+            falseOp(this._api);
+          }
+        });
+        return this;
+      },
+      
+      repeat(times, operation) {
+        this._operations.push(() => {
+          for (let i = 0; i < times; i++) {
+            operation(this._api, i);
+          }
+        });
+        return this;
+      },
+      
+      delay(ms) {
+        this._operations.push(() => {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        });
+        return this;
+      },
+      
+      parallel(...operations) {
+        this._operations.push(async () => {
+          await Promise.all(operations.map(op => op(this._api)));
+        });
+        return this;
+      },
+      
+      sequence(...operations) {
+        this._operations.push(async () => {
+          for (const op of operations) {
+            await op(this._api);
+          }
+        });
+        return this;
+      },
+      
+      async execute() {
+        for (const operation of this._operations) {
+          const result = operation(this._api);
+          if (result instanceof Promise) {
+            await result;
+          }
+        }
+        return this._api.config;
+      },
+      
+      build() {
+        this._operations.forEach(op => op(this._api));
+        return this._api.config;
+      }
+    };
+    
+    return chainBuilder;
+  }
+
+  // Feature 2: Performance Monitoring & Optimization
+  monitor() {
+    const performanceMonitor = {
+      _metrics: {
+        renderTime: 0,
+        memoryUsage: 0,
+        fps: 0,
+        operations: [],
+        startTime: performance.now()
+      },
+      _api: this,
+      
+      startTracking() {
+        this._metrics.startTime = performance.now();
+        
+        // Track FPS
+        let lastTime = performance.now();
+        let frames = 0;
+        const trackFPS = () => {
+          frames++;
+          const currentTime = performance.now();
+          if (currentTime >= lastTime + 1000) {
+            this._metrics.fps = Math.round((frames * 1000) / (currentTime - lastTime));
+            frames = 0;
+            lastTime = currentTime;
+          }
+          requestAnimationFrame(trackFPS);
+        };
+        trackFPS();
+        
+        // Track memory if available
+        if (performance.memory) {
+          this._metrics.memoryUsage = performance.memory.usedJSHeapSize / 1048576; // MB
+        }
+        
+        return this;
+      },
+      
+      trackOperation(name, fn) {
+        const start = performance.now();
+        const result = fn();
+        const duration = performance.now() - start;
+        
+        this._metrics.operations.push({
+          name: name,
+          duration: duration,
+          timestamp: Date.now()
+        });
+        
+        return result;
+      },
+      
+      async trackAsync(name, fn) {
+        const start = performance.now();
+        const result = await fn();
+        const duration = performance.now() - start;
+        
+        this._metrics.operations.push({
+          name: name,
+          duration: duration,
+          timestamp: Date.now(),
+          async: true
+        });
+        
+        return result;
+      },
+      
+      getMetrics() {
+        return {
+          ...this._metrics,
+          totalTime: performance.now() - this._metrics.startTime,
+          averageOperationTime: this._metrics.operations.length > 0
+            ? this._metrics.operations.reduce((sum, op) => sum + op.duration, 0) / this._metrics.operations.length
+            : 0,
+          slowestOperation: this._metrics.operations.length > 0
+            ? this._metrics.operations.reduce((max, op) => op.duration > max.duration ? op : max, this._metrics.operations[0])
+            : null
+        };
+      },
+      
+      optimize() {
+        const metrics = this.getMetrics();
+        const optimizations = [];
+        
+        // Check for slow operations
+        if (metrics.averageOperationTime > 100) {
+          optimizations.push({
+            type: 'slow-operations',
+            message: 'Average operation time is high. Consider optimizing heavy operations.',
+            suggestion: 'Use Web Workers for heavy computations'
+          });
+        }
+        
+        // Check FPS
+        if (metrics.fps < 30) {
+          optimizations.push({
+            type: 'low-fps',
+            message: 'Low FPS detected. Consider reducing visual effects.',
+            suggestion: 'Reduce blur intensity or disable animations'
+          });
+        }
+        
+        // Check memory
+        if (metrics.memoryUsage > 100) {
+          optimizations.push({
+            type: 'high-memory',
+            message: 'High memory usage detected.',
+            suggestion: 'Clear caches or reduce resource loading'
+          });
+        }
+        
+        return {
+          metrics: metrics,
+          optimizations: optimizations,
+          score: this._calculatePerformanceScore(metrics)
+        };
+      },
+      
+      _calculatePerformanceScore(metrics) {
+        let score = 100;
+        
+        // Deduct for slow operations
+        if (metrics.averageOperationTime > 50) score -= 20;
+        if (metrics.averageOperationTime > 100) score -= 20;
+        
+        // Deduct for low FPS
+        if (metrics.fps < 30) score -= 30;
+        else if (metrics.fps < 50) score -= 15;
+        
+        // Deduct for high memory
+        if (metrics.memoryUsage > 100) score -= 20;
+        else if (metrics.memoryUsage > 50) score -= 10;
+        
+        return Math.max(0, score);
+      },
+      
+      report() {
+        const optimization = this.optimize();
+        console.group('🔍 SmonthlAPI Performance Report');
+        console.log('📊 Metrics:', optimization.metrics);
+        console.log('⚡ Performance Score:', optimization.score + '/100');
+        if (optimization.optimizations.length > 0) {
+          console.log('💡 Optimizations:');
+          optimization.optimizations.forEach(opt => {
+            console.log(`  - ${opt.type}: ${opt.message}`);
+            console.log(`    Suggestion: ${opt.suggestion}`);
+          });
+        } else {
+          console.log('✅ No optimizations needed!');
+        }
+        console.groupEnd();
+        
+        return optimization;
+      },
+      
+      autoOptimize() {
+        const optimization = this.optimize();
+        
+        optimization.optimizations.forEach(opt => {
+          if (opt.type === 'low-fps' && this._api.config) {
+            // Reduce blur
+            if (this._api.config.glass.blur > 40) {
+              this._api.config.glass.blur = 40;
+              console.log('🔧 Auto-optimized: Reduced blur to 40');
+            }
+          }
+          
+          if (opt.type === 'high-memory') {
+            // Clear caches
+            if (this._api.resourceCache) {
+              this._api.resourceCache.clear();
+              console.log('🔧 Auto-optimized: Cleared resource cache');
+            }
+          }
+        });
+        
+        return optimization;
+      }
+    };
+    
+    return performanceMonitor;
+  }
+
+  // Batch processing with progress tracking
+  batchProcess(items, processor, options = {}) {
+    const defaults = {
+      batchSize: 10,
+      delay: 0,
+      onProgress: null,
+      onComplete: null,
+      parallel: false
+    };
+    const opts = { ...defaults, ...options };
+    
+    const results = [];
+    let processed = 0;
+    
+    const processBatch = async (batch) => {
+      if (opts.parallel) {
+        const batchResults = await Promise.all(batch.map(item => processor(item)));
+        results.push(...batchResults);
+      } else {
+        for (const item of batch) {
+          const result = await processor(item);
+          results.push(result);
+        }
+      }
+      
+      processed += batch.length;
+      
+      if (opts.onProgress) {
+        opts.onProgress({
+          processed: processed,
+          total: items.length,
+          percentage: Math.round((processed / items.length) * 100)
+        });
+      }
+      
+      if (opts.delay > 0) {
+        await new Promise(resolve => setTimeout(resolve, opts.delay));
+      }
+    };
+    
+    const execute = async () => {
+      for (let i = 0; i < items.length; i += opts.batchSize) {
+        const batch = items.slice(i, i + opts.batchSize);
+        await processBatch(batch);
+      }
+      
+      if (opts.onComplete) {
+        opts.onComplete(results);
+      }
+      
+      return results;
+    };
+    
+    return execute();
+  }
+
+  // Memoization for expensive operations
+  memoize(fn, keyGenerator) {
+    const cache = new Map();
+    
+    return (...args) => {
+      const key = keyGenerator ? keyGenerator(...args) : JSON.stringify(args);
+      
+      if (cache.has(key)) {
+        return cache.get(key);
+      }
+      
+      const result = fn(...args);
+      cache.set(key, result);
+      
+      return result;
+    };
+  }
+
+  // Debounce helper
+  debounce(fn, delay = 300) {
+    let timeoutId;
+    
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => fn(...args), delay);
+    };
+  }
+
+  // Throttle helper
+  throttle(fn, limit = 300) {
+    let inThrottle;
+    
+    return (...args) => {
+      if (!inThrottle) {
+        fn(...args);
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
   }
 }
 
